@@ -1,0 +1,145 @@
+package com.example.envios_bios.controladores;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import com.example.envios_bios.dominio.EstadoRastreo;
+import com.example.envios_bios.excepciones.ExcepcionEnviosBios;
+import com.example.envios_bios.servicios.IServicioEstadoRastreo;
+import jakarta.validation.Valid;
+
+@Controller
+@RequestMapping("/estadosRastreos")
+public class ControladorEstadoRastreo {
+    @Autowired
+    private IServicioEstadoRastreo servicioEstadoRastreo;
+
+    @GetMapping
+    public String mostrarEstados(@RequestParam(required = false) String criterio, Model model) {
+        List<EstadoRastreo> rastreos = servicioEstadoRastreo.buscar(criterio);
+
+        model.addAttribute("rastreo", rastreos);
+
+        return "estadosRastreos/estadosRastreos";
+    }
+
+    @GetMapping("/agregar")
+    public String mostrarAgregar(Model model) {
+        // Crear un objeto estado vacío para el formulario
+    EstadoRastreo rastreo = new EstadoRastreo();
+    model.addAttribute("rastreo", rastreo);
+    // Pasar el valor del botón de acción al formulario
+    model.addAttribute("textoBoton", "Agregar Estado de Rastreo");
+    return "estadosRastreos/agregar";
+    }
+       
+    
+    @PostMapping("/agregar")
+    public String agregarEstadoRastreo(@ModelAttribute("rastreo") @Valid EstadoRastreo rastreo, RedirectAttributes redirectAttributes, BindingResult result, Model model) {
+        
+        if (result.hasErrors()) {
+            return "estadosRastreos/agregar";
+        }
+        try { 
+            servicioEstadoRastreo.agregar(rastreo);
+        }
+        catch (ExcepcionEnviosBios e) {
+            model.addAttribute("error", e.getMessage());
+            return "estadosRastreos/agregar";
+
+        }
+        // Añadir un mensaje de éxito a los atributos redireccionados
+        redirectAttributes.addFlashAttribute("mensaje", "Estado de Rastreo agregado exitosamente!");
+        
+        // Redireccionar a la lista de categorías
+        return "redirect:/estadosRastreos";
+    }
+
+    @GetMapping("/modificar")
+    public String mostrarModificar(Integer idRastreo, Model model) {
+    model.addAttribute("rastreos", servicioEstadoRastreo.listar());
+
+        EstadoRastreo rastreo = servicioEstadoRastreo.obtener(idRastreo);
+
+        if (rastreo != null) {
+            model.addAttribute("rastreos", rastreo);
+        } else {
+            model.addAttribute("mensaje", "¡ERROR! No se encontró el Estado de Rastreo con el id " + idRastreo + ".");
+        }
+
+        return "estadosRastreos/modificar";
+}
+
+@PostMapping("/modificar")
+    public String procesarModificar(@ModelAttribute @Valid EstadoRastreo rastreo, BindingResult result, Model model, RedirectAttributes attributes) {
+        model.addAttribute("rastreos", servicioEstadoRastreo.listar());
+        
+        if (result.hasErrors()) {
+            return "estadosRastreos/modificar";
+        }
+        try {
+            
+            servicioEstadoRastreo.modificar(rastreo);
+            attributes.addFlashAttribute("mensaje", "Estado de Rastreo modificado con éxito.");
+            return "redirect:/estadosRastreos";
+    
+        }
+        catch (ExcepcionEnviosBios e) {
+            model.addAttribute("mensaje", "¡ERROR! " + e.getMessage());
+
+            return "estadosRastreos/modificar";
+        
+        }
+    }
+
+    @GetMapping("/eliminar")
+    public String mostrarEliminar(Integer idRastreo, Model model) {
+        EstadoRastreo rastreo = servicioEstadoRastreo.obtener(idRastreo);
+
+        if (rastreo != null) {
+            model.addAttribute("rastreos", rastreo);
+        } else {
+            model.addAttribute("mensaje", "¡ERROR! No se encontró el Estado de Rastreo con el código " + idRastreo + ".");
+        }
+
+        return "estadosRastreos/eliminar";
+    }
+
+    @PostMapping("/eliminar")
+    public String procesarEliminar(Integer idRastreo, Model model, RedirectAttributes attributes) {
+        try {
+            servicioEstadoRastreo.eliminar(idRastreo);           
+
+            attributes.addFlashAttribute("mensaje", "Estado de Rastreo eliminado con éxito.");
+
+            return "redirect:/estadosRastreos";
+        } catch (ExcepcionEnviosBios e) {
+            model.addAttribute("mensaje", "¡ERROR! " + e.getMessage());
+
+            return "estadosRastreos/estadosRastreos";
+        }
+    }
+
+    @GetMapping("/{idRastreo}")
+    public String mostrarDetalle(@PathVariable("idRastreo") Integer idRastreo, Model model) {
+        EstadoRastreo rastreo = servicioEstadoRastreo.obtener(idRastreo);
+
+        if (rastreo != null) {
+            model.addAttribute("rastreos", rastreo);
+        } else {
+            model.addAttribute("mensaje", "¡ERROR! No se encontró el Estado de Rastreo con el código " + idRastreo + ".");
+        }
+
+        return "estadosRastreos/detalle";
+    }
+}

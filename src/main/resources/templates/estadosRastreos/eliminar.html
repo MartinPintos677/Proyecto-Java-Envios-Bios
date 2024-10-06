@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+    th:replace="~{fragmentos/plantilla-maestra::html(~{::title}, ~{::body}, 'css/estiloFormularioCategoria.css')}">
+
+<head>
+    <title>Envios Bios - Eliminar Estado de Rastreo</title>
+</head>
+
+<body th:remove="tag">
+    <h1>Eliminar Estado de Rastreo</h1>
+
+    <p th:replace="~{fragmentos/parrafo-mensaje}"></p>
+
+    <th:block th:if="${rastreos}">
+        <p>¿Confirma que desea eliminar el Estado de Rastreo con código <strong
+                th:text="${rastreos.idRastreo}"></strong> (<span th:text="${rastreos.descripcion}"></span>)?</p>
+
+        <form method="post">
+            <div>
+                <input type="submit" value="Eliminar" />
+            </div>
+        </form>
+    </th:block>
+
+</body>
+
+</html>

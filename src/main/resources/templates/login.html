@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/login.css">
+    <title>Login</title>
+  </head>
+
+<body>
+  <div class="login-container">
+    <form class="login-form" action="/pantalla-principal" method="get">
+      <div class="">
+        <!-- Aca voy a poner el logo -->
+        <img src="/imagenes/logo png.png" alt="Logo Envíos Bios" class="logo-login">
+      </div>
+      <h2>Iniciar Sesión</h2>
+      <div class="line-h2"></div>
+      <div class="input-container-login">
+        <label class="input-container-label" for="username">Nombre de Usuario</label>
+        <input class="input-container-label" type="text" id="username" name="username" maxlength="18">
+      </div>
+      <div class="input-container-login">
+        <label class="input-container-label-pass" for="password">Contraseña</label>
+        <input class="input-container-label" type="password" id="password" name="password" maxlength="18">
+      </div>
+      <button class="btn-login" type="submit">Iniciar Sesión</button>
+      <p class="registro-invitar">Si aún no estás registrado como cliente, <a th:href="@{registro}">regístrate
+          ahora!</a></p>
+
+      <p class="volver-inicio"><a th:href="@{index}">Volver a inicio</a></p>
+    </form>
+  </div>
+</body>
+
+</html>

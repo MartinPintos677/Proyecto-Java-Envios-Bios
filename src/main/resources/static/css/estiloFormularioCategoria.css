@@ -1,0 +1,258 @@
+/* Estilo general para el formulario */
+form {
+    max-width: 600px; /* Limitar el ancho máximo del formulario */
+    margin: 0 auto; /* Centrar el formulario en la página */
+    background-color: #f9f9f9; /* Fondo claro */
+    padding: 20px 30px; /* Espaciado interno */
+    border: 1px solid #006699;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    font-family: 'Arial', sans-serif; /* Fuente simple y legible */
+    margin:20px;
+}
+
+/* Estilo para cada campo del formulario */
+form div {
+    margin-bottom: 15px; /* Separación entre los campos */
+    display: flex; /* Alineación de etiquetas e inputs */
+    flex-direction: column; /* Alineación vertical */
+    width: 50%;
+}
+
+/* Estilo para las etiquetas */
+label {
+    font-size: 14px; /* Tamaño de letra de etiquetas */
+    font-weight: bold; /* Letras en negrita */
+    margin-bottom: 5px; /* Espacio debajo de la etiqueta */
+    color: #333; /* Color del texto */
+}
+
+/* Estilo para los inputs */
+input[type="text"],
+input[type="number"],
+input[type="password"],
+select,
+textarea {
+    padding: 10px; /* Espaciado interno */
+    border: 1px solid #ccc; /* Borde gris claro */
+    border-radius: 4px; /* Bordes redondeados */
+    font-size: 16px; /* Tamaño de letra */
+    background-color: #fff; /* Fondo blanco */
+    transition: border-color 0.3s ease-in-out; /* Transición en el borde */
+}
+
+/* Cambiar el borde cuando el campo tiene el foco */
+input[type="text"]:focus,
+input[type="number"]:focus,
+input[type="file"]:focus,
+input[type="password"]:focus,
+select:focus,
+textarea:focus {
+    border-color: #007BFF; /* Color de borde azul al enfocar */
+    outline: none; /* Quitar borde exterior */
+}
+
+/* Estilo para los botones */
+input[type="submit"] {
+    background-color: #006699; /* Fondo azul */
+    color: #fff; /* Texto blanco */
+    border: none; /* Sin borde */
+    padding: 10px 20px; /* Espaciado interno */
+    font-size: 16px; /* Tamaño de letra */
+    border-radius: 4px; /* Bordes redondeados */
+    cursor: pointer; /* Cambiar cursor al pasar */
+    transition: background-color 0.3s ease-in-out; /* Transición en el fondo */
+    width: 30%; 
+    margin-top: 15px;   
+}
+
+input[type="submit"]:hover {
+    background-color: #0056b3; /* Fondo más oscuro al pasar el cursor */
+}
+
+/* Estilo para mensajes de error */
+.error {
+    color: #d9534f; /* Rojo para el texto */
+    font-size: 14px; /* Tamaño de letra */
+    margin-top: 5px; /* Espacio sobre el mensaje */
+}
+
+
+/* Estilo para el contenedor general */
+body {
+    background-color: #e9ecef; /* Fondo gris claro */
+    font-family: 'Arial', sans-serif; /* Fuente general */
+}
+
+/*ejemplo tabla*/
+.datagrid table {
+    border-collapse: collapse;
+    text-align: left;
+    table-layout: fixed;
+    width: 100%;
+}
+
+.datagrid {
+    font: normal 12px/150% Arial, Helvetica, sans-serif;
+    background: #fff;
+    /*overflow: hidden;*/
+    overflow-x: auto;
+    border: 1px solid #006699;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    width: 40%;
+    margin: 30px auto;
+}
+
+.datagrid table td,
+.datagrid table th {
+    padding: 8px 12px;
+    border: 1px solid #ddd; /* Borde entre celdas */
+    white-space: nowrap; /* Evita que el texto se divida en varias líneas */
+    overflow: hidden;    
+}
+
+.datagrid table td a {
+    margin: 0 4px; /* Espaciado entre los iconos */
+}
+
+.datagrid table thead th {
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #006699), color-stop(1, #00557F));
+    background: -moz-linear-gradient(center top, #006699 5%, #00557F 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#006699', endColorstr='#00557F');
+    background-color: #006699;
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: bold;
+    border-left: 1px solid #0070A8;
+}
+
+.datagrid table thead th:first-child {
+    border: none;
+}
+
+.datagrid table tbody td {
+    color: #00496B;
+    border-left: 1px solid #E1EEF4;
+    font-size: 12px;
+    font-weight: normal;
+}
+
+.datagrid table tbody .alt td {
+    background: #E1EEF4;
+    color: #00496B;
+}
+
+.datagrid table tbody td:first-child {
+    border-left: none;
+}
+
+.datagrid table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.datagrid table tfoot td div {
+    border-top: 1px solid #006699;
+    background: #E1EEF4;
+}
+
+.datagrid table tfoot td {
+    padding: 0;
+    font-size: 12px
+}
+
+.datagrid table tfoot td div {
+    padding: 2px;
+}
+
+.datagrid table tfoot td ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    text-align: right;
+}
+
+.datagrid table tfoot li {
+    display: inline;
+}
+
+.datagrid table tfoot li a {
+    text-decoration: none;
+    display: inline-block;
+    padding: 2px 8px;
+    margin: 1px;
+    color: #FFFFFF;
+    border: 1px solid #006699;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #006699), color-stop(1, #00557F));
+    background: -moz-linear-gradient(center top, #006699 5%, #00557F 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#006699', endColorstr='#00557F');
+    background-color: #006699;
+}
+
+.datagrid table tfoot ul.active,
+.datagrid table tfoot ul a:hover {
+    text-decoration: none;
+    border-color: #006699;
+    color: #FFFFFF;
+    background: none;
+    background-color: #00557F;
+}
+
+/* Estilo para el enlace de "Agregar" */
+a.agregar {
+    display: inline-block;
+    background-color: #006699; 
+    color: white;
+    padding: 12px 25px; 
+    font-size: 16px; 
+    font-weight: bold; 
+    text-align: center;
+    border-radius: 8px; 
+    text-decoration: none; 
+    transition: background-color 0.3s ease, transform 0.2s ease;    
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); 
+}
+
+/* Efecto al pasar el cursor por el botón */
+a.agregar:hover {
+    background-color: #0056b3;
+    transform: scale(1.05); 
+}
+
+/* Efecto al hacer clic en el botón */
+a.agregar:active {
+    background-color: #00557F; 
+    transform: scale(1); 
+}
+
+@media (max-width: 1200px) {
+.datagrid {
+    width: 50%;
+}
+}
+
+
+/* Responsivo: Ajustar el formulario en pantallas más pequeñas */
+@media (max-width: 850px) {
+    .datagrid {
+        width: 90%; 
+    }
+
+    /* Las columnas de la tabla pueden adaptarse */
+    .datagrid table th, .datagrid table td {
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 768px) {
+input[type="submit"] {
+width: 40%;
+}}
+
+@media (max-width: 565px) {
+input[type="submit"] {
+width: 50%;
+}}

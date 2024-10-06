@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+    th:replace="~{fragmentos/plantilla-maestra::html(~{::title}, ~{::body}, 'css/estiloFormularioCategoria.css')}">
+
+<head>
+    <title>Envios Bios - Modificar Empleado</title>
+</head>
+
+<body th:remove="tag">
+    <h1>Modificar Empleado</h1>
+
+    <p th:replace="~{fragmentos/parrafo-mensaje}"></p>
+
+    <th:block th:if="${empleado}">
+        <div th:replace="fragmentos/formulario-empleado:: formulario-empleado('Modificar')"></div>
+
+    </th:block>
+</body>
+
+</html>

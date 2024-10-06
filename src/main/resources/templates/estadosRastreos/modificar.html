@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+    th:replace="~{fragmentos/plantilla-maestra::html(~{::title}, ~{::body}, 'css/estiloFormularioCategoria.css')}">
+
+<head>
+    <title>Envios Bios - Modificar Estado de Rastreo</title>
+</head>
+
+<body th:remove="tag">
+    <h1>Modificar Estado de Rastreo</h1>
+
+    <p th:replace="~{fragmentos/parrafo-mensaje}"></p>
+
+    <th:block th:if="${rastreos}">
+        <div th:replace="fragmentos/formulario-estadosRastreos :: formulario-estadosRastreos('Modificar')"></div>
+
+    </th:block>
+
+    <div th:replace="~{fragmentos/footer::html(~{::title}, ~{::body})}"></div>
+</body>
+
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+    th:replace="~{fragmentos/plantilla-maestra::html(~{::title}, ~{::body}, 'css/estiloFormularioCategoria.css')}">
+
+<head>
+    <title>Envios Bios - Eliminar Empleado</title>
+</head>
+
+<body th:remove="tag">
+    <h1>Eliminar Empleado</h1>
+
+    <p th:replace="~{fragmentos/parrafo-mensaje}"></p>
+
+    <th:block th:if="${empleados}">
+        <p>¿Confirma que desea eliminar el producto con código <strong th:text="${empleados.nombreUsuario}"></strong> (<span
+                th:text="${empleados.sucursal.nombre}"></span>)?</p>
+
+        <form method="post">
+            <div>
+                <input type="submit" value="Eliminar" />
+            </div>
+        </form>
+    </th:block>
+
+</body>
+
+</html>

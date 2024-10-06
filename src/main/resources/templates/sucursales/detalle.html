@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" th:replace="~{fragmentos/plantilla-maestra::html(~{::title}, ~{::body}, 'css/estiloFormularioCategoria.css')}">
+    <head>
+        <title>Envios Bios - Detalle de Sucursal</title>
+    </head>
+    <body th:remove="tag">
+        <h1>Detalle de Sucursal</h1>
+
+        <p th:replace="~{fragmentos/parrafo-mensaje}"></p>
+        
+        <th:block th:if="${sucursales}">
+            <h2 th:text="${sucursales.nombre}"></h2>
+            <ul>
+                <li><strong>Id</strong>: <span th:text="${sucursales.numero}"></span></li>
+                <li><strong>Nombre</strong>: <span th:text="${sucursales.nombre}"></span></li>                
+            </ul>            
+        </th:block>
+        
+    </body>
+</html>

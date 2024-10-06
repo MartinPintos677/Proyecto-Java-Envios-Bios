@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+    th:replace="~{fragmentos/plantilla-maestra::html(~{::title}, ~{::body}, 'css/estiloFormularioCategoria.css')}">
+
+<head>
+    <title>Envios Bios - Modificar Categoria</title>
+</head>
+
+<body th:remove="tag">
+    <h1>Modificar Categoria</h1>
+
+    <p th:replace="~{fragmentos/parrafo-mensaje}"></p>
+
+    <th:block th:if="${categorias}">
+        <div th:replace="fragmentos/formulario-categoria :: formulario-categoria('Modificar')"></div>
+
+    </th:block>
+
+    <div th:replace="~{fragmentos/footer::html(~{::title}, ~{::body})}"></div>
+</body>
+
+</html>

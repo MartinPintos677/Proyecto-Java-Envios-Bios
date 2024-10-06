@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" th:fragment="html(titulo, contenido)">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title th:replace="${titulo}">Footer</title>
+
+  <link rel="stylesheet" th:href="@{/css/footer.css}">
+
+</head>
+
+<body>
+  <footer class="footer">
+    <div class="container-footer">
+      <!-- Logo de Envíos BIOS -->
+      <div class="footer-logo">
+        <img th:src="@{/imagenes/logo png.png}" alt="Logo Envíos BIOS">
+      </div>
+
+      <!-- Información de contacto -->
+      <div class="footer-contact">
+        <p class="p-contact"><strong>Contacto:</strong></p>
+        <p class="p-contact">Teléfono: 21234567</p>
+        <p class="p-contact">Celular: 099183956</p>
+        <p class="p-contact">Email: info@enviosbios.com.uy</p>
+        <p class="p-contact">Dirección: Colonia 1464, Montevideo</p>
+      </div>
+
+      <!-- Logos de Redes Sociales -->
+      <div class="footer-social">
+        <div class="sociales-flex">
+          <p class="p-redes"><strong>¡Seguinos en nuestras redes!</strong></p>
+
+          <div class="icons-social">
+            <a href="https://www.instagram.com/" target="_blank"><img th:src="@{/imagenes/linkedin-brands-solid.svg}"
+                alt="Linkedin"></a>
+
+            <a href="https://www.x.com/" target="_blank"><img th:src="@{/imagenes/square-x-twitter-brands-solid.svg}"
+                alt="Twitter"></a>
+
+            <a href="https://www.linkedin.com/" target="_blank"><img th:src="@{/imagenes/instagram-brands-solid.svg}"
+                alt="Instagram"></a>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- Desarrollado por SOFT Team -->
+      <div class="footer-softteam">
+        <p><strong>Desarrollado por</strong></p>
+        <img th:src="@{/imagenes/SoftTeam logo.png}" alt="Logo SOFT Team">
+      </div>
+    </div>
+  </footer>
+
+</body>
+
+</html>

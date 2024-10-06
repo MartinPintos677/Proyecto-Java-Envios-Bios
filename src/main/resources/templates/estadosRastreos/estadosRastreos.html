@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+    th:replace="~{fragmentos/plantilla-maestra::html(~{::title}, ~{::body}, 'css/estiloFormularioCategoria.css')}">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/estiloFormularioCategoria.css">
+    <title>Estados de Rastreo</title>
+
+</head>
+
+<body th:remove="tag">
+
+    <div class="container" align="center">
+        <h1>Estados de Rastreo</h1>
+
+        <p th:replace="~{fragmentos/parrafo-mensaje}"></p>
+        <!-- Formulario de búsqueda -->
+        <form id="formularioBusqueda">
+            <div>
+                <input type="search" name="criterio" th:value="${param.criterio}" id="criterio"
+                    placeholder="Nombre del Estado">
+                <input type="submit" value="Buscar">
+            </div>
+        </form>
+
+        <!-- Tabla para mostrar la lista de estados -->
+        <div class="datagrid">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Descripción</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="r : ${rastreo}">
+                        <td th:text="${r.idRastreo}"></td>
+                        <td th:text="${r.descripcion}"></td>
+                        <td>
+                            <a th:href="@{/estadosRastreos/{idRastreo}(idRastreo=${r.idRastreo})}"
+                                title="Ver Detalle"><i class="icono icono-ver"></i></a>&nbsp;&nbsp; |
+                            <a th:href="@{/estadosRastreos/modificar(idRastreo=${r.idRastreo})}" title="Modificar"><i
+                                    class="icono icono-modificar"></i></a>&nbsp;&nbsp;|
+                            <a th:href="@{/estadosRastreos/eliminar(idRastreo=${r.idRastreo})}" title="Eliminar"><i
+                                    class="icono icono-eliminar"></i></a>
+                        </td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+        </div>
+
+        <p>
+            <a class="agregar" th:href="@{/estadosRastreos/agregar}" title="Agregar">Agregar Estado de Rastreo</a>
+        </p>
+
+        <div th:replace="~{fragmentos/footer::html(~{::title}, ~{::body})}"></div>
+
+        <script>
+            document.getElementById('formularioBusqueda').addEventListener('search', function () {
+                document.getElementById('formularioBusqueda').submit();
+            });
+
+            document.getElementById('criterio').focus();
+            document.getElementById('criterio').select();
+        </script>
+</body>
+
+</html>

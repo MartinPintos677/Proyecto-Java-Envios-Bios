@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" th:replace="~{fragmentos/plantilla-maestra::html(~{::title}, ~{::body}, 'css/estiloFormularioCategoria.css')}">
+    <head>
+        <title>Envios Bios - Detalle de Empleado</title>
+    </head>
+    <body th:remove="tag">
+        <h1>Detalle de Empleado</h1>
+
+        <p th:replace="~{fragmentos/parrafo-mensaje}"></p>
+        
+        <th:block th:if="${empleado}">
+            <h2 th:text="${empleado.nombreUsuario}"></h2>
+            <ul>
+                <li><strong>Nombre de Usuario:</strong>: <span th:text="${empleado.nombreUsuario}"></span></li>
+                <li><strong>Sucursal</strong>: <span th:text="${empleado.sucursal.nombre}"></span></li>
+                <li><strong>Email</strong>: <span th:text="${empleado.email}"></span></li>
+                <li><strong>Clave de Acceso</strong>: <span th:text="${empleado.claveDeAcceso}"></span></li>
+                
+            </ul>            
+        </th:block>
+        
+    </body>
+</html>

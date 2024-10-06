@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+    th:replace="~{fragmentos/plantilla-maestra::html(~{::title}, ~{::body}, 'css/estiloFormularioCategoria.css')}">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/estiloFormularioCategoria.css">
+    <title>Categorías</title>
+
+</head>
+
+<body th:remove="tag">
+
+
+
+    <div class="container" align="center">
+        <h1>Categorías</h1>
+
+        <p th:replace="~{fragmentos/parrafo-mensaje}"></p>
+        <!-- Formulario de búsqueda -->
+        <form id="formularioBusqueda">
+            <div>
+                <input type="search" name="criterio" th:value="${param.criterio}" id="criterio"
+                    placeholder="Nombre de categoría">
+                <input type="submit" value="Buscar">
+            </div>
+        </form>
+
+        <!-- Tabla para mostrar la lista de categorías -->
+        <div class="datagrid">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="c : ${categorias}">
+                        <td th:text="${c.idCat}"></td>
+                        <td th:text="${c.nombre}"></td>
+                        <td>
+                            <a th:href="@{/categorias/{idCat}(idCat=${c.idCat})}" title="Ver Detalle"><i
+                                    class="icono icono-ver"></i></a>&nbsp;&nbsp; |
+                            <a th:href="@{/categorias/modificar(idCat=${c.idCat})}" title="Modificar"><i
+                                    class="icono icono-modificar"></i></a>&nbsp;&nbsp; |
+                            <a th:href="@{/categorias/eliminar(idCat=${c.idCat})}" title="Eliminar"><i
+                                    class="icono icono-eliminar"></i></a>
+                        </td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+        </div>
+
+        <p>
+            <a class="agregar" th:href="@{/categorias/agregar}" title="Agregar">Agregar Categoría</a>
+        </p>
+
+        <script>
+            document.getElementById('formularioBusqueda').addEventListener('search', function () {
+                document.getElementById('formularioBusqueda').submit();
+            });
+
+            document.getElementById('criterio').focus();
+            document.getElementById('criterio').select();
+        </script>
+
+        <div th:replace="~{fragmentos/footer::html(~{::title}, ~{::body})}"></div>
+</body>
+
+</html>

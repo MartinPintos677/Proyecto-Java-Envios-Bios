@@ -1,0 +1,40 @@
+.cabezal-principal {
+    height: 200px;
+    background-size: cover;
+    background-position: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    margin: 0;
+    padding: 20px;
+    
+}
+
+header.cabezal-principal h1 {
+    margin:0;
+    font-size: 3em;
+    line-height: 160px;
+}
+
+nav.navegacion-principal {
+    height: 40px;
+    position: sticky;
+    top: 0;
+    background-color: black;
+}
+
+nav.navegacion-principal > * {
+    float: right;
+}
+
+nav.navegacion-principal > *:first-child {
+    float: left;
+}
+
+nav.navegacion-principal ul{
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}

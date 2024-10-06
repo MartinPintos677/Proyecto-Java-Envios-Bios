@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+  th:replace="~{fragmentos/plantilla-maestra::html(~{::title}, ~{::body}, 'css/estiloFormPaquete.css')}">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Envios Bios - Agregar Paquete</title>
+
+</head>
+
+<body th:remove="tag">
+  <h1>Agregar Paquete</h1>
+
+  <!-- Mensaje de éxito o error -->
+  <p th:replace="~{fragmentos/parrafo-mensaje}"></p>
+
+  <div th:replace="fragmentos/formulario-paquete :: formulario-paquete('Agregar')"></div>
+
+  <div th:replace="~{fragmentos/footer::html(~{::title}, ~{::body})}"></div>
+</body>
+
+</html>

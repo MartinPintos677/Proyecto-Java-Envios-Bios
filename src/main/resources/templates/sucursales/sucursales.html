@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+    th:replace="~{fragmentos/plantilla-maestra::html(~{::title}, ~{::body}, 'css/estiloFormularioCategoria.css')}">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/estiloFormularioCategoria.css}">
+    <title>Sucursales</title>
+
+</head>
+
+<body th:remove="tag">
+
+    <div class="contenedor" align="center">
+        <h1>Sucursales</h1>
+
+        <p th:replace="~{fragmentos/parrafo-mensaje}"></p>
+        <!-- Formulario de búsqueda -->
+        <form id="formularioBusqueda">
+            <div>
+                <input type="search" name="criterio" th:value="${param.criterio}" id="criterio"
+                    placeholder="Nombre de sucursal">
+                <input type="submit" value="Buscar">
+            </div>
+        </form>
+
+        <!-- Tabla para mostrar la lista de sucursales -->
+        <div class="datagrid">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="s : ${sucursales}">
+                        <td th:text="${s.numero}"></td>
+                        <td th:text="${s.nombre}"></td>
+                        <td>
+                            <a th:href="@{/sucursales/{numero}(numero=${s.numero})}" title="Ver Detalle"><i
+                                    class="icono icono-ver"></i></a>&nbsp;&nbsp; |
+                            <a th:href="@{/sucursales/modificar(numero=${s.numero})}" title="Modificar"><i
+                                    class="icono icono-modificar"></i></a>&nbsp;&nbsp; |
+                            <a th:href="@{/sucursales/eliminar(numero=${s.numero})}" title="Eliminar"><i
+                                    class="icono icono-eliminar"></i></a>
+                        </td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+        </div>
+
+        <p>
+            <a class="agregar" th:href="@{/sucursales/agregar}" title="Agregar">Agregar sucursal</a>
+        </p>
+
+        <div th:replace="~{fragmentos/footer::html(~{::title}, ~{::body})}"></div>
+</body>
+
+</html>

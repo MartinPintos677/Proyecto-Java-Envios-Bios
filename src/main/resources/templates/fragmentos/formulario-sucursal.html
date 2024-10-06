@@ -1,0 +1,24 @@
+<div xmlns:th="http://www.thymeleaf.org" th:fragment="formulario-sucursal(textoBoton)" class="div-bottom">
+    <link rel="stylesheet" th:href="@{/css/estiloFormularioCategoria.css}">
+    <div align="center" style="padding-bottom: 50px;">
+        <form method="post" th:object="${sucursal}">
+            <div>
+                <label for="numero">Id</label>
+                <input type="number" th:field="*{numero}" />
+
+            </div>
+            <div>
+                <label for="nombre">Nombre</label>
+                <input type="text" th:field="*{nombre}" />
+
+            </div>
+            <input type="submit" th:value="${textoBoton}" />
+    </div>
+    </form>
+</div>
+
+</div>
+<script th:inline="javascript">
+    document.getElementById(/*[[${foco}]]*/'numero').focus();
+    document.getElementById(/*[[${foco}]]*/'numero').select();
+</script>

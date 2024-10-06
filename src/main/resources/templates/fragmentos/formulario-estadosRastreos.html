@@ -1,0 +1,24 @@
+<div xmlns:th="http://www.thymeleaf.org" th:fragment="formulario-estadosRastreos(textoBoton)">
+    <link rel="stylesheet" th:href="@{/css/estiloFormularioCategoria.css}">
+    <div align="center" style="padding-bottom: 50px;">
+        <link rel="stylesheet" th:href="@{/css/estiloFormularioCategoria.css}">
+        <form method="post" th:object="${rastreos}">
+            <div>
+                <label for="idRastreo">Id</label>
+                <input type="number" th:field="*{idRastreo}" />
+            </div>
+            <div>
+                <label for="descripcion">Descripción</label>
+                <input type="text" th:field="*{descripcion}" />
+            </div>
+            <div>
+                <input type="submit" th:value="${textoBoton}" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<script th:inline="javascript">
+    document.getElementById(/*[[${foco}]]*/'idRastreo').focus();
+    document.getElementById(/*[[${foco}]]*/'idRastreo').select();
+</script>

@@ -1,0 +1,52 @@
+<div xmlns:th="http://www.thymeleaf.org" th:fragment="formulario-paquete(textoBoton)" class="div-bottom">
+  <link rel="stylesheet" th:href="@{/css/estiloFormPaquete.css}">
+  <div align="center" style="padding-bottom: 50px;">
+    <form method="post" th:object="${paquete}">
+      <div>
+        <label for="idPaquete">ID</label>
+        <input type="number" th:field="*{idPaquete}" />
+      </div>
+
+      <div>
+        <label for="cliente">Cliente (Remitente)</label>
+        <!-- Aquí añadimos un dropdown list para seleccionar el cliente -->
+        <select th:field="*{nombreUsuario}" id="cliente">
+          <option th:each="cliente : ${clientes}" th:value="${cliente}" th:text="${cliente.nombreUsuario}">Seleccionar
+            cliente
+          </option>
+        </select>
+      </div>
+      <div>
+        <label for="telefonoDestinatario">Teléfono</label>
+        <input type="text" th:field="*{telefonoDestinatario}" />
+      </div>
+      <div>
+        <label for="direccionDestinatario">Dirección</label>
+        <input type="text" th:field="*{direccionDestinatario}" />
+      </div>
+      <div>
+        <label for="categoria">Categoría</label>
+        <input type="text" th:field="*{categoria.nombre}" />
+      </div>
+      <div>
+        <label for="estadoRastreo">Estado</label>
+        <input type="text" th:field="*{estadoRastreo.descripcion}" />
+      </div>
+      <div>
+        <label for="fechaHoraRegistro">Fecha de Registro</label>
+        <input type="text" th:field="*{fechaHoraRegistro}"
+          th:value="${#temporals.format(paquete.fechaHoraRegistro, 'dd/MM/yyyy HH:mm')}" disabled="disabled" />
+      </div>
+      <div>
+        <label for="cobroDestinatario">Cobro a Destinatario</label>
+        <input type="checkbox" th:field="*{cobroDestinatario}" />
+      </div>
+      <input type="submit" th:value="${textoBoton}" />
+    </form>
+  </div>
+</div>
+
+<script th:inline="javascript">
+  document.getElementById(/*[[${foco}]]*/'idPaquete').focus();
+  document.getElementById(/*[[${foco}]]*/'idPaquete').select();
+</script>

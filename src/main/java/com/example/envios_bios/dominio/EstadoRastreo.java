@@ -10,7 +10,6 @@ import jakarta.persistence.Column;
 
 @Entity
 @Table(name = "estadoRastreo")
-
 public class EstadoRastreo {
 
     // Atributos
@@ -23,15 +22,18 @@ public class EstadoRastreo {
     @Column(nullable = false, length = 100)
     private String descripcion;
 
+    private boolean activo;
+
     // Constructor completo
-    public EstadoRastreo(@NotNull Integer idRastreo, @NotNull @Size(max = 100) String descripcion) {
+    public EstadoRastreo(@NotNull Integer idRastreo, @NotNull @Size(max = 100) String descripcion, boolean activo) {
         this.idRastreo = idRastreo;
         this.descripcion = descripcion;
+        this.activo = activo;
     }
 
     // Constructor por defecto
     public EstadoRastreo() {
-        this(null, null);
+        this(null, null, false);
     }
 
     // Getter y Setter
@@ -49,6 +51,13 @@ public class EstadoRastreo {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+    public boolean isActivo() {
+        return activo;
+    }
+
+    public void setActivo(boolean activo) {
+        this.activo = activo;
     }
 
 }

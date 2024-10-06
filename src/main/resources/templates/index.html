@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+    th:replace="~{fragmentos/header-inicio::html(~{::title}, ~{::body}, 'css/index.css')}">
+
+</html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/header-dos.css}">
+    <title>Index</title>
+</head>
+
+<body th:remove="tag">
+
+    <main>
+        <!-- Sección de Bienvenida -->
+        <section id="intro-bios" class="intro">
+            <div class="container">
+                <h1>Conectando Tu Mundo</h1>
+                <div class="line"></div>
+                <p>En Envíos BIOS, nos dedicamos a proporcionar soluciones logísticas que garantizan la entrega rápida y
+                    segura de tus
+                    paquetes a cualquier rincón del país. Con una infraestructura avanzada y tecnología de seguimiento
+                    de
+                    vanguardia,
+                    aseguramos que cada envío sea gestionado con el máximo cuidado y precisión.</p>
+                <p>Nuestro compromiso con la excelencia y la satisfacción del cliente nos convierte en tu mejor aliado
+                    para
+                    todas tus
+                    necesidades de envío. Ya sea para negocios o para necesidades personales, Envíos BIOS está aquí para
+                    ayudarte a
+                    mantener tu mundo conectado.</p>
+
+                <a href="/registro" class="btn-index">Regístrate ahora</a>
+            </div>
+        </section>
+
+        <!-- Sección Misión y Visión -->
+        <section id="mision" class="mission">
+            <div class="container">
+                <h2>Nuestra Misión y Visión</h2>
+                <div class="line"></div>
+                <p>Nuestro compromiso es fortalecer la infraestructura logística de nuestro país y revolucionar la
+                    manera en
+                    que los
+                    negocios y consumidores gestionan sus necesidades de envío.</p>
+                <ul class="ul-inicio-mision">
+                    <li class="li-inicio"><strong>Misión:</strong> Brindar soluciones de logística integral a nivel
+                        nacional,
+                        ofreciendo un servicio al cliente excepcional y eficiencia operativa. Nos esforzamos por superar
+                        las
+                        expectativas de nuestros clientes a través de nuestra dedicación a la innovación, la seguridad y
+                        la
+                        sostenibilidad en todos nuestros procesos.</li>
+                    <li class="li-inicio"><strong>Visión:</strong> Ser la empresa líder en logística en nuestro país,
+                        estableciendo
+                        estándares de excelencia en cada entrega. Innovamos constantemente para mejorar nuestro servicio
+                        y
+                        expandir
+                        nuestra presencia global, con el objetivo de conectar mercados y personas de manera más
+                        eficiente
+                        que
+                        nunca.
+                    </li>
+                </ul>
+                <p>Creemos en la creación de valor a largo plazo para nuestros clientes y en fomentar relaciones
+                    duraderas
+                    basadas
+                    en la confianza y la transparencia. Envíos BIOS está comprometido con el desarrollo económico y
+                    social,
+                    apoyando a
+                    comunidades locales mientras abrazamos retos globales.</p>
+            </div>
+        </section>
+
+        <!-- Sección ¿Por qué elegirnos? -->
+        <section id="why" class="why-choose-us">
+            <div class="container">
+                <h2>¿Por qué elegir Envíos BIOS?</h2>
+                <div class="line"></div>
+                <p>En Envíos BIOS, nos dedicamos a proporcionar un servicio excepcional, utilizando tecnología avanzada
+                    para
+                    garantizar la seguridad y la eficiencia de cada entrega. Descubre cómo nuestra dedicación a la
+                    calidad
+                    nos
+                    distingue de los demás:</p>
+                <ul class="ul-inicio">
+                    <li class="li-inicio"><strong>Seguridad:</strong> Todos los paquetes están asegurados y son
+                        manejados
+                        con el
+                        mayor
+                        cuidado. Implementamos protocolos de seguridad de vanguardia y nuestro personal está altamente
+                        capacitado
+                        para
+                        manejar tus envíos con la máxima precaución.</li>
+                    <li class="li-inicio"><strong>Eficiencia:</strong> Utilizamos tecnología de rastreo en tiempo real
+                        para
+                        garantizar
+                        que siempre sepas dónde está tu envío. Nuestro sistema de logística optimiza las rutas para
+                        reducir
+                        los
+                        tiempos
+                        de entrega y aumentar la eficiencia.</li>
+                    <li class="li-inicio"><strong>Cobertura Nacional:</strong> Tenemos una amplia presencia en todos los
+                        departamentos
+                        del país, lo que nos permite llegar a cada rincón de nuestro territorio con facilidad. No
+                        importa
+                        dónde te
+                        encuentres, puedes contar con Envíos BIOS para conectar tus paquetes con su destino.</li>
+                    <li class="li-inicio"><strong>Atención al Cliente:</strong> Nuestro equipo de soporte está
+                        disponible
+                        24/7
+                        para
+                        responder a cualquier pregunta o inquietud. Nos comprometemos a proporcionar una experiencia de
+                        cliente
+                        excepcional, con un enfoque personalizado para cada envío.</li>
+                    <li class="li-inicio"><strong>Sostenibilidad:</strong> Comprometidos con el medio ambiente, operamos
+                        de
+                        manera
+                        sostenible, utilizando vehículos eco-amigables y optimizando nuestros recursos para minimizar la
+                        huella de
+                        carbono.</li>
+                </ul>
+            </div>
+        </section>
+
+
+        <!-- Sección de Testimonios -->
+        <section id="testimonial" class="testimonials">
+            <div class="container">
+                <h2>Lo que dicen nuestros clientes</h2>
+                <div class="line"></div>
+
+                <blockquote>
+                    <div class="image-stars">
+                        <img th:src="@{/imagenes/hombre 2.webp}" alt="Cliente 1" class="testimonial-image">
+                        <p class="stars">★★★★★</p>
+                    </div>
+
+                    <p>"La rapidez y eficiencia de Envíos BIOS ha hecho que nuestra empresa pueda operar a un ritmo
+                        mucho
+                        más
+                        ágil y
+                        confiable. ¡Imprescindibles!"</p>
+                    <footer>Rafael Pérez, Abogado</footer>
+                </blockquote>
+
+                <blockquote>
+                    <div class="image-stars">
+                        <img th:src="@{/imagenes/mujer.png}" alt="Cliente 2" class="testimonial-image">
+                        <p class="stars">★★★★★</p>
+                    </div>
+
+                    <p>"Como cliente frecuente, siempre he recibido mis paquetes a tiempo y en perfecto estado. No
+                        cambiaría
+                        Envíos
+                        BIOS por ninguna otra empresa."</p>
+                    <footer>Ana Gómez, Emprendedora</footer>
+                </blockquote>
+
+                <blockquote>
+                    <div class="image-stars">
+                        <img th:src="@{/imagenes/hombre 3.webp}" alt="Cliente 3" class="testimonial-image">
+                        <p class="stars">★★★★★</p>
+                    </div>
+
+                    <p>"Hace mucho tiempo que utilizo los servicios de Envíos BIOS y lo recomiendo siempre! Siempre me
+                        han
+                        brindado un servicio de alta calidad, tanto para envíar como para recibir paquetes."</p>
+                    <footer>Mariano Morelo, Contador</footer>
+                </blockquote>
+
+            </div>
+        </section>
+
+    </main>
+
+    <div th:replace="~{fragmentos/footer::html(~{::title}, ~{::body})}"></div>
+
+</body>
+
+</html>
