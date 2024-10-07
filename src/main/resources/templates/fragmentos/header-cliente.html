@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" th:fragment="html(titulo, contenido, cssPath)">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title th:replace="${titulo}">Envios Bios</title>
+
+  <link rel="stylesheet" th:href="@{/css/header-dos.css}">
+  <link rel="stylesheet" th:href="@{${cssPath}}" th:if="${cssPath}">
+
+</head>
+
+<body>
+  <header class="cabezal-principal">
+    <div>
+      <img th:src="@{/imagenes/logo png.png}" alt="Logo Envíos Bios" class="logo-header">
+    </div>
+  </header>
+  <nav class="navegacion-principal">
+    <ul>
+      <li><a th:href="@{/index}">Inicio</a></li> <!-- Talvez lo saco -->
+      <li><a th:href="@{/informacion}">Información</a></li> <!-- Talvez lo saco -->
+      <li>
+        <a href="#">Secciones</a>
+        <ul>
+          <li><a href="/sucursales">Enviar paquete</a></li>
+          <li><a href="/empleados">Paquetes enviados</a></li>
+          <li><a href="/categorias">Modificar datos</a></li>
+          <li><a href="/estadosRastreos">Eliminar usuario</a></li>
+        </ul>
+      </li>
+    </ul>
+    <ul id="menu-cerrar-sesion">
+      <li id="iniciar-sesion"><a th:href="@{login}">Cerrar sesión</a></li>
+    </ul>
+  </nav>
+  <main class="contenido" th:insert="${contenido}"></main>
+</body>
+
+</html>

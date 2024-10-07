@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+  th:replace="~{fragmentos/header-cliente::html(~{::title}, ~{::body}, 'css/estiloFormPaquete.css')}">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Paquetes</title>
+</head>
+
+<body th:remove="tag">
+
+  <div class="contenedor" align="center">
+    <h1>Paquetes Registrados</h1>
+
+    <p th:replace="~{fragmentos/parrafo-mensaje}"></p>
+
+    <!-- Formulario de búsqueda -->
+    <form id="formularioBusqueda" th:action="@{/paquetes}" method="get">
+      <div>
+        <!-- Filtro por cédula del cliente -->
+        <label for="text">Filtrar por cédula</label>
+        <input type="text" name="cedulaCliente" th:value="${param.cedulaCliente}" id="cedulaCliente"
+          placeholder="Número de cédula de cliente">
+      </div>
+
+      <div>
+        <!-- Filtro por fecha de registro -->
+        <label for="date">Filtrar por fecha de registro</label>
+        <input type="date" name="fechaRegistro" th:value="${param.fechaRegistro}" id="fechaRegistro"
+          placeholder="Buscar por fecha de registro">
+      </div>
+
+      <div>
+        <!-- Filtro por estado de rastreo -->
+        <select name="estadoRastreo" id="estadoRastreo">
+          <option value="" selected>Filtrar por estado de rastreo</option> <!-- Opción predeterminada -->
+          <option th:each="estado : ${estadosRastreo}" th:value="${estado}" th:text="${estado}"></option>
+        </select>
+      </div>
+
+      <div>
+        <input type="submit" value="Buscar">
+      </div>
+    </form>
+
+    <!-- Mensaje si no se encontraron paquetes -->
+    <div th:if="${#lists.isEmpty(paquetes)}">
+      <p>No se encontraron paquetes encontrado.</p>
+    </div>
+
+    <!-- Tabla para mostrar la lista de paquetes si hay resultados -->
+    <div class="datagrid" th:if="${not #lists.isEmpty(paquetes)}">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Remitente</th>
+            <th>Destinatario</th>
+            <th>Teléfono</th>
+            <th>Dirección</th>
+            <th>Categoría</th>
+            <th>Estado</th>
+            <th>Fecha de Registro</th>
+            <th>Cobro a Destinatario</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="paquete : ${paquetes}">
+            <td th:text="${paquete.idPaquete}"></td>
+            <td th:text="${paquete.nombreUsuario.nombreUsuario}"></td>
+            <td th:text="${paquete.nombreDestinatario}"></td>
+            <td th:text="${paquete.telefonoDestinatario}"></td>
+            <td th:text="${paquete.direccionDestinatario}"></td>
+            <td th:text="${paquete.categoria.nombre}"></td>
+            <td th:text="${paquete.estadoRastreo.descripcion}"></td>
+            <td th:text="${#temporals.format(paquete.fechaHoraRegistro, 'dd/MM/yyyy HH:mm')}"></td>
+            <td th:text="${paquete.cobroDestinatario ? 'Sí' : 'No'}"></td>
+            <td>
+              <a th:href="@{'/paquetes/buscar/' + ${paquete.idPaquete}}" title="Ver Detalle"><i
+                  class="icono icono-ver"></i></a>&nbsp;&nbsp; |
+              <a th:href="@{'/paquetes/editar/' + ${paquete.idPaquete}}" title="Editar"><i
+                  class="icono icono-modificar"></i></a>&nbsp;&nbsp; |
+              <a th:href="@{'/paquetes/eliminar/' + ${paquete.idPaquete}}" title="Eliminar"
+                th:onclick="'return confirm(\'¿Estás seguro de querer eliminar este paquete?\');'"><i
+                  class="icono icono-eliminar"></i></a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>
+      <a class="agregar-paquete" th:href="@{/paquetes/agregar}" title="Agregar Paquete">Agregar Paquete</a>
+    </p>
+  </div>
+
+  <div th:replace="~{fragmentos/footer::html(~{::title}, ~{::body})}"></div>
+
+</body>
+
+</html>

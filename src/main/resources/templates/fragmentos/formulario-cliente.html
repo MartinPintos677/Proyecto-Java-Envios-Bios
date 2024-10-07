@@ -1,0 +1,29 @@
+<div xmlns:th="http://www.thymeleaf.org" th:fragment="formulario-empleado(textoBoton)">
+  <link rel="stylesheet" th:href="@{/css/estiloFormularioCategoria.css}">
+  <form method="post" th:object="${empleado}" align="center" style="padding-bottom: 50px;">
+    <div>
+      <label for="nombreUsuario">Nombre de Usuario</label>
+      <input type="text" th:field="*{nombreUsuario}" />
+      <p th:errors="*{nombreUsuario}" style="color: red;"></p>
+    </div>
+    <div>
+      <label for="email">Email</label>
+      <input type="email" th:field="*{email}" />
+      <p th:errors="*{email}" class="error"></p>
+    </div>
+    <div>
+      <label for="claveDeAcceso">Clave de Acceso</label>
+      <input type="password" th:field="*{claveDeAcceso}" />
+      <p th:errors="*{claveDeAcceso}" class="error"></p>
+    </div>
+
+    <div>
+      <input type="submit" th:value="${textoBoton}" />
+    </div>
+  </form>
+
+  <script th:inline="javascript">
+    document.getElementById(/*[[${foco}]]*/'nombreUsuario').focus();
+    document.getElementById(/*[[${foco}]]*/'nombreUsuario').select();
+  </script>
+</div>
