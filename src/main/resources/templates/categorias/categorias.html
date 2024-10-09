@@ -26,7 +26,7 @@
         </form>
 
         <!-- Tabla para mostrar la lista de categorías -->
-        <div class="datagrid">
+        <div class="datagrid" id="tablaCategorias">
             <table>
                 <thead>
                     <tr>
@@ -77,6 +77,23 @@
         </div>
 
         <script>
+            // Función que hace scroll automático a la tabla
+            function irATablaCategorias() {
+                const tabla = document.getElementById('tablaCategorias');
+                if (tabla) {
+                    tabla.scrollIntoView({ behavior: 'smooth' });
+                }
+            }
+
+            // Llamar a la función después de que la página haya cargado
+            window.onload = function () {
+                // Verificamos si es una recarga o navegación después de una paginación
+                const urlParams = new URLSearchParams(window.location.search);
+                if (urlParams.has('pagina')) {
+                    irATablaCategorias();
+                }
+            };
+
             document.getElementById('formularioBusqueda').addEventListener('search', function () {
                 document.getElementById('formularioBusqueda').submit();
             });
