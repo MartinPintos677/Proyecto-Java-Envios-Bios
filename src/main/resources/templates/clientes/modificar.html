@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+  th:replace="~{fragmentos/header-cliente::html(~{::title}, ~{::body}, 'css/estiloFormularioCategoria.css')}">
+
+<head>
+  <title>Envios Bios - Modificar Cliente</title>
+</head>
+
+<body th:remove="tag">
+  <h1>Modificar Cliente</h1>
+
+  <p th:replace="~{fragmentos/parrafo-mensaje}"></p>
+
+  <th:block th:if="${empleado}">
+    <div th:replace="fragmentos/formulario-cliente:: formulario-cliente('Modificar')"></div>
+
+  </th:block>
+
+  <div th:replace="~{fragmentos/footer::html(~{::title}, ~{::body})}"></div>
+</body>
+
+</html>

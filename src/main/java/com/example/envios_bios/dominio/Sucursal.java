@@ -10,7 +10,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 @Entity
-@Table(name = "Sucursal")
+@Table(name = "sucursal")
 public class Sucursal {
 
     // Atributos
