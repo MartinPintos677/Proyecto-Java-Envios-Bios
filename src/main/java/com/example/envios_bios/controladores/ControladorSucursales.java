@@ -36,34 +36,34 @@ public class ControladorSucursales {
 
     @GetMapping("/agregar")
     public String mostrarAgregar(Model model) {
-        // Crear un objeto sucursal vacío para el formulario
-    Sucursal sucursal = new Sucursal();
-    model.addAttribute("sucursal", sucursal);
-    // Pasar el valor del botón de acción al formulario
-    model.addAttribute("textoBoton", "Agregar Sucursal");
-    return "sucursales/agregar";
+            // Crear un objeto sucursal vacío para el formulario
+        Sucursal sucursal = new Sucursal();
+        model.addAttribute("sucursal", sucursal);
+        // Pasar el valor del botón de acción al formulario
+        model.addAttribute("textoBoton", "Agregar Sucursal");
+        return "sucursales/agregar";
     }
        
     
     @PostMapping("/agregar")
-    public String agregarSucursal(@ModelAttribute("sucursal") @Valid Sucursal sucursal, RedirectAttributes redirectAttributes, BindingResult result, Model model) {
+    public String agregarSucursal(@ModelAttribute("sucursal") @Valid Sucursal sucursal, BindingResult result, RedirectAttributes redirectAttributes, Model model) {
         
         if (result.hasErrors()) {
             return "sucursales/agregar";
         }
         try { 
             servicioSucursales.agregar(sucursal);
+
+             // Añadir un mensaje de éxito a los atributos redireccionados
+            redirectAttributes.addFlashAttribute("mensaje", "Sucursal agregada exitosamente!");
+            
+            // Redireccionar a la lista de categorías
+            return "redirect:/sucursales";
         }
         catch (ExcepcionEnviosBios e) {
             model.addAttribute("error", e.getMessage());
             return "sucursales/agregar";
-
-        }
-        // Añadir un mensaje de éxito a los atributos redireccionados
-        redirectAttributes.addFlashAttribute("mensaje", "Sucursal agregada exitosamente!");
-        
-        // Redireccionar a la lista de categorías
-        return "redirect:/sucursales";
+        }   
     }
 
     @GetMapping("/modificar")

@@ -1,109 +1,67 @@
 package com.example.envios_bios.servicios;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.envios_bios.dominio.Sucursal;
 import com.example.envios_bios.excepciones.ExcepcionEnviosBios;
+import com.example.envios_bios.excepciones.ExcepcionNoExiste;
 import com.example.envios_bios.excepciones.ExcepcionYaExiste;
+import com.example.envios_bios.repositorio.IRepositorioSucursal;
 
 @Service
 public class ServicioSucursales implements IServicioSucursales{
-    
-    //private ArrayList<Sucursal> sucursales; 
-    private List<Sucursal> sucursales;       
-        
 
-    public ServicioSucursales(){ 
-       sucursales = new ArrayList<>();
-
-        //datos de prueba
-        sucursales.add(new Sucursal(1L,"sucursal1"));
-        sucursales.add(new Sucursal(2L,"sucursal2"));
-        sucursales.add(new Sucursal(3L,"sucursal3"));
-        sucursales.add(new Sucursal(4L,"sucursal4"));
-        sucursales.add(new Sucursal(5L,"sucursal5"));        
-        
-    }
+    @Autowired
+    private IRepositorioSucursal repositorioSucursal; 
 
     @Override
     public List<Sucursal> listar(){
-        return new ArrayList<>(sucursales);
+        return repositorioSucursal.findAll();
     }
 
     @Override
     public Sucursal obtener(Long numero){
-        Sucursal sucursalEncontrada = null;
-
-        for (Sucursal s : sucursales){
-            if (s.getNumero().equals(numero)) {
-                sucursalEncontrada = s;
-                break;
-            }
-        }
-
-        return sucursalEncontrada;
-    }
-
-    private int obtenerPosicion(Long numero){
-        for (int i = 0; i < sucursales.size(); i++){
-            if (sucursales.get(i).getNumero().equals(numero)) { 
-                return i;
-            }
-        }
-        return -1; // No se encontró la posición
+        return repositorioSucursal.findById(numero).orElse(null);
     }
 
     @Override
     public List<Sucursal> buscar(String criterio) {
-        if (criterio == null || criterio.isBlank()) {
-            return listar();
-        }
-
-        criterio = criterio.trim().toLowerCase();
-        List<Sucursal> sucursalesFiltradas = new ArrayList<>();
-
-        for (Sucursal s : this.sucursales){
-            if (s.getNumero().toString().equals(criterio) || s.getNombre().toLowerCase().contains(criterio)) {
-                sucursalesFiltradas.add(s);
-            }
-        }
-
-        return sucursalesFiltradas;
+        return repositorioSucursal.findAll(); //En caso de usar Specifications pasarle el criterio
     }
 
     @Override
     public void agregar(Sucursal sucursal) throws ExcepcionEnviosBios {
-        // Verificamos si la sucursal ya existe en la lista por su ID o nombre
-        if (obtener(sucursal.getNumero()) != null) {
-            throw new ExcepcionYaExiste("La sucursal con ID " + sucursal.getNumero() + " ya existe.");
+        
+        Sucursal s = repositorioSucursal.findById(sucursal.getNumero()).orElse(null);//Buscamos la sucursal
+
+        if (s != null) { //Si la encuentra, tira mensaje de error
+            throw new ExcepcionYaExiste("La Sucursal ya existe.");
         }
 
-        // Si no existe, agregamos la nueva sucursal
-        sucursales.add(sucursal);
+        repositorioSucursal.save(s);//sino, la guardamos en la BD
     }
 
     @Override
     public void modificar(Sucursal sucursal) throws ExcepcionEnviosBios {
-        int posicion = obtenerPosicion(sucursal.getNumero());
-        if (posicion == -1) {
-            throw new ExcepcionEnviosBios("La sucursal a modificar no existe.");
-        }
+        Sucursal s = repositorioSucursal.findById(sucursal.getNumero()).orElse(null);
 
-        // Se modifica la categoría en la posición encontrada
-        sucursales.set(posicion, sucursal);
+        if (s == null) {
+            throw new ExcepcionNoExiste("La Sucursal no existe.");
+        }
+        repositorioSucursal.save(s);
     }
 
     @Override
     public void eliminar(Long numero) throws ExcepcionEnviosBios {
-        int posicion = obtenerPosicion(numero);
-        if (posicion == -1) {
-            throw new ExcepcionEnviosBios("La sucursal a eliminar no existe.");
+        Sucursal s = repositorioSucursal.findById(numero).orElse(null);
+
+        if (s == null) {
+            throw new ExcepcionNoExiste("La Sucursal no existe.");
         }
 
-        // Se elimina la categoría de la lista
-        sucursales.remove(posicion);
+        repositorioSucursal.deleteById(numero);
     }
 }

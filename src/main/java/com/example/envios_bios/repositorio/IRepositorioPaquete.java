@@ -25,9 +25,9 @@ public interface IRepositorioPaquete extends JpaRepository<Paquete, Long>, JpaSp
     Page<Paquete> findAll(Pageable pageable);
 
     //comentar si no usamos Specification
-    @Override
-    @EntityGraph(type = EntityGraphType.LOAD, attributePaths = { "cliente","categoria","estadoRastreo" })
-    Page<Paquete> findAll(@Nullable Specification<Paquete> spec, Pageable pageable);
+    // @Override
+    // @EntityGraph(type = EntityGraphType.LOAD, attributePaths = { "cliente","categoria","estadoRastreo" })
+    // Page<Paquete> findAll(@Nullable Specification<Paquete> spec, Pageable pageable);
 
     @Override
     @EntityGraph(type = EntityGraphType.LOAD, attributePaths = { "cliente","categoria","estadoRastreo" })

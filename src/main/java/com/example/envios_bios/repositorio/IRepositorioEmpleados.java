@@ -14,14 +14,13 @@ import com.example.envios_bios.dominio.Empleado;
 
 public interface IRepositorioEmpleados extends JpaRepository<Empleado, String>, JpaSpecificationExecutor<Empleado>{
 
-    //Comnetar si es que no usamos roles y Specification
     @Override
     @EntityGraph(type = EntityGraphType.LOAD, attributePaths = { "roles","sucursal"})
     List<Empleado> findAll();
 
-    @Override
-    @EntityGraph(type = EntityGraphType.LOAD, attributePaths = { "roles","sucursal"})
-    List<Empleado> findAll(@Nullable Specification<Empleado> spec);
+    // @Override
+    // @EntityGraph(type = EntityGraphType.LOAD, attributePaths = { "roles","sucursal"})
+    // List<Empleado> findAll(@Nullable Specification<Empleado> spec);
 
     @Override
     @EntityGraph(type = EntityGraphType.LOAD, attributePaths = { "roles","sucursal"})

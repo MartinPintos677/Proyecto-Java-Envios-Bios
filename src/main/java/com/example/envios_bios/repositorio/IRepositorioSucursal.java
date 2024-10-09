@@ -12,7 +12,7 @@ import com.example.envios_bios.dominio.Sucursal;
 public interface IRepositorioSucursal extends JpaRepository<Sucursal,Long>, JpaSpecificationExecutor<Sucursal>{
     
     //comentar si no usamos Specification
-    @Override
-    List<Sucursal> findAll(@Nullable Specification<Sucursal> spec);
+    // @Override
+    // List<Sucursal> findAll(@Nullable Specification<Sucursal> spec);
     
 }
