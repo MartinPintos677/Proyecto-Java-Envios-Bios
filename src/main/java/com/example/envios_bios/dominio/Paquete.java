@@ -50,18 +50,18 @@ public class Paquete {
     private boolean cobroDestinatario;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "idCat", nullable = false)
+    @JoinColumn(name = "id_cat", nullable = false)
     private Categoria categoria;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "idRastreo", nullable = false)
+    @JoinColumn(name = "id_rastreo", nullable = false)
     private EstadoRastreo estadoRastreo;
 
     // Constructor completo
-    public Paquete(Long idPaquete,Cliente cliente,
-                   @NotNull @Size(max = 50) String nombreDestinatario, @NotNull @Size(max = 20) String telefonoDestinatario,
-                   LocalDateTime fechaHoraRegistro, @NotNull @Size(max = 100) String direccionDestinatario,
-                   boolean cobroDestinatario,Categoria categoria,EstadoRastreo estadoRastreo) {
+    public Paquete(Long idPaquete, Cliente cliente,
+            @NotNull @Size(max = 50) String nombreDestinatario, @NotNull @Size(max = 20) String telefonoDestinatario,
+            LocalDateTime fechaHoraRegistro, @NotNull @Size(max = 100) String direccionDestinatario,
+            boolean cobroDestinatario, Categoria categoria, EstadoRastreo estadoRastreo) {
         this.idPaquete = idPaquete;
         this.cliente = cliente;
         this.nombreDestinatario = nombreDestinatario;
