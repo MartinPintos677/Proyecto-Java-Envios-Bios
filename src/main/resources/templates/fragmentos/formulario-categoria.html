@@ -1,4 +1,5 @@
-<div xmlns:th="http://www.thymeleaf.org" th:fragment="formulario-categoria(textoBoton)">
+<div xmlns:th="http://www.thymeleaf.org" th:fragment="formulario-categoria(textoBoton)" 
+    th:with="deshabilitarClave = ${deshabilitarClave} ?: false, foco= ${foco} ?: 'idCat'" >
     <link rel="stylesheet" th:href="@{/css/estiloFormularioCategoria.css}">
     <div align="center" style="padding-bottom: 50px;">
         <form method="post" th:object="${categoria}">

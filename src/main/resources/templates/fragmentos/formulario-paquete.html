@@ -1,4 +1,5 @@
-<div xmlns:th="http://www.thymeleaf.org" th:fragment="formulario-paquete(textoBoton)" class="div-bottom">
+<div xmlns:th="http://www.thymeleaf.org" th:fragment="formulario-paquete(textoBoton)"
+  th:with="deshabilitarClave = ${deshabilitarClave} ?: false, foco= ${foco} ?: 'idPaquete'"  class="div-bottom">
   <link rel="stylesheet" th:href="@{/css/estiloFormPaquete.css}">
   <div align="center" style="padding-bottom: 50px;">
     <form method="post" th:object="${paquete}">

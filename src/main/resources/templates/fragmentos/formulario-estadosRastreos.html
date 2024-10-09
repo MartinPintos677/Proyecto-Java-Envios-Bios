@@ -1,4 +1,5 @@
-<div xmlns:th="http://www.thymeleaf.org" th:fragment="formulario-estadosRastreos(textoBoton)">
+<div xmlns:th="http://www.thymeleaf.org" th:fragment="formulario-estadosRastreos(textoBoton)"
+th:with="deshabilitarClave = ${deshabilitarClave} ?: false, foco= ${foco} ?: 'idRastreo'" >
     <link rel="stylesheet" th:href="@{/css/estiloFormularioCategoria.css}">
     <div align="center" style="padding-bottom: 50px;">
         <link rel="stylesheet" th:href="@{/css/estiloFormularioCategoria.css}">
