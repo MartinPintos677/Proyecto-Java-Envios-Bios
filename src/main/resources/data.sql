@@ -30,8 +30,8 @@ BEGIN
         INSERT INTO categorias (id_cat, nombre) VALUES
         (1, 'Documentos'),
         (2, 'Paquetes Grandes'),
-        (3, 'Paquetes Pequeños');
-        (4, 'Paquetes Otros');
+        (3, 'Paquetes Pequeños'),
+        (4, 'Paquetes Otros'),
         (5, 'Paquetes Pesados');
 
 
