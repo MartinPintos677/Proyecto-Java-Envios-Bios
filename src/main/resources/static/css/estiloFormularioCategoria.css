@@ -228,6 +228,11 @@ a.agregar:active {
     transform: scale(1); 
 }
 
+.li-pagination{
+    list-style:none;
+    padding: 0;
+}
+
 @media (max-width: 1200px) {
 .datagrid {
     width: 50%;

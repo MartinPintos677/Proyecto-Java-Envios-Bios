@@ -33,19 +33,16 @@ public class ControladorCategoria {
     // private IServicioPaginacion servicioPaginacion;
 
     @GetMapping
-    public String mostrarCategorias(@RequestParam(required = false) String criterio, Model model) {
-        List<Categoria> categorias;
-
-        // Si el criterio es null o está vacío, listar todas las categorías
-        if (criterio == null || criterio.trim().isEmpty()) {
-            categorias = servicioCategorias.listar();
-        } else {
-            categorias = servicioCategorias.buscar(criterio);
+    public String mostrarCategorias(@RequestParam(required = false) String criterio, Pageable pageable, Model model) {
+        if (criterio == null) {
+            criterio = ""; // Esto asegura que no sea nulo
         }
+        Page<Categoria> categoriasP = servicioCategorias.buscarPaginado(criterio, pageable); // Usando paginación
+        model.addAttribute("categorias", categoriasP.getContent()); // Listado de categorías
+        model.addAttribute("page", categoriasP); // Información de la paginación
+        model.addAttribute("criterio", criterio); // Asegúrate de enviar el criterio también a la vista
 
-        model.addAttribute("categorias", categorias);
-
-        return "categorias/categorias"; // Asegúrate de que esta vista exista y esté correctamente implementada
+        return "categorias/categorias";
     }
 
     @GetMapping("/agregar")
