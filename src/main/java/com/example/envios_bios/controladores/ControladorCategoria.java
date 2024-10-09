@@ -3,6 +3,8 @@ package com.example.envios_bios.controladores;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -16,6 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.example.envios_bios.dominio.Categoria;
 import com.example.envios_bios.excepciones.ExcepcionEnviosBios;
 import com.example.envios_bios.servicios.IServicioCategorias;
+import com.example.envios_bios.servicios.IServicioPaginacion;
 
 import jakarta.validation.Valid;
 
@@ -24,17 +27,21 @@ import jakarta.validation.Valid;
 public class ControladorCategoria {
 
     @Autowired
-    private IServicioCategorias servicioCategorias;
+    private IServicioCategorias servicioCategorias;    
 
+    //@Autowired
+    //private IServicioPaginacion servicioPaginacion;
+    
     @GetMapping
-    public String mostrarCategorias(@RequestParam(required = false) String criterio, Model model) {
+    public String mostrarCategorias(@RequestParam(required = false) String criterio, Pageable pageable, Model model) {
         List<Categoria> categorias = servicioCategorias.buscar(criterio);
-
+        //Page<Categoria> categoriasP = servicioPaginacion.buscarP(criterio);
         model.addAttribute("categorias", categorias);
+        
 
         return "categorias/categorias";
     }
-
+    
     @GetMapping("/agregar")
     public String mostrarAgregar(Model model) {
         // Crear un objeto categoría vacío para el formulario

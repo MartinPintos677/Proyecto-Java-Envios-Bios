@@ -31,6 +31,9 @@ BEGIN
         (1, 'Documentos'),
         (2, 'Paquetes Grandes'),
         (3, 'Paquetes Pequeños');
+        (4, 'Paquetes Otros');
+        (5, 'Paquetes Pesados');
+
 
         -- Datos de prueba para la tabla estadoRastreo
         INSERT INTO estado_rastreo (id_rastreo, descripcion, activo) VALUES

@@ -11,6 +11,11 @@ import com.example.envios_bios.dominio.Cliente;
 
 public interface IRepositorioClientes extends JpaRepository<Cliente, String>{
     
+    //trae los clientes activos - ver si corresponde
+    //List<Cliente> findByActivo(boolean activo);
+
+
+
     //En caso de no usar Roles, comentar esto
     @Override
     @EntityGraph(type = EntityGraphType.LOAD, attributePaths = { "roles"})//Se carga con los roles
