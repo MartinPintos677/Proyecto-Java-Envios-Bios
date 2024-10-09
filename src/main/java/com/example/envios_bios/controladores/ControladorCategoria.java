@@ -27,56 +27,61 @@ import jakarta.validation.Valid;
 public class ControladorCategoria {
 
     @Autowired
-    private IServicioCategorias servicioCategorias;    
+    private IServicioCategorias servicioCategorias;
 
-    //@Autowired
-    //private IServicioPaginacion servicioPaginacion;
-    
+    // @Autowired
+    // private IServicioPaginacion servicioPaginacion;
+
     @GetMapping
-    public String mostrarCategorias(@RequestParam(required = false) String criterio, Pageable pageable, Model model) {
-        List<Categoria> categorias = servicioCategorias.buscar(criterio);
-        //Page<Categoria> categoriasP = servicioPaginacion.buscarP(criterio);
-        model.addAttribute("categorias", categorias);
-        
+    public String mostrarCategorias(@RequestParam(required = false) String criterio, Model model) {
+        List<Categoria> categorias;
 
-        return "categorias/categorias";
+        // Si el criterio es null o está vacío, listar todas las categorías
+        if (criterio == null || criterio.trim().isEmpty()) {
+            categorias = servicioCategorias.listar();
+        } else {
+            categorias = servicioCategorias.buscar(criterio);
+        }
+
+        model.addAttribute("categorias", categorias);
+
+        return "categorias/categorias"; // Asegúrate de que esta vista exista y esté correctamente implementada
     }
-    
+
     @GetMapping("/agregar")
     public String mostrarAgregar(Model model) {
         // Crear un objeto categoría vacío para el formulario
-    Categoria categoria = new Categoria();
-    model.addAttribute("categoria", categoria);
-    // Pasar el valor del botón de acción al formulario
-    model.addAttribute("textoBoton", "Agregar Categoría");
-    return "categorias/agregar";
+        Categoria categoria = new Categoria();
+        model.addAttribute("categoria", categoria);
+        // Pasar el valor del botón de acción al formulario
+        model.addAttribute("textoBoton", "Agregar Categoría");
+        return "categorias/agregar";
     }
-       
-    
+
     @PostMapping("/agregar")
-    public String agregarCategoria(@ModelAttribute("categoria") @Valid Categoria categoria, RedirectAttributes redirectAttributes, BindingResult result, Model model) {
-        
+    public String agregarCategoria(@ModelAttribute("categoria") @Valid Categoria categoria,
+            RedirectAttributes redirectAttributes, BindingResult result, Model model) {
+
         if (result.hasErrors()) {
             return "categorias/agregar";
         }
-        try { 
+        try {
             servicioCategorias.agregar(categoria);
-        }
-        catch (ExcepcionEnviosBios e) {
+        } catch (ExcepcionEnviosBios e) {
             model.addAttribute("error", e.getMessage());
             return "categorias/agregar";
 
         }
         // Añadir un mensaje de éxito a los atributos redireccionados
         redirectAttributes.addFlashAttribute("mensaje", "¡Categoría agregada exitosamente!");
-        
+
         // Redireccionar a la lista de categorías
         return "redirect:/categorias";
     }
 
     @GetMapping("/modificar")
     public String mostrarModificar(Integer idCat, Model model) {
-    model.addAttribute("categorias", servicioCategorias.listar());
+        model.addAttribute("categorias", servicioCategorias.listar());
 
         Categoria categoria = servicioCategorias.obtener(idCat);
 
@@ -87,27 +92,27 @@ public class ControladorCategoria {
         }
 
         return "categorias/modificar";
-}
+    }
 
-@PostMapping("/modificar")
-    public String procesarModificar(@ModelAttribute @Valid Categoria categoria, BindingResult result, Model model, RedirectAttributes attributes) {
+    @PostMapping("/modificar")
+    public String procesarModificar(@ModelAttribute @Valid Categoria categoria, BindingResult result, Model model,
+            RedirectAttributes attributes) {
         model.addAttribute("categorias", servicioCategorias.listar());
         System.out.println(categoria);
         if (result.hasErrors()) {
             return "categorias/modificar";
         }
         try {
-            
+
             servicioCategorias.modificar(categoria);
             attributes.addFlashAttribute("mensaje", "Categoria modificada con éxito.");
             return "redirect:/categorias";
-    
-        }
-        catch (ExcepcionEnviosBios e) {
+
+        } catch (ExcepcionEnviosBios e) {
             model.addAttribute("mensaje", "¡ERROR! " + e.getMessage());
 
             return "categorias/modificar";
-        
+
         }
     }
 
@@ -127,7 +132,7 @@ public class ControladorCategoria {
     @PostMapping("/eliminar")
     public String procesarEliminar(Integer idCat, Model model, RedirectAttributes attributes) {
         try {
-            servicioCategorias.eliminar(idCat);           
+            servicioCategorias.eliminar(idCat);
 
             attributes.addFlashAttribute("mensaje", "Categoria eliminada con éxito.");
 
