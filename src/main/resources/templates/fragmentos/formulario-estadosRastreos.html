@@ -7,10 +7,12 @@ th:with="deshabilitarClave = ${deshabilitarClave} ?: false, foco= ${foco} ?: 'id
             <div>
                 <label for="idRastreo">Id</label>
                 <input type="number" th:field="*{idRastreo}" />
+                <p th:errors="*{idRastreo}" style="color: red;"></p>
             </div>
             <div>
                 <label for="descripcion">Descripción</label>
                 <input type="text" th:field="*{descripcion}" />
+                <p th:errors="*{descripcion}" style="color: red;"></p>
             </div>
             <div>
                 <input type="submit" th:value="${textoBoton}" />

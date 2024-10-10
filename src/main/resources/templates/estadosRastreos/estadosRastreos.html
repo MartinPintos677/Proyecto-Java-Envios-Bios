@@ -58,9 +58,44 @@
             <a class="agregar" th:href="@{/estadosRastreos/agregar}" title="Agregar">Agregar Estado de Rastreo</a>
         </p>
 
-        <div th:replace="~{fragmentos/footer::html(~{::title}, ~{::body})}"></div>
+         <!-- Controles de paginación -->
+         <div class="pagination">
+            <ul class="li-pagination">
+                <!-- Link para ir a la página anterior -->
+                <li th:if="${page.hasPrevious()}">
+                    <a
+                        th:href="@{/estadosRastreos(pagina=${page.number - 1}, tamanioPagina=${page.size}, criterio=${criterio})}">Anterior</a>
+                </li>
+
+                <!-- Mostrar número de página actual y total de páginas -->
+                <li th:text="'Página ' + (${page.number + 1}) + ' de ' + ${page.totalPages}"></li>
+
+                <!-- Link para ir a la página siguiente -->
+                <li th:if="${page.hasNext()}">
+                    <a
+                        th:href="@{/estadosRastreos(pagina=${page.number + 1}, tamanioPagina=${page.size}, criterio=${criterio})}">Siguiente</a>
+                </li>
+            </ul>
+        </div>
 
         <script>
+            // Función que hace scroll automático a la tabla
+            function irATablaCategorias() {
+                const tabla = document.getElementById('tablaCategorias');
+                if (tabla) {
+                    tabla.scrollIntoView({ behavior: 'smooth' });
+                }
+            }
+
+            // Llamar a la función después de que la página haya cargado
+            window.onload = function () {
+                // Verificamos si es una recarga o navegación después de una paginación
+                const urlParams = new URLSearchParams(window.location.search);
+                if (urlParams.has('pagina')) {
+                    irATablaCategorias();
+                }
+            };
+
             document.getElementById('formularioBusqueda').addEventListener('search', function () {
                 document.getElementById('formularioBusqueda').submit();
             });
@@ -68,6 +103,9 @@
             document.getElementById('criterio').focus();
             document.getElementById('criterio').select();
         </script>
+
+        <div th:replace="~{fragmentos/footer::html(~{::title}, ~{::body})}"></div>
+    </div>
 </body>
 
 </html>

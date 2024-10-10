@@ -18,7 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.example.envios_bios.dominio.Categoria;
 import com.example.envios_bios.excepciones.ExcepcionEnviosBios;
 import com.example.envios_bios.servicios.IServicioCategorias;
-import com.example.envios_bios.servicios.IServicioPaginacion;
+
 
 import jakarta.validation.Valid;
 
@@ -28,9 +28,7 @@ public class ControladorCategoria {
 
     @Autowired
     private IServicioCategorias servicioCategorias;
-
-    // @Autowired
-    // private IServicioPaginacion servicioPaginacion;
+  
 
     @GetMapping
     public String mostrarCategorias(@RequestParam(required = false) String criterio, Pageable pageable, Model model) {
@@ -56,24 +54,26 @@ public class ControladorCategoria {
     }
 
     @PostMapping("/agregar")
-    public String agregarCategoria(@ModelAttribute("categoria") @Valid Categoria categoria,
-            RedirectAttributes redirectAttributes, BindingResult result, Model model) {
+    public String agregarCategoria(@ModelAttribute("categoria") @Valid Categoria categoria, RedirectAttributes redirectAttributes, BindingResult result, Model model) {
 
         if (result.hasErrors()) {
             return "categorias/agregar";
         }
-        try {
+        try
+        {
             servicioCategorias.agregar(categoria);
+
+            // Añadir un mensaje de éxito a los atributos redireccionados
+            redirectAttributes.addFlashAttribute("mensaje", "¡Categoría agregada exitosamente!");
+
+            // Redireccionar a la lista de categorías
+            return "redirect:/categorias";
+
         } catch (ExcepcionEnviosBios e) {
-            model.addAttribute("error", e.getMessage());
+            model.addAttribute("mensaje", e.getMessage());
             return "categorias/agregar";
 
-        }
-        // Añadir un mensaje de éxito a los atributos redireccionados
-        redirectAttributes.addFlashAttribute("mensaje", "¡Categoría agregada exitosamente!");
-
-        // Redireccionar a la lista de categorías
-        return "redirect:/categorias";
+        }              
     }
 
     @GetMapping("/modificar")

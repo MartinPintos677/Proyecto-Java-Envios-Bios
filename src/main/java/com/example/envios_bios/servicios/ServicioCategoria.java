@@ -29,9 +29,8 @@ public class ServicioCategoria implements IServicioCategorias {
 
     @Override
     public List<Categoria> buscar(String criterio) {
-        // return
-        // repositorioCategorias.findAll(EspecificacionesProducto.buscar(criterio));
-        return null;
+        
+        return repositorioCategorias.findAll();       
     }
 
     @Override
@@ -39,11 +38,11 @@ public class ServicioCategoria implements IServicioCategorias {
         // busco por el idCat
         Categoria categoriaExistente = repositorioCategorias.findById(categoria.getIdCat()).orElse(null);
 
-        if (categoriaExistente != null) {
+        if (categoriaExistente != null) { //si la encuentra muestra el mensaje de error
             throw new ExcepcionYaExiste("La categoría ya existe.");
         }
 
-        repositorioCategorias.save(categoria);
+        repositorioCategorias.save(categoria); //guardamos en la bd
     }
 
     @Override
@@ -70,22 +69,12 @@ public class ServicioCategoria implements IServicioCategorias {
 
     @Override
     public Page<Categoria> listarPaginado(Pageable pageable) {
-        return repositorioCategorias.findAll(pageable); // findAll soporta paginación
+        return repositorioCategorias.findAll(pageable); 
     }
 
     @Override
     public Page<Categoria> buscarPaginado(String criterio, Pageable pageable) {
         return repositorioCategorias.buscarP(criterio, pageable);
     }
-
-    /*
-     * @Override
-     * public Page<Categoria> listarP(Pageable pageable){
-     * return repositorioCategorias.findAll(pageable);
-     * }
-     * 
-     * public Page<Categoria> buscarP(Pageable pageable){
-     * return repositorioCategorias.findAll(pageable);
-     * }
-     */
+    
 }

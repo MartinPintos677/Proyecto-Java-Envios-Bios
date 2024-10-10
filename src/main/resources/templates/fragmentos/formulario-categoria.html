@@ -1,20 +1,21 @@
-<div xmlns:th="http://www.thymeleaf.org" th:fragment="formulario-categoria(textoBoton)" 
-    th:with="deshabilitarClave = ${deshabilitarClave} ?: false, foco= ${foco} ?: 'idCat'" >
+<div xmlns:th="http://www.thymeleaf.org" th:fragment="formulario-categoria(textoBoton)" th:with="deshabilitarClave = ${deshabilitarClave} ?: false, foco= ${foco} ?: 'idCat'" >
     <link rel="stylesheet" th:href="@{/css/estiloFormularioCategoria.css}">
     <div align="center" style="padding-bottom: 50px;">
         <form method="post" th:object="${categoria}">
             <div>
                 <label for="idCat">Id</label>
                 <input type="number" th:field="*{idCat}" />
+                <p th:errors="*{idCat}" style="color: red;"></p>
             </div>
             <div>
                 <label for="nombre">Nombre</label>
                 <input type="text" th:field="*{nombre}" />
+                <p th:errors="*{nombre}" style="color: red;"></p>
             </div>
             <input type="submit" th:value="${textoBoton}" />
-        </form> <!-- Mueve el cierre del formulario aquí -->
+        </form> 
     </div>
-</div> <!-- Cierra correctamente este div -->
+</div> 
 
 <script th:inline="javascript">
     document.getElementById(/*[[${foco}]]*/'idCat').focus();

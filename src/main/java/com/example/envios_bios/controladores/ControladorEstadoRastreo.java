@@ -52,17 +52,19 @@ public class ControladorEstadoRastreo {
         }
         try { 
             servicioEstadoRastreo.agregar(rastreo);
+            // Añadir un mensaje de éxito a los atributos redireccionados
+            redirectAttributes.addFlashAttribute("mensaje", "Estado de Rastreo agregado exitosamente!");
+             
+            // Redireccionar a la lista de categorías
+            return "redirect:/estadosRastreos";
         }
         catch (ExcepcionEnviosBios e) {
             model.addAttribute("error", e.getMessage());
             return "estadosRastreos/agregar";
 
         }
-        // Añadir un mensaje de éxito a los atributos redireccionados
-        redirectAttributes.addFlashAttribute("mensaje", "Estado de Rastreo agregado exitosamente!");
         
-        // Redireccionar a la lista de categorías
-        return "redirect:/estadosRastreos";
+       
     }
 
     @GetMapping("/modificar")

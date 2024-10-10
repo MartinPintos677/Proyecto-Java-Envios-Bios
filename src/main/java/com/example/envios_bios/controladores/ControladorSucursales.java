@@ -57,7 +57,7 @@ public class ControladorSucursales {
              // Añadir un mensaje de éxito a los atributos redireccionados
             redirectAttributes.addFlashAttribute("mensaje", "Sucursal agregada exitosamente!");
             
-            // Redireccionar a la lista de categorías
+            // Redireccionar a la lista de sucursales
             return "redirect:/sucursales";
         }
         catch (ExcepcionEnviosBios e) {
