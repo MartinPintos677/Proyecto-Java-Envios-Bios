@@ -5,8 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import com.example.envios_bios.dominio.Categoria;
 import com.example.envios_bios.dominio.EstadoRastreo;
 import com.example.envios_bios.excepciones.ExcepcionEnviosBios;
 import com.example.envios_bios.excepciones.ExcepcionNoExiste;
@@ -70,7 +68,7 @@ public class ServicioEstadoRastreo implements IServicioEstadoRastreo{
         }
         repositorioEstadoRastreo.deleteById(idRastreo);
     }
-
+/* 
     @Override
     public Page<EstadoRastreo> listarPaginado(Pageable pageable) {
         return repositorioEstadoRastreo.findAll(pageable); 
@@ -78,7 +76,7 @@ public class ServicioEstadoRastreo implements IServicioEstadoRastreo{
 
     @Override
     public Page<EstadoRastreo> buscarPaginado(String criterio, Pageable pageable) {
-        return repositorioEstadoRastreo.buscarP(criterio, pageable);
+        return repositorioEstadoRastreo.buscarPagina(criterio, pageable);
     }
-    
+    */
 }

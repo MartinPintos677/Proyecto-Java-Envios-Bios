@@ -8,8 +8,9 @@ import com.example.envios_bios.dominio.EstadoRastreo;
 
 public interface IRepositorioEstadoRastreo extends JpaRepository<EstadoRastreo,Integer>{
     
-    // Paginación y búsqueda por idCat (como string) o por nombre
-
-    @Query("SELECT r FROM estado_rastreo r WHERE cast(r.idRastreo as string) = ?1 OR c.nombre LIKE concat('%', ?1, '%')")
-    Page<EstadoRastreo> buscarP(String criterio, Pageable pageable);
+    // Paginación y búsqueda por idRastreo (como string) o por descripcion
+/* 
+    @Query("SELECT r FROM estadoRastreo r WHERE cast(r.idRastreo as string) = ?1 OR r.descripcion LIKE concat('%', ?1, '%')")
+    Page<EstadoRastreo> buscarPagina(String criterio, Pageable pageable);
+    */
 }
