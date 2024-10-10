@@ -61,7 +61,7 @@ public class ControladorSucursales {
             return "redirect:/sucursales";
         }
         catch (ExcepcionEnviosBios e) {
-            model.addAttribute("error", e.getMessage());
+            model.addAttribute("mensaje", e.getMessage());
             return "sucursales/agregar";
         }   
     }

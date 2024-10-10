@@ -1,16 +1,17 @@
-<div xmlns:th="http://www.thymeleaf.org" th:fragment="formulario-sucursal(textoBoton)" 
-th:with="deshabilitarClave = ${deshabilitarClave} ?: false, foco= ${foco} ?: 'numero'" class="div-bottom">
+<div xmlns:th="http://www.thymeleaf.org" th:fragment="formulario-sucursal(textoBoton)" th:with="deshabilitarClave = ${deshabilitarClave} ?: false, foco= ${foco} ?: 'numero'" class="div-bottom">
     <link rel="stylesheet" th:href="@{/css/estiloFormularioCategoria.css}">
     <div align="center" style="padding-bottom: 50px;">
         <form method="post" th:object="${sucursal}">
             <div>
                 <label for="numero">Id</label>
                 <input type="number" th:field="*{numero}" />
+                <p th:errors="*{numero}" style="color: red;"></p>
 
             </div>
             <div>
                 <label for="nombre">Nombre</label>
                 <input type="text" th:field="*{nombre}" />
+                <p th:errors="*{nombre}" style="color: red;"></p>
 
             </div>
             <input type="submit" th:value="${textoBoton}" />

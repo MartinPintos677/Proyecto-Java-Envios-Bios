@@ -41,7 +41,7 @@ public class ServicioSucursales implements IServicioSucursales{
             throw new ExcepcionYaExiste("La Sucursal ya existe.");
         }
 
-        repositorioSucursal.save(s);//sino, la guardamos en la BD
+        repositorioSucursal.save(sucursal);//sino, la guardamos en la BD
     }
 
     @Override
@@ -51,7 +51,7 @@ public class ServicioSucursales implements IServicioSucursales{
         if (s == null) {
             throw new ExcepcionNoExiste("La Sucursal no existe.");
         }
-        repositorioSucursal.save(s);
+        repositorioSucursal.save(sucursal);
     }
 
     @Override
