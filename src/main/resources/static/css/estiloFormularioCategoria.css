@@ -61,7 +61,7 @@ input[type="submit"] {
     border-radius: 4px; /* Bordes redondeados */
     cursor: pointer; /* Cambiar cursor al pasar */
     transition: background-color 0.3s ease-in-out; /* Transición en el fondo */
-    width: 30%; 
+    width: 40%; 
     margin-top: 15px;   
 }
 
@@ -254,10 +254,10 @@ a.agregar:active {
 
 @media (max-width: 768px) {
 input[type="submit"] {
-width: 40%;
+width: 50%;
 }}
 
 @media (max-width: 565px) {
 input[type="submit"] {
-width: 50%;
+width: 55%;
 }}

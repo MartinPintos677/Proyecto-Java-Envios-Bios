@@ -12,7 +12,9 @@
     <h1>Agregar Estado de Rastreo</h1>
 
     <p th:replace="~{fragmentos/parrafo-mensaje}"></p>
-    <div th:replace="fragmentos/formulario-estadosRastreos :: formulario-estadosRastreos('Agregar')"></div>
+
+    <!-- Ajuste aquí: Solo pasa 1 parámetro, que es 'textoBoton' -->
+    <div th:replace="fragmentos/formulario-estadosRastreos :: formulario-estadosRastreos(textoBoton)"></div>
 
     <div th:replace="~{fragmentos/footer::html(~{::title}, ~{::body})}"></div>
 
