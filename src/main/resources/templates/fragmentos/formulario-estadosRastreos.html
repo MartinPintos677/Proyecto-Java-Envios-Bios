@@ -1,19 +1,17 @@
 <div xmlns:th="http://www.thymeleaf.org" th:fragment="formulario-estadosRastreos(textoBoton)"
-th:with="deshabilitarClave = ${deshabilitarClave} ?: false, foco= ${foco} ?: 'idRastreo'" >
+    th:with="foco = ${foco} ?: 'descripcion'">
+
     <link rel="stylesheet" th:href="@{/css/estiloFormularioCategoria.css}">
+
     <div align="center" style="padding-bottom: 50px;">
-        <link rel="stylesheet" th:href="@{/css/estiloFormularioCategoria.css}">
-        <form method="post" th:object="${rastreos}">
-            <div>
-                <label for="idRastreo">Id</label>
-                <input type="number" th:field="*{idRastreo}" />
-                <p th:errors="*{idRastreo}" style="color: red;"></p>
-            </div>
+        <form method="post" th:object="${rastreo}">
+            <!-- Eliminar el campo ID ya que será autogenerado -->
             <div>
                 <label for="descripcion">Descripción</label>
-                <input type="text" th:field="*{descripcion}" />
+                <input type="text" th:field="*{descripcion}" id="descripcion" />
                 <p th:errors="*{descripcion}" style="color: red;"></p>
             </div>
+
             <div>
                 <input type="submit" th:value="${textoBoton}" />
             </div>
@@ -22,6 +20,6 @@ th:with="deshabilitarClave = ${deshabilitarClave} ?: false, foco= ${foco} ?: 'id
 </div>
 
 <script th:inline="javascript">
-    document.getElementById(/*[[${foco}]]*/'idRastreo').focus();
-    document.getElementById(/*[[${foco}]]*/'idRastreo').select();
+    document.getElementById(/*[[${foco}]]*/'descripcion').focus();
+    document.getElementById(/*[[${foco}]]*/'descripcion').select();
 </script>

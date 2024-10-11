@@ -2,6 +2,8 @@ package com.example.envios_bios.dominio;
 
 import jakarta.persistence.Table;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -13,8 +15,9 @@ import jakarta.persistence.Column;
 public class EstadoRastreo {
 
     // Atributos
-    @NotNull
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idRastreo;
 
     @NotBlank
@@ -52,6 +55,7 @@ public class EstadoRastreo {
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
+
     public boolean isActivo() {
         return activo;
     }

@@ -12,39 +12,39 @@ import com.example.envios_bios.excepciones.ExcepcionYaExiste;
 import com.example.envios_bios.repositorio.IRepositorioEstadoRastreo;
 
 @Service
-public class ServicioEstadoRastreo implements IServicioEstadoRastreo{
-    
+public class ServicioEstadoRastreo implements IServicioEstadoRastreo {
+
     @Autowired
-    private IRepositorioEstadoRastreo repositorioEstadoRastreo;     
-        
-    
+    private IRepositorioEstadoRastreo repositorioEstadoRastreo;
+
     @Override
-    public List<EstadoRastreo> listar(){
+    public List<EstadoRastreo> listar() {
         return repositorioEstadoRastreo.findAll();
     }
 
     @Override
-    public EstadoRastreo obtener(Integer idRastreo){
-        return repositorioEstadoRastreo.findById(idRastreo).orElse(null);        
+    public EstadoRastreo obtener(Integer idRastreo) {
+        return repositorioEstadoRastreo.findById(idRastreo).orElse(null);
     }
-    
+
     @Override
     public List<EstadoRastreo> buscar(String criterio) {
-        return repositorioEstadoRastreo.findAll();       
-       
+        return repositorioEstadoRastreo.findAll();
+
     }
 
     @Override
     public void agregar(EstadoRastreo rastreo) throws ExcepcionEnviosBios {
-        
-       // busco por el idRastreo
-        EstadoRastreo rastreoExistente = repositorioEstadoRastreo.findById(rastreo.getIdRastreo()).orElse(null);
+        // Si deseas evitar duplicados basados en la descripción, puedes verificarlo
+        // aquí
+        EstadoRastreo rastreoExistente = repositorioEstadoRastreo.findByDescripcion(rastreo.getDescripcion());
 
-        if (rastreoExistente != null) { //si la encuentra muestra el mensaje de error
-            throw new ExcepcionYaExiste("El estado de Rastreo ya existe.");
+        if (rastreoExistente != null) {
+            throw new ExcepcionYaExiste("Ya existe un Estado de Rastreo con esa descripción.");
         }
 
-        repositorioEstadoRastreo.save(rastreo); //guardamos en la bd
+        // Guardar el nuevo estado de rastreo; el idRastreo se autogenerará
+        repositorioEstadoRastreo.save(rastreo);
     }
 
     @Override
@@ -68,15 +68,14 @@ public class ServicioEstadoRastreo implements IServicioEstadoRastreo{
         }
         repositorioEstadoRastreo.deleteById(idRastreo);
     }
-/* 
+
     @Override
     public Page<EstadoRastreo> listarPaginado(Pageable pageable) {
-        return repositorioEstadoRastreo.findAll(pageable); 
+        return repositorioEstadoRastreo.findAll(pageable); // Soporta paginación
     }
 
     @Override
     public Page<EstadoRastreo> buscarPaginado(String criterio, Pageable pageable) {
-        return repositorioEstadoRastreo.buscarPagina(criterio, pageable);
+        return repositorioEstadoRastreo.buscarPagina(criterio, pageable); // Busca con paginación
     }
-    */
 }

@@ -7,7 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/estiloFormularioCategoria.css">
     <title>Estados de Rastreo</title>
-
 </head>
 
 <body th:remove="tag">
@@ -16,17 +15,20 @@
         <h1>Estados de Rastreo</h1>
 
         <p th:replace="~{fragmentos/parrafo-mensaje}"></p>
+
         <!-- Formulario de búsqueda -->
-        <form id="formularioBusqueda">
+        <form id="formularioBusqueda" method="get">
             <div>
                 <input type="search" name="criterio" th:value="${param.criterio}" id="criterio"
-                    placeholder="Nombre del Estado">
+                    placeholder="Descripción del Estado">
                 <input type="submit" value="Buscar">
             </div>
+            <!-- Incluimos el número de página en el formulario -->
+            <input type="hidden" name="pagina" th:value="${page.number}" />
         </form>
 
         <!-- Tabla para mostrar la lista de estados -->
-        <div class="datagrid">
+        <div class="datagrid" id="tablaEstadosRastreo">
             <table>
                 <thead>
                     <tr>
@@ -48,9 +50,7 @@
                                     class="icono icono-eliminar"></i></a>
                         </td>
                     </tr>
-
                 </tbody>
-
             </table>
         </div>
 
@@ -58,8 +58,8 @@
             <a class="agregar" th:href="@{/estadosRastreos/agregar}" title="Agregar">Agregar Estado de Rastreo</a>
         </p>
 
-         <!-- Controles de paginación -->
-         <div class="pagination">
+        <!-- Controles de paginación -->
+        <div class="pagination">
             <ul class="li-pagination">
                 <!-- Link para ir a la página anterior -->
                 <li th:if="${page.hasPrevious()}">
@@ -80,8 +80,8 @@
 
         <script>
             // Función que hace scroll automático a la tabla
-            function irATablaCategorias() {
-                const tabla = document.getElementById('tablaCategorias');
+            function irATablaEstadosRastreo() {
+                const tabla = document.getElementById('tablaEstadosRastreo');
                 if (tabla) {
                     tabla.scrollIntoView({ behavior: 'smooth' });
                 }
@@ -92,7 +92,7 @@
                 // Verificamos si es una recarga o navegación después de una paginación
                 const urlParams = new URLSearchParams(window.location.search);
                 if (urlParams.has('pagina')) {
-                    irATablaCategorias();
+                    irATablaEstadosRastreo();
                 }
             };
 
