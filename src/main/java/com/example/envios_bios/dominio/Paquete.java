@@ -20,7 +20,6 @@ import jakarta.persistence.Column;
 public class Paquete {
 
     // Atributos
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idPaquete;
