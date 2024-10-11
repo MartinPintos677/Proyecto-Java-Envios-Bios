@@ -1,10 +1,15 @@
 package com.example.envios_bios.dominio;
 
+import java.util.Set;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -32,6 +37,10 @@ public class Usuario {
     @Column(nullable = false, length = 100)
     private String email;
 
+    @ManyToMany
+    @JoinTable(joinColumns = { @JoinColumn(name = "usuario_nombre_usuario") }, inverseJoinColumns = { @JoinColumn(name = "rol_nombre_rol") })
+    private Set<Rol> roles;
+
     // Getter y Setter
     public String getNombreUsuario() {
         return nombreUsuario;
@@ -55,6 +64,10 @@ public class Usuario {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Set<Rol> getRoles() {
+        return this.roles;
     }
 
     // Constructor por defecto

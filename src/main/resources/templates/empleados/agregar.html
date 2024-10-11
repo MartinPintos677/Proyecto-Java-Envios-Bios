@@ -11,11 +11,12 @@
 <body th:remove="tag">
     <h1>Agregar Empleado</h1>
 
-    <p th:replace="~{fragmentos/parrafo-mensaje}"></p>
-    <div th:replace="fragmentos/formulario-empleado('Agregar')"></div>
+    <div align="center">
+        <p th:replace="~{fragmentos/parrafo-mensaje}"></p>
+        <div th:replace="fragmentos/formulario-empleado('Agregar')"></div>
 
-    <div th:replace="~{fragmentos/footer::html(~{::title}, ~{::body})}"></div>
-
+        <div th:replace="~{fragmentos/footer::html(~{::title}, ~{::body})}"></div>
+    </div>
 </body>
 
 </html>

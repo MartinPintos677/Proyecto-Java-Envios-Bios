@@ -3,13 +3,16 @@ package com.example.envios_bios.servicios;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.example.envios_bios.dominio.Sucursal;
 import com.example.envios_bios.excepciones.ExcepcionEnviosBios;
 import com.example.envios_bios.excepciones.ExcepcionNoExiste;
+import com.example.envios_bios.excepciones.ExcepcionTieneVinculos;
 import com.example.envios_bios.excepciones.ExcepcionYaExiste;
 import com.example.envios_bios.repositorio.IRepositorioSucursal;
+
 
 @Service
 public class ServicioSucursales implements IServicioSucursales{
@@ -62,6 +65,13 @@ public class ServicioSucursales implements IServicioSucursales{
             throw new ExcepcionNoExiste("La Sucursal no existe.");
         }
 
-        repositorioSucursal.deleteById(numero);
+        try {
+
+            repositorioSucursal.deleteById(numero);
+            
+        } catch (DataIntegrityViolationException e) {
+            throw new ExcepcionTieneVinculos("La sucursal tiene empleados.");
+        }
+        
     }
 }

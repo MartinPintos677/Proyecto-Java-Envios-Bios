@@ -7,7 +7,6 @@ import com.example.envios_bios.excepciones.ExcepcionEnviosBios;
 
 public interface IServicioEmpleado {
     
-    List<Empleado> listar();
     List<Empleado> buscar(String criterio);
     Empleado obtener(String nombreUsuario);
     void agregar(Empleado empleado) throws ExcepcionEnviosBios;

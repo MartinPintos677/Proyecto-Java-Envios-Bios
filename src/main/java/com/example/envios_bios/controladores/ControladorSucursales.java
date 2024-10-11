@@ -127,7 +127,7 @@ public class ControladorSucursales {
         } catch (ExcepcionEnviosBios e) {
             model.addAttribute("mensaje", "¡ERROR! " + e.getMessage());
 
-            return "sucursales/categorias";
+            return "sucursales/eliminar";
         }
     }
 
