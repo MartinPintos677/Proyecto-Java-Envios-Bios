@@ -1,5 +1,6 @@
-<div xmlns:th="http://www.thymeleaf.org" th:fragment="formulario-empleado(textoBoton)" th:with="deshabilitarClave = ${deshabilitarClave} ?: false, foco= ${foco} ?: 'nombreUsuario'" >
-    <link rel="stylesheet" th:href="@{/css/estiloFormularioCategoria.css}">
+<div xmlns:th="http://www.thymeleaf.org" th:fragment="formulario-empleado(textoBoton)"
+    th:with="deshabilitarClave = ${deshabilitarClave} ?: false, foco= ${foco} ?: 'nombreUsuario'">
+    <link rel="stylesheet" th:href="@{/css/estiloFormularioGenerales.css}">
     <form method="post" th:object="${empleado}" align="center" style="padding-bottom: 50px;">
         <div>
             <label for="nombreUsuario">Nombre de Usuario</label>
