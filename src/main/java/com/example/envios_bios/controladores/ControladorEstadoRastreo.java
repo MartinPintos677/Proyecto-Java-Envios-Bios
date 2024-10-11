@@ -50,24 +50,22 @@ public class ControladorEstadoRastreo {
 
     @PostMapping("/agregar")
     public String agregarEstadoRastreo(@ModelAttribute("rastreo") @Valid EstadoRastreo rastreo,
-            RedirectAttributes redirectAttributes, BindingResult result, Model model) {
-
+            BindingResult result,
+            RedirectAttributes redirectAttributes,
+            Model model) {
         if (result.hasErrors()) {
+
             return "estadosRastreos/agregar";
         }
+
         try {
             servicioEstadoRastreo.agregar(rastreo);
-            // Añadir un mensaje de éxito a los atributos redireccionados
-            redirectAttributes.addFlashAttribute("mensaje", "Estado de Rastreo agregado exitosamente!");
-
-            // Redireccionar a la lista de categorías
+            redirectAttributes.addFlashAttribute("mensaje", "Estado de rastreo agregado exitosamente!");
             return "redirect:/estadosRastreos";
         } catch (ExcepcionEnviosBios e) {
-            model.addAttribute("error", e.getMessage());
+            model.addAttribute("mensaje", e.getMessage());
             return "estadosRastreos/agregar";
-
         }
-
     }
 
     @GetMapping("/modificar")
