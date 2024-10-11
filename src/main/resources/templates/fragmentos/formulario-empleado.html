@@ -13,6 +13,7 @@
         </div>
         <div>
             <label for="claveDeAcceso">Clave de Acceso</label>
+            <input type="hidden" name="contrasenaFalsa" th:value="${contrasenaFalsa}" />
             <input type="password" th:field="*{claveDeAcceso}" />
             <p th:errors="*{claveDeAcceso}" class="error"></p>
         </div>

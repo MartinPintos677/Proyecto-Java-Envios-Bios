@@ -1,5 +1,6 @@
 package com.example.envios_bios.dominio;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import jakarta.persistence.Column;
@@ -72,6 +73,7 @@ public class Usuario {
 
     // Constructor por defecto
     public Usuario() {
+        this(null,null,null);
     }
 
     // Constructor Completo
@@ -79,5 +81,8 @@ public class Usuario {
         this.nombreUsuario = nombreUsuario;
         this.claveDeAcceso = claveDeAcceso;
         this.email = email;
+
+        roles = new HashSet<>();
+
     }
 }

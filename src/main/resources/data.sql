@@ -24,7 +24,16 @@ BEGIN
         -- Datos de prueba para la tabla empleados (sin claveDeAcceso y email)
         INSERT INTO empleados (nombre_usuario, sucursal_numero) VALUES
         ('empleado1', 1),
-        ('empleado2', 2);        
+        ('empleado2', 2);
+
+        --Datos de prueba para la tabla Roles
+        INSERT INTO roles(nombre_rol) VALUES
+        ('empleado'),
+        ('cliente');
+
+        INSERT INTO usuarios_roles(usuario_nombre_usuario, rol_nombre_rol) VALUES
+        ('empleado1', 'empleado'),
+        ('cliente1', 'cliente');   
 
         -- Datos de prueba para la tabla categorias
         INSERT INTO categorias (id_cat, nombre) VALUES

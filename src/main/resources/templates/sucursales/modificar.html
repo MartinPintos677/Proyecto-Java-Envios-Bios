@@ -12,7 +12,7 @@
     <p th:replace="~{fragmentos/parrafo-mensaje}"></p>
 
     <th:block th:if="${sucursal}">
-        <div th:replace="fragmentos/formulario-sucursal :: formulario-sucursal('Modificar')"></div>
+        <div th:replace="~{fragmentos/formulario-sucursal(textoBoton = 'Modificar', deshabilitarClave = true, foco = 'nombre')}"></div>
 
     </th:block>
 

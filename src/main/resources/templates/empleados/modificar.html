@@ -9,12 +9,12 @@
 <body th:remove="tag">
     <h1>Modificar Empleado</h1>
 
-    <p th:replace="~{fragmentos/parrafo-mensaje}"></p>
-
-    <th:block th:if="${empleado}">
-        <div th:replace="~{fragmentos/formulario-empleado(textoBoton = 'Modificar', deshabilitarClave = true, foco = 'email')}"></div>
-
-    </th:block>
+    <div align="center">
+        <p th:replace="~{fragmentos/parrafo-mensaje}"></p>
+        <th:block th:if="${empleado}">
+            <div th:replace="~{fragmentos/formulario-empleado(textoBoton = 'Modificar', deshabilitarClave = true, foco = 'email')}"></div>
+        </th:block>
+    </div>
 </body>
 
 </html>

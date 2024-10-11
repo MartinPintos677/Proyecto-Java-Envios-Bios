@@ -1,6 +1,7 @@
 package com.example.envios_bios.controladores;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -90,7 +91,8 @@ public class ControladorEmpleado {
         Empleado empleado = servicioEmpleado.obtener(nombreUsuario);
 
         if (empleado != null) {
-            model.addAttribute("empleados", empleado);
+            model.addAttribute("empleado", empleado);
+            model.addAttribute("contrasenaFalsa", UUID.randomUUID().toString());//Le damos una contraseña falsa
         } else {
             model.addAttribute("mensaje", "¡ERROR! No se encontró el empleado con el nombre " + nombreUsuario + ".");
         }
@@ -99,15 +101,22 @@ public class ControladorEmpleado {
     }
 
     @PostMapping("/modificar")
-    public String procesarModificar(@ModelAttribute @Valid Empleado empleado, BindingResult result, Model model,
-            RedirectAttributes attributes) {
+    public String procesarModificar(@ModelAttribute @Valid Empleado empleado, BindingResult result, String contrasenaFalsa, Model model, RedirectAttributes attributes) {
         model.addAttribute("sucursales", servicioSucursales.listar());
 
         if (result.hasErrors()) {
+            model.addAttribute("contrasenaFalsa", UUID.randomUUID().toString());//Le damos una nueva contraseña falsa
             return "empleados/modificar";
         }
 
         try {
+
+            Empleado bdEmp = servicioEmpleado.obtener(empleado.getNombreUsuario());
+            
+            if (contrasenaFalsa.equals(empleado.getClaveDeAcceso())) { //Si la contraseña es igual a la que le dimos, es porque no cambió
+                empleado.setClaveDeAcceso(bdEmp.getClaveDeAcceso());
+            }
+
             servicioEmpleado.modificar(empleado);
 
             attributes.addFlashAttribute("mensaje", "Empleado modificado con éxito.");

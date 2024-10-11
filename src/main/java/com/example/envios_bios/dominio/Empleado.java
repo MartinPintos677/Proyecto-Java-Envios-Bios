@@ -1,5 +1,6 @@
 package com.example.envios_bios.dominio;
 
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
