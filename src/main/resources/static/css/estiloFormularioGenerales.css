@@ -106,10 +106,13 @@ body {
 
 .datagrid table td,
 .datagrid table th {
-    padding: 8px 12px;
+    padding: 8px 12px;    
+    overflow: hidden;    
+}
+
+.datagrid table td{
     border: 1px solid #ddd; /* Borde entre celdas */
     white-space: nowrap; /* Evita que el texto se divida en varias líneas */
-    overflow: hidden;    
 }
 
 .datagrid table td a {
