@@ -7,7 +7,7 @@
         <form method="post" th:object="${rastreo}">
 
             <!-- Mostrar el ID pero como campo de solo lectura -->
-            <div>
+            <div th:if="${rastreo.idRastreo != null}">
                 <label for="idRastreo">ID</label>
                 <input type="text" th:field="*{idRastreo}" id="idRastreo" readonly="readonly" />
             </div>
