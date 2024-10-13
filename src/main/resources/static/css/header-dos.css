@@ -135,12 +135,74 @@ h1{
     font-size: 1.1em;
 }
 
+/* Contenedor para el detalle */
+.detalle-contenedor {
+    max-width: 500px;
+    margin: 0 auto; /* Centrar el contenedor */
+    background-color: #f9f9f9;
+    padding: 20px 30px;
+    border: 1px solid #006699;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-family: 'Arial', sans-serif;
+    margin-top: 30px;
+    /*align-items: center;    */
+}
+
+/* Encabezado de detalle */
+.detalle-contenedor h2 {
+    font-size: 24px;
+    color: #006699;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Lista de detalles */
+.detalle-contenedor ul {
+    list-style-type: none;
+    padding: 0;    
+}
+
+/* Estilos para cada elemento de la lista de detalles */
+.detalle-contenedor ul li {
+    margin-bottom: 15px;
+    font-size: 16px;
+    display: flex;
+    gap: 5px;    
+    justify-content: center;  /* Centra horizontalmente */
+    align-items: center;      /* Centra verticalmente */
+    text-align: center;       
+}
+
+/* Estilo para el texto en negrita (títulos de los detalles) */
+.detalle-contenedor ul li strong {
+    color: #333;
+    font-weight: bold;
+}
+
+/* Estilo para los valores de los detalles */
+.detalle-contenedor ul li span {
+    color: #006699;
+    font-weight: normal;
+}
+
 @media (max-width: 1200px) {
-  .logo-header {
-   /*margin-left: 0px;*/
+  .logo-header {   
    margin-top: 60px;
    height: 270px; 
   }
+}
+
+@media (max-width: 768px) {
+    .detalle-contenedor {
+        padding: 15px 20px;
+        margin-top: 20px;
+    }
+    
+
+    .detalle-contenedor h2 {
+        font-size: 22px;
+    }
 }
 
 i.icono {

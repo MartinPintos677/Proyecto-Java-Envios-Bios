@@ -1,20 +1,29 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org" th:replace="~{fragmentos/plantilla-maestra::html(~{::title}, ~{::body}, 'css/estiloFormularioGenerales.css')}">
-    <head>
-        <title>Envios Bios - Detalle de Sucursal</title>
-    </head>
-    <body th:remove="tag">
-        <h1>Detalle de Sucursal</h1>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+    th:replace="~{fragmentos/plantilla-maestra::html(~{::title}, ~{::body}, 'css/estiloFormularioGenerales.css')}">
 
-        <p th:replace="~{fragmentos/parrafo-mensaje}"></p>
-        
-        <th:block th:if="${sucursales}">
+<head>
+    <title>Envios Bios - Detalle de Sucursal</title>
+</head>
+
+<body th:remove="tag">
+    <h1>Detalle de Sucursal</h1>
+
+    <p th:replace="~{fragmentos/parrafo-mensaje}"></p>
+
+    <th:block th:if="${sucursales}">
+        <div class="detalle-contenedor">
             <h2 th:text="${sucursales.nombre}"></h2>
             <ul>
-                <li><strong>Id</strong>: <span th:text="${sucursales.numero}"></span></li>
-                <li><strong>Nombre</strong>: <span th:text="${sucursales.nombre}"></span></li>                
-            </ul>            
-        </th:block>
-        
-    </body>
+                <li><strong>Número:</strong> <span th:text="${sucursales.numero}"></span></li>
+                <li><strong>Nombre:</strong> <span th:text="${sucursales.nombre}"></span></li>
+            </ul>
+        </div>
+    </th:block>
+    <div style="padding-bottom: 50px;"></div>
+
+    <div th:replace="~{fragmentos/footer::html(~{::title}, ~{::body})}"></div>
+
+</body>
+
 </html>

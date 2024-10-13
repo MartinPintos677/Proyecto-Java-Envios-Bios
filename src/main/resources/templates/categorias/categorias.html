@@ -25,8 +25,13 @@
             </div>
         </form>
 
+        <!-- Mensaje si no hay resultados -->
+        <p th:if="${#lists.isEmpty(categorias)}" style="color: red;">No se encontró ninguna categoría con el
+            criterio
+            proporcionado.</p>
+
         <!-- Tabla para mostrar la lista de categorías -->
-        <div class="datagrid" id="tablaCategorias">
+        <div class="datagrid" id="tablaCategorias" th:if="${!#lists.isEmpty(categorias)}">
             <table>
                 <thead>
                     <tr>
@@ -57,12 +62,12 @@
         </p>
 
         <!-- Controles de paginación -->
-        <div class="pagination">
+        <div class="pagination" th:if="${!#lists.isEmpty(categorias)}">
             <ul class="li-pagination">
                 <!-- Link para ir a la página anterior -->
                 <li th:if="${page.hasPrevious()}">
                     <a
-                        th:href="@{/categorias(pagina=${page.number - 1}, tamanioPagina=${page.size}, criterio=${criterio})}">Anterior</a>
+                        th:href="@{/categorias(pagina=${page.number - 1}, tamanioPagina=${page.size}, criterio=${criterio})}">←</a>
                 </li>
 
                 <!-- Mostrar número de página actual y total de páginas -->
@@ -71,7 +76,7 @@
                 <!-- Link para ir a la página siguiente -->
                 <li th:if="${page.hasNext()}">
                     <a
-                        th:href="@{/categorias(pagina=${page.number + 1}, tamanioPagina=${page.size}, criterio=${criterio})}">Siguiente</a>
+                        th:href="@{/categorias(pagina=${page.number + 1}, tamanioPagina=${page.size}, criterio=${criterio})}">→</a>
                 </li>
             </ul>
         </div>

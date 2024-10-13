@@ -12,12 +12,16 @@
     <p th:replace="~{fragmentos/parrafo-mensaje}"></p>
 
     <th:block th:if="${categorias}">
-        <h2 th:text="${categorias.nombre}"></h2>
-        <ul>
-            <li><strong>Id</strong>: <span th:text="${categorias.idCat}"></span></li>
-            <li><strong>Nombre</strong>: <span th:text="${categorias.nombre}"></span></li>
-        </ul>
+        <div class="detalle-contenedor">
+            <h2 th:text="${categorias.nombre}"></h2>
+            <ul>
+                <li><strong>Id</strong>: <span th:text="${categorias.idCat}"></span></li>
+                <li><strong>Nombre</strong>: <span th:text="${categorias.nombre}"></span></li>
+            </ul>
+        </div>
     </th:block>
+
+    <div style="padding-bottom: 50px;"></div>
 
     <div th:replace="~{fragmentos/footer::html(~{::title}, ~{::body})}"></div>
 

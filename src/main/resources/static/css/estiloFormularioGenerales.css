@@ -314,13 +314,11 @@ width: 50%;
 }
 
 .pagination ul li a {
-        padding: 6px 10px;
-        
+        padding: 6px 10px;        
     }
 
-    .pagination ul li.active {
-        padding: 6px 10px;
-       
+.pagination ul li.active {
+        padding: 6px 10px;       
     }
 }
 

@@ -83,24 +83,22 @@ public class ControladorEstadoRastreo {
     }
 
     @PostMapping("/modificar")
-    public String procesarModificar(@ModelAttribute @Valid EstadoRastreo rastreo, BindingResult result, Model model,
+    public String procesarModificar(@ModelAttribute("rastreo") @Valid EstadoRastreo rastreo, BindingResult result,
+            Model model,
             RedirectAttributes attributes) {
-        model.addAttribute("rastreos", servicioEstadoRastreo.listar());
 
         if (result.hasErrors()) {
+            model.addAttribute("textoBoton", "Modificar Estado de Rastreo");
             return "estadosRastreos/modificar";
         }
-        try {
 
+        try {
             servicioEstadoRastreo.modificar(rastreo);
             attributes.addFlashAttribute("mensaje", "Estado de Rastreo modificado con éxito.");
             return "redirect:/estadosRastreos";
-
         } catch (ExcepcionEnviosBios e) {
             model.addAttribute("mensaje", "¡ERROR! " + e.getMessage());
-
             return "estadosRastreos/modificar";
-
         }
     }
 
