@@ -32,7 +32,6 @@ public class Usuario {
     @Column(nullable = false, length = 50)
     private String claveDeAcceso;
 
-    @NotBlank
     @Email
     @Size(max = 100)
     @Column(nullable = false, length = 100)

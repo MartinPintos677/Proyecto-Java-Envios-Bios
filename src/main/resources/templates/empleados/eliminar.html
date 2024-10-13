@@ -11,9 +11,9 @@
 
     <p th:replace="~{fragmentos/parrafo-mensaje}"></p>
 
-    <th:block th:if="${empleados}">
-        <p>¿Confirma que desea eliminar el producto con código <strong th:text="${empleados.nombreUsuario}"></strong> (<span
-                th:text="${empleados.sucursal.nombre}"></span>)?</p>
+    <th:block th:if="${empleado}">
+        <p>¿Confirma que desea eliminar el producto con código <strong th:text="${empleado.nombreUsuario}"></strong> (<span
+                th:text="${empleado.sucursal.nombre}"></span>)?</p>
 
         <form method="post">
             <div>
