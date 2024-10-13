@@ -30,6 +30,7 @@ label {
 input[type="text"],
 input[type="number"],
 input[type="password"],
+input[type="search"],
 select,
 textarea {
     padding: 10px; /* Espaciado interno */
@@ -37,7 +38,7 @@ textarea {
     border-radius: 4px; /* Bordes redondeados */
     font-size: 16px; /* Tamaño de letra */
     background-color: #fff; /* Fondo blanco */
-    transition: border-color 0.3s ease-in-out; /* Transición en el borde */
+    transition: border-color 0.3s ease-in-out; /* Transición en el borde */    
 }
 
 /* Cambiar el borde cuando el campo tiene el foco */
