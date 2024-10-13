@@ -1,22 +1,33 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org" th:replace="~{fragmentos/plantilla-maestra::html(~{::title}, ~{::body}, 'css/estiloFormularioGenerales.css')}">
-    <head>
-        <title>Envios Bios - Detalle de Empleado</title>
-    </head>
-    <body th:remove="tag">
-        <h1>Detalle de Empleado</h1>
-        <p th:replace="~{fragmentos/parrafo-mensaje}"></p>
-        
-        <th:block th:if="${empleado}">
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+    th:replace="~{fragmentos/plantilla-maestra::html(~{::title}, ~{::body}, 'css/estiloFormularioGenerales.css')}">
+
+<head>
+    <title>Envios Bios - Detalle de Empleado</title>
+</head>
+
+<body th:remove="tag">
+    <h1>Detalle de Empleado</h1>
+    <p th:replace="~{fragmentos/parrafo-mensaje}"></p>
+
+    <th:block th:if="${empleado}">
+        <div class="detalle-contenedor">
             <h2 th:text="${empleado.nombreUsuario}"></h2>
             <ul>
                 <li><strong>Nombre de Usuario:</strong>: <span th:text="${empleado.nombreUsuario}"></span></li>
                 <li><strong>Sucursal</strong>: <span th:text="${empleado.sucursal.nombre}"></span></li>
-                <li><strong>Email</strong>: <span th:text="${empleado.email} != '' ? ${empleado.email} : 'No tiene'"></span></li>
+                <li><strong>Email</strong>: <span
+                        th:text="${empleado.email} != '' ? ${empleado.email} : 'No tiene'"></span></li>
                 <li><strong>Clave de Acceso</strong>: <span th:text="${empleado.claveDeAcceso}"></span></li>
-                
-            </ul>            
-        </th:block>
-        
-    </body>
+
+            </ul>
+        </div>
+    </th:block>
+
+    <div style="padding-bottom: 50px;"></div>
+
+    <div th:replace="~{fragmentos/footer::html(~{::title}, ~{::body})}"></div>
+
+</body>
+
 </html>

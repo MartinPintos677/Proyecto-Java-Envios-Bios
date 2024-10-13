@@ -137,7 +137,7 @@ h1{
 
 /* Contenedor para el detalle */
 .detalle-contenedor {
-    max-width: 500px;
+    max-width: 400px;
     margin: 0 auto; /* Centrar el contenedor */
     background-color: #f9f9f9;
     padding: 20px 30px;
@@ -146,7 +146,7 @@ h1{
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     font-family: 'Arial', sans-serif;
     margin-top: 30px;
-    /*align-items: center;    */
+    text-align: center; /* Centrar el texto */
 }
 
 /* Encabezado de detalle */
@@ -154,7 +154,7 @@ h1{
     font-size: 24px;
     color: #006699;
     margin-bottom: 20px;
-    text-align: center;
+    text-align: left;
 }
 
 /* Lista de detalles */
@@ -168,10 +168,8 @@ h1{
     margin-bottom: 15px;
     font-size: 16px;
     display: flex;
-    gap: 5px;    
-    justify-content: center;  /* Centra horizontalmente */
-    align-items: center;      /* Centra verticalmente */
-    text-align: center;       
+    gap: 5px;       
+    text-align: left;       
 }
 
 /* Estilo para el texto en negrita (títulos de los detalles) */
