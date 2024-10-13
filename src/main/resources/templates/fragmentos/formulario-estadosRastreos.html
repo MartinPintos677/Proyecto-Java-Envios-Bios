@@ -5,7 +5,13 @@
 
     <div align="center" style="padding-bottom: 50px;">
         <form method="post" th:object="${rastreo}">
-            <!-- Eliminar el campo ID ya que será autogenerado -->
+
+            <!-- Mostrar el ID pero como campo de solo lectura -->
+            <div>
+                <label for="idRastreo">ID</label>
+                <input type="text" th:field="*{idRastreo}" id="idRastreo" readonly="readonly" />
+            </div>
+
             <div>
                 <label for="descripcion">Descripción</label>
                 <input type="text" th:field="*{descripcion}" id="descripcion" />

@@ -11,9 +11,9 @@
 
     <p th:replace="~{fragmentos/parrafo-mensaje}"></p>
 
-    <th:block th:if="${rastreos}">
+    <!-- Mostrar el formulario solo si 'rastreo' está presente -->
+    <th:block th:if="${rastreo}">
         <div th:replace="fragmentos/formulario-estadosRastreos :: formulario-estadosRastreos('Modificar')"></div>
-
     </th:block>
 
     <div th:replace="~{fragmentos/footer::html(~{::title}, ~{::body})}"></div>

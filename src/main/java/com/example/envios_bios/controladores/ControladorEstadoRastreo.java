@@ -69,13 +69,12 @@ public class ControladorEstadoRastreo {
     }
 
     @GetMapping("/modificar")
-    public String mostrarModificar(Integer idRastreo, Model model) {
-        model.addAttribute("rastreos", servicioEstadoRastreo.listar());
-
+    public String mostrarModificar(@RequestParam("idRastreo") Integer idRastreo, Model model) {
         EstadoRastreo rastreo = servicioEstadoRastreo.obtener(idRastreo);
 
         if (rastreo != null) {
-            model.addAttribute("rastreos", rastreo);
+            model.addAttribute("rastreo", rastreo); // Cambiar a 'rastreo'
+            model.addAttribute("textoBoton", "Modificar Estado de Rastreo");
         } else {
             model.addAttribute("mensaje", "¡ERROR! No se encontró el Estado de Rastreo con el id " + idRastreo + ".");
         }

@@ -237,6 +237,58 @@ a.agregar:active {
     padding: 0;
 }
 
+/* Estilo para la paginación */
+.pagination {
+    margin-top: 20px;
+    text-align: center;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Estilo para los elementos de la lista de paginación */
+.pagination ul {
+    list-style: none;
+    padding: 0;
+    display: inline-block;
+}
+
+.pagination ul li {
+    display: inline-block;
+    margin: 0 5px;
+}
+
+/* Estilo para los enlaces de paginación */
+.pagination ul li a {
+    text-decoration: none;
+    padding: 5px 12px;
+    background-color: #006699; /* Fondo azul */
+    color: #fff; /* Texto blanco */
+    border-radius: 5px; /* Bordes redondeados */
+    border: 1px solid #00557F;
+    transition: background-color 0.3s ease, color 0.3s ease; /* Transición suave */
+    font-size: 18px;
+}
+
+/* Efecto hover para los enlaces de paginación */
+.pagination ul li a:hover {
+    background-color: #00557F; /* Fondo más oscuro */
+    color: #fff; /* Asegurarse de que el texto siga siendo blanco */
+}
+
+/* Estilo para el número de página actual (sin enlace) */
+.pagination ul li.active {
+    background-color: #E1EEF4; /* Fondo claro para la página activa */
+    color: #00496B; /* Texto azul oscuro */
+    font-weight: bold; /* Texto en negrita */
+    padding: 8px 12px;
+    border-radius: 5px;
+    border: 1px solid #00496B; /* Borde azul */
+}
+
+/* Ocultar la paginación cuando no hay resultados */
+.pagination.hidden {
+    display: none;
+}
+
 @media (max-width: 1200px) {
 .datagrid {
     width: 50%;
@@ -259,7 +311,18 @@ a.agregar:active {
 @media (max-width: 768px) {
 input[type="submit"] {
 width: 50%;
-}}
+}
+
+.pagination ul li a {
+        padding: 6px 10px;
+        
+    }
+
+    .pagination ul li.active {
+        padding: 6px 10px;
+       
+    }
+}
 
 @media (max-width: 565px) {
 input[type="submit"] {
