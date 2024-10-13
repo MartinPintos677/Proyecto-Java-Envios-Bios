@@ -25,7 +25,7 @@ public class Sucursal {
     private String nombre;
 
     // Constructor completo
-    public Sucursal(@NotNull @Min(1) Long numero, @NotNull String nombre) {
+    public Sucursal(Long numero, String nombre) {
         this.numero = numero;
         this.nombre = nombre;
     }

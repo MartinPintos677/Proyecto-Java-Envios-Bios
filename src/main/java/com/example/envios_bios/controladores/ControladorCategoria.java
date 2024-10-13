@@ -1,7 +1,5 @@
 package com.example.envios_bios.controladores;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,7 +17,6 @@ import com.example.envios_bios.dominio.Categoria;
 import com.example.envios_bios.excepciones.ExcepcionEnviosBios;
 import com.example.envios_bios.servicios.IServicioCategorias;
 
-
 import jakarta.validation.Valid;
 
 @Controller
@@ -28,7 +25,6 @@ public class ControladorCategoria {
 
     @Autowired
     private IServicioCategorias servicioCategorias;
-  
 
     @GetMapping
     public String mostrarCategorias(@RequestParam(required = false) String criterio, Pageable pageable, Model model) {
@@ -54,13 +50,18 @@ public class ControladorCategoria {
     }
 
     @PostMapping("/agregar")
-    public String agregarCategoria(@ModelAttribute("categoria") @Valid Categoria categoria, RedirectAttributes redirectAttributes, BindingResult result, Model model) {
+    public String agregarCategoria(@ModelAttribute("categoria") @Valid Categoria categoria,
+            RedirectAttributes redirectAttributes,
+            BindingResult result,
+            Model model) {
 
         if (result.hasErrors()) {
             return "categorias/agregar";
         }
-        try
-        {
+        try {
+            // Asegúrate de que el ID sea nulo al agregar
+            categoria.setIdCat(null);
+
             servicioCategorias.agregar(categoria);
 
             // Añadir un mensaje de éxito a los atributos redireccionados
@@ -72,20 +73,18 @@ public class ControladorCategoria {
         } catch (ExcepcionEnviosBios e) {
             model.addAttribute("mensaje", e.getMessage());
             return "categorias/agregar";
-
-        }              
+        }
     }
 
     @GetMapping("/modificar")
-    public String mostrarModificar(Integer idCat, Model model) {
-        model.addAttribute("categorias", servicioCategorias.listar());
-
+    public String mostrarModificar(@RequestParam("idCat") Integer idCat, Model model) {
         Categoria categoria = servicioCategorias.obtener(idCat);
 
         if (categoria != null) {
-            model.addAttribute("categoria", categoria);
+            model.addAttribute("categoria", categoria); // Cambiar a 'categoria'
+            model.addAttribute("textoBoton", "Modificar Categoría");
         } else {
-            model.addAttribute("mensaje", "¡ERROR! No se encontró la categoria con el id " + idCat + ".");
+            model.addAttribute("mensaje", "¡ERROR! No se encontró la categoría con el id " + idCat + ".");
         }
 
         return "categorias/modificar";

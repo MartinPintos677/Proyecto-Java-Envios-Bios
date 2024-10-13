@@ -5,7 +5,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import jakarta.persistence.Id;
 import jakarta.persistence.Column;
@@ -15,7 +14,6 @@ import jakarta.persistence.Column;
 public class EstadoRastreo {
 
     // Atributos
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idRastreo;
@@ -28,7 +26,7 @@ public class EstadoRastreo {
     private boolean activo;
 
     // Constructor completo
-    public EstadoRastreo(@NotNull Integer idRastreo, @NotNull @Size(max = 100) String descripcion, boolean activo) {
+    public EstadoRastreo(Integer idRastreo, String descripcion, boolean activo) {
         this.idRastreo = idRastreo;
         this.descripcion = descripcion;
         this.activo = activo;

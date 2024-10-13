@@ -137,16 +137,16 @@ h1{
 
 /* Contenedor para el detalle */
 .detalle-contenedor {
-    max-width: 400px;
+    max-width: 350px;
     margin: 0 auto; /* Centrar el contenedor */
     background-color: #f9f9f9;
-    padding: 20px 30px;
+    padding: 10px 30px;
     border: 1px solid #006699;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     font-family: 'Arial', sans-serif;
     margin-top: 30px;
-    text-align: center; /* Centrar el texto */
+    text-align: center; 
 }
 
 /* Encabezado de detalle */

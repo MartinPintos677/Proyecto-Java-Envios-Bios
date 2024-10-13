@@ -29,20 +29,20 @@ public class ServicioCategoria implements IServicioCategorias {
 
     @Override
     public List<Categoria> buscar(String criterio) {
-        
-        return repositorioCategorias.findAll();       
+
+        return repositorioCategorias.findAll();
     }
 
     @Override
     public void agregar(Categoria categoria) throws ExcepcionEnviosBios {
-        // busco por el idCat
-        Categoria categoriaExistente = repositorioCategorias.findById(categoria.getIdCat()).orElse(null);
+        Categoria categoriaExistente = repositorioCategorias.findByNombre(categoria.getNombre());
 
-        if (categoriaExistente != null) { //si la encuentra muestra el mensaje de error
+        if (categoriaExistente != null) { // Si la encuentra, significa que ya existe
             throw new ExcepcionYaExiste("La categoría ya existe.");
         }
 
-        repositorioCategorias.save(categoria); //guardamos en la bd
+        // Guardamos la nueva categoría (el ID se generará automáticamente)
+        repositorioCategorias.save(categoria);
     }
 
     @Override
@@ -69,12 +69,12 @@ public class ServicioCategoria implements IServicioCategorias {
 
     @Override
     public Page<Categoria> listarPaginado(Pageable pageable) {
-        return repositorioCategorias.findAll(pageable); 
+        return repositorioCategorias.findAll(pageable);
     }
 
     @Override
     public Page<Categoria> buscarPaginado(String criterio, Pageable pageable) {
         return repositorioCategorias.buscarP(criterio, pageable);
     }
-    
+
 }

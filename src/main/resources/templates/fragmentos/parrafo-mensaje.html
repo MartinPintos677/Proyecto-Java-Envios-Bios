@@ -1,1 +1,4 @@
-<p xmlns:th="http://www.thymeleaf.org" th:fragment="parrafo-mensaje" th:with="clases = ${clases} ?: ''" th:if="${mensaje}" th:text="${mensaje}" th:classappend="${clases} + ' ' + (${#strings.containsIgnoreCase(mensaje, '¡error!')} ? 'error' : '')" align="center"></p>
+<p xmlns:th="http://www.thymeleaf.org" th:fragment="parrafo-mensaje" th:with="clases = ${clases} ?: ''"
+  th:if="${mensaje}" th:text="${mensaje}"
+  th:classappend="${clases} + ' ' + (${#strings.containsIgnoreCase(mensaje, '¡error!')} ? 'error' : '')" align="center"
+  style="color: #2fc234;"></p>

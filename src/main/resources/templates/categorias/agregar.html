@@ -12,7 +12,7 @@
     <h1>Agregar Categoria</h1>
 
     <p th:replace="~{fragmentos/parrafo-mensaje}"></p>
-    <div th:replace="fragmentos/formulario-categoria :: formulario-categoria('Agregar')"></div>
+    <div th:replace="~{fragmentos/formulario-categoria :: formulario-categoria('Agregar')}"></div>
 
     <div th:replace="~{fragmentos/footer::html(~{::title}, ~{::body})}"></div>
 

@@ -11,9 +11,8 @@
 
     <p th:replace="~{fragmentos/parrafo-mensaje}"></p>
 
-    <th:block th:if="${categorias}">
+    <th:block th:if="${categoria}">
         <div th:replace="fragmentos/formulario-categoria :: formulario-categoria('Modificar')"></div>
-
     </th:block>
 
     <div th:replace="~{fragmentos/footer::html(~{::title}, ~{::body})}"></div>
