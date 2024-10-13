@@ -5,7 +5,6 @@
     </head>
     <body th:remove="tag">
         <h1>Detalle de Empleado</h1>
-
         <p th:replace="~{fragmentos/parrafo-mensaje}"></p>
         
         <th:block th:if="${empleado}">
@@ -13,7 +12,7 @@
             <ul>
                 <li><strong>Nombre de Usuario:</strong>: <span th:text="${empleado.nombreUsuario}"></span></li>
                 <li><strong>Sucursal</strong>: <span th:text="${empleado.sucursal.nombre}"></span></li>
-                <li><strong>Email</strong>: <span th:text="${empleado.email}"></span></li>
+                <li><strong>Email</strong>: <span th:text="${empleado.email} != '' ? ${empleado.email} : 'No tiene'"></span></li>
                 <li><strong>Clave de Acceso</strong>: <span th:text="${empleado.claveDeAcceso}"></span></li>
                 
             </ul>            
