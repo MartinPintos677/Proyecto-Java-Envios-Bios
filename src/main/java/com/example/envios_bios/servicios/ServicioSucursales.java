@@ -13,38 +13,40 @@ import com.example.envios_bios.excepciones.ExcepcionTieneVinculos;
 import com.example.envios_bios.excepciones.ExcepcionYaExiste;
 import com.example.envios_bios.repositorio.IRepositorioSucursal;
 
-
 @Service
-public class ServicioSucursales implements IServicioSucursales{
+public class ServicioSucursales implements IServicioSucursales {
 
     @Autowired
-    private IRepositorioSucursal repositorioSucursal; 
+    private IRepositorioSucursal repositorioSucursal;
 
     @Override
-    public List<Sucursal> listar(){
+    public List<Sucursal> listar() {
         return repositorioSucursal.findAll();
     }
 
     @Override
-    public Sucursal obtener(Long numero){
+    public Sucursal obtener(Long numero) {
         return repositorioSucursal.findById(numero).orElse(null);
     }
 
-    @Override
     public List<Sucursal> buscar(String criterio) {
-        return repositorioSucursal.findAll(); //En caso de usar Specifications pasarle el criterio
+        if (criterio == null || criterio.isEmpty()) {
+            return repositorioSucursal.findAll(); // Devuelve todas las sucursales si no hay criterio
+        } else {
+            return repositorioSucursal.findByNombreContaining(criterio); // Método que busca por nombre
+        }
     }
 
     @Override
     public void agregar(Sucursal sucursal) throws ExcepcionEnviosBios {
-        
-        Sucursal s = repositorioSucursal.findById(sucursal.getNumero()).orElse(null);//Buscamos la sucursal
 
-        if (s != null) { //Si la encuentra, tira mensaje de error
+        Sucursal s = repositorioSucursal.findById(sucursal.getNumero()).orElse(null);// Buscamos la sucursal
+
+        if (s != null) { // Si la encuentra, tira mensaje de error
             throw new ExcepcionYaExiste("La Sucursal ya existe.");
         }
 
-        repositorioSucursal.save(sucursal);//sino, la guardamos en la BD
+        repositorioSucursal.save(sucursal);// sino, la guardamos en la BD
     }
 
     @Override
@@ -68,10 +70,10 @@ public class ServicioSucursales implements IServicioSucursales{
         try {
 
             repositorioSucursal.deleteById(numero);
-            
+
         } catch (DataIntegrityViolationException e) {
             throw new ExcepcionTieneVinculos("La sucursal tiene empleados.");
         }
-        
+
     }
 }

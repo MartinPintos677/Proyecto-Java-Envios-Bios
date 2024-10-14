@@ -25,8 +25,13 @@
             </div>
         </form>
 
+        <!-- Mensaje si no hay resultados -->
+        <p th:if="${#lists.isEmpty(sucursales)}" style="color: red;">No se encontró ninguna sucursal con el
+            criterio
+            proporcionado.</p>
+
         <!-- Tabla para mostrar la lista de sucursales -->
-        <div class="datagrid">
+        <div class="datagrid" th:if="${!#lists.isEmpty(sucursales)}">
             <table>
                 <thead>
                     <tr>
@@ -36,7 +41,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr th:each="s : ${sucursales}">
+                    <tr th:each=" s : ${sucursales}">
                         <td th:text="${s.numero}"></td>
                         <td th:text="${s.nombre}"></td>
                         <td>
