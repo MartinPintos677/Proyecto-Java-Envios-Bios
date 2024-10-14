@@ -29,6 +29,7 @@ public class ServicioSucursales implements IServicioSucursales {
         return repositorioSucursal.findById(numero).orElse(null);
     }
 
+    @Override
     public List<Sucursal> buscar(String criterio) {
         if (criterio == null || criterio.isEmpty()) {
             return repositorioSucursal.findAll(); // Devuelve todas las sucursales si no hay criterio

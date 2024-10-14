@@ -7,8 +7,8 @@ import com.example.envios_bios.excepciones.ExcepcionEnviosBios;
 
 public interface IServicioCliente {
     
-    Cliente login(String nombreUsuario, String claveDeAcceso);
-    void editarDatos(Cliente cliente) throws ExcepcionEnviosBios;
+    void modificar(Cliente cliente) throws ExcepcionEnviosBios;
     void registrarse(Cliente cliente) throws ExcepcionEnviosBios;
     void agregarPaquete(Paquete paquete) throws ExcepcionEnviosBios;
+    void eliminar(String nombreUsuario) throws ExcepcionEnviosBios;
 }

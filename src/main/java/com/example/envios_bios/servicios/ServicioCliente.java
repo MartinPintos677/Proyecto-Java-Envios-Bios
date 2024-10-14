@@ -1,32 +1,80 @@
 package com.example.envios_bios.servicios;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.envios_bios.dominio.Cliente;
 import com.example.envios_bios.dominio.Paquete;
+import com.example.envios_bios.dominio.Rol;
+import com.example.envios_bios.dominio.Usuario;
 import com.example.envios_bios.excepciones.ExcepcionEnviosBios;
+import com.example.envios_bios.excepciones.ExcepcionNoExiste;
+import com.example.envios_bios.excepciones.ExcepcionTieneVinculos;
+import com.example.envios_bios.excepciones.ExcepcionYaExiste;
+import com.example.envios_bios.repositorio.IRepositorioClientes;
+import com.example.envios_bios.repositorio.IRepositorioPaquete;
 
 @Service
 public class ServicioCliente implements IServicioCliente{
+
+    @Autowired
+    private IRepositorioClientes repositorioClientes;
+
+    @Autowired
+    private IRepositorioPaquete repositorioPaquete;
     
     @Override
-    public Cliente login(String nombreUsuario, String claveDeAcceso) {
-        //Vemos
-        return new Cliente();
-    }
+    public void modificar(Cliente cliente) throws ExcepcionEnviosBios {
+        Cliente clienteExistente = repositorioClientes.findById(cliente.getNombreUsuario()).orElse(null);
 
-    @Override
-    public void editarDatos(Cliente cliente) throws ExcepcionEnviosBios {
-        //Vemos
+        if (clienteExistente == null) {
+            throw new ExcepcionNoExiste("El Cliente no existe.");
+        }
+
+        cliente.getRoles().clear();//Limpiamos los roles que tenga
+
+        for (Rol r : clienteExistente.getRoles()) { //Se los agregamos
+            cliente.getRoles().add(r);
+        }
+
+        repositorioClientes.save(cliente);
     }
 
     @Override
     public void registrarse(Cliente cliente) throws ExcepcionEnviosBios {
-        //Vemos
+        Usuario usuarioExistente = repositorioClientes.findById(cliente.getNombreUsuario()).orElse(null);
+
+        if (usuarioExistente != null) {
+            throw new ExcepcionYaExiste("El Cliente ya existe.");
+        }
+
+        cliente.getRoles().add(new Rol("cliente"));//Le damos el rol
+
+        repositorioClientes.save(cliente); //Registramos el Cliente
     }
 
     @Override
     public void agregarPaquete(Paquete paquete) throws ExcepcionEnviosBios {
-        //Vemos
+        //Implementar cuando se haga el Agregar Paquete principal
     }
+
+    @Override
+    public void eliminar(String nombreUsuario) throws ExcepcionEnviosBios {
+        
+        Cliente clienteExistente = repositorioClientes.findById(nombreUsuario).orElse(null);
+        if (clienteExistente == null) {
+            throw new ExcepcionNoExiste("El cliente no existe.");
+        }
+
+        boolean existePaqueteConCliente = repositorioPaquete.findAll().stream().anyMatch(p -> p.getCliente().getNombreUsuario().equals(clienteExistente.getNombreUsuario()));
+        if (existePaqueteConCliente) {
+            clienteExistente.setActivo(false);
+            repositorioClientes.save(clienteExistente);//Lo guardamos pero con el activo en false
+        }
+        else{
+            repositorioClientes.deleteById(nombreUsuario);
+        }
+    }
+
+    
 }
