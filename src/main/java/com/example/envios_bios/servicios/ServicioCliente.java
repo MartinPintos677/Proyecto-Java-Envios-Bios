@@ -1,5 +1,7 @@
 package com.example.envios_bios.servicios;
 
+import java.time.LocalDateTime;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,7 +11,6 @@ import com.example.envios_bios.dominio.Rol;
 import com.example.envios_bios.dominio.Usuario;
 import com.example.envios_bios.excepciones.ExcepcionEnviosBios;
 import com.example.envios_bios.excepciones.ExcepcionNoExiste;
-import com.example.envios_bios.excepciones.ExcepcionTieneVinculos;
 import com.example.envios_bios.excepciones.ExcepcionYaExiste;
 import com.example.envios_bios.repositorio.IRepositorioClientes;
 import com.example.envios_bios.repositorio.IRepositorioPaquete;
@@ -55,7 +56,15 @@ public class ServicioCliente implements IServicioCliente{
 
     @Override
     public void agregarPaquete(Paquete paquete) throws ExcepcionEnviosBios {
-        //Implementar cuando se haga el Agregar Paquete principal
+        Paquete paqueteExistente = repositorioPaquete.findById(paquete.getIdPaquete()).orElse(null);
+
+        if (paqueteExistente != null) {
+            throw new ExcepcionYaExiste("El Paquete ya existe.");
+        }
+
+        paquete.setFechaHoraRegistro(LocalDateTime.now());//Seteamos la fecha actual
+
+        repositorioPaquete.save(paquete);
     }
 
     @Override
