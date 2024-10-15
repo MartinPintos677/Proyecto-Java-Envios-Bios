@@ -42,6 +42,7 @@ public class ControladorPaquete {
 
     // Opcional: también pasar la lista de posibles estados de rastreo para el
     // dropdown
+    
     List<String> estadosRastreo = List.of("Registrado", "En tránsito", "Entregado", "Devuelto");
     model.addAttribute("estadosRastreo", estadosRastreo);
 

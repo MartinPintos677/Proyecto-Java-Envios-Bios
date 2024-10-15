@@ -1,61 +1,40 @@
 package com.example.envios_bios.servicios;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
+
 import java.util.List;
 import java.util.stream.Collectors;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
-
-import com.example.envios_bios.dominio.Categoria;
 import com.example.envios_bios.dominio.Cliente;
-import com.example.envios_bios.dominio.EstadoRastreo;
 import com.example.envios_bios.dominio.Paquete;
 import com.example.envios_bios.excepciones.ExcepcionEnviosBios;
+import com.example.envios_bios.excepciones.ExcepcionNoExiste;
+import com.example.envios_bios.excepciones.ExcepcionTieneVinculos;
 import com.example.envios_bios.excepciones.ExcepcionYaExiste;
+import com.example.envios_bios.repositorio.IRepositorioClientes;
+import com.example.envios_bios.repositorio.IRepositorioPaquete;
+
 
 @Service
 public class ServicioPaquete implements IServicioPaquete{
     
-    private List<Paquete> paquetes;
-  private List<Cliente> clientes; // para probar listado en dropDownList
+ 
+  @Autowired
+  private IRepositorioPaquete repositorioPaquete;
 
-  public ServicioPaquete() {
-    paquetes = new ArrayList<>();
-    clientes = new ArrayList<>(); // para probar listado en dropDownList
-
-    // Creación de clientes
-    Cliente cliente1 = new Cliente("nombreUsuario1", "clave1", "email1@example.com", "12345678", "Domicilio1",
-        "099111111",true);
-    Cliente cliente2 = new Cliente("nombreUsuario2", "clave2", "email2@example.com", "87654321", "Domicilio2",
-        "099222222",true);
-
-    clientes.add(cliente1);
-    clientes.add(cliente2);
-
-    // Creación de categorías y estados de rastreo
-    Categoria categoria1 = new Categoria(1, "Categoria1");
-    Categoria categoria2 = new Categoria(2, "Categoria2");
-    EstadoRastreo estado1 = new EstadoRastreo(1, "Registrado",true);
-    EstadoRastreo estado2 = new EstadoRastreo(2, "En tránsito",true);
-
-//     // Creación de paquetes con los objetos adecuados
-//     paquetes.add(new Paquete(1, cliente1, "Destinatario1", "099111111", LocalDateTime.now(), "Direccion1", false,
-//         categoria1, estado1));
-
-//     paquetes.add(new Paquete(2, cliente2, "Destinatario2", "099222222", LocalDateTime.now(), "Direccion2", true,
-//         categoria2, estado2));
-  }
-
+  @Autowired
+  private IRepositorioClientes repositorioClientes;
+  
   // Método para obtener la lista de clientes
   @Override
   public List<Cliente> listarClientes() {
-    return new ArrayList<>(clientes);
+    return repositorioClientes.findAll();
   }
 
   @Override
   public List<Paquete> buscar(String criterio, String cedulaCliente, String fechaRegistro, String estadoRastreo) {
-    return paquetes.stream()
+    return repositorioPaquete.findAll().stream()
         // Filtro por criterio (ID, destinatario)
         .filter(p -> (criterio == null || criterio.isBlank() || p.getIdPaquete().toString().contains(criterio)
             || p.getNombreDestinatario().toLowerCase().contains(criterio)))
@@ -73,54 +52,52 @@ public class ServicioPaquete implements IServicioPaquete{
 
   @Override
   public List<Paquete> listarTodosLosPaquetes() {
-    return new ArrayList<>(paquetes);
+    return repositorioPaquete.findAll();
   }
 
   @Override
   public Paquete obtenerPaquetePorId(Long idPaquete) {
-    for (Paquete p : paquetes) {
-      if (p.getIdPaquete().equals(idPaquete)) {
-        return p;
-      }
-    }
-    return null;
-  }
-
-  private int obtenerPosicion(Long idPaquete) {
-    for (int i = 0; i < paquetes.size(); i++) {
-      if (paquetes.get(i).getIdPaquete().equals(idPaquete)) {
-        return i;
-      }
-    }
-    return -1; // No se encontró la posición
+    return repositorioPaquete.findById(idPaquete).orElse(null);
   }
 
   @Override
   public void agregarPaquete(Paquete paquete) throws ExcepcionEnviosBios {
-    int posicion = obtenerPosicion(paquete.getIdPaquete());
-    if (posicion != -1) {
-      throw new ExcepcionYaExiste("El paquete con ID " + paquete.getIdPaquete() + " ya existe.");
-    }
-    paquetes.add(paquete);
+     Paquete p = repositorioPaquete.findById(paquete.getIdPaquete()).orElse(null);// Buscamos el paquete
+
+        if (p != null) { // Si la encuentra, tira mensaje de error
+            throw new ExcepcionYaExiste("El paquete ya existe.");
+        }
+
+        repositorioPaquete.save(paquete);// sino, la guardamos en la BD
   }
 
   @Override
   public void modificarPaquete(Paquete paquete) throws ExcepcionEnviosBios {
-    int posicion = obtenerPosicion(paquete.getIdPaquete());
-    if (posicion == -1) {
-      throw new ExcepcionEnviosBios("El paquete a modificar no existe.");
-    }
-    paquetes.set(posicion, paquete);
+     Paquete p = repositorioPaquete.findById(paquete.getIdPaquete()).orElse(null);
+
+        if (p == null) {
+            throw new ExcepcionNoExiste("El paquete no existe.");
+        }
+        repositorioPaquete.save(paquete);
   }
 
   @Override
   public void eliminarPaquete(Long idPaquete) throws ExcepcionEnviosBios {
-    int posicion = obtenerPosicion(idPaquete);
-    if (posicion == -1) {
-      throw new ExcepcionEnviosBios("El paquete a eliminar no existe.");
-    }
-    paquetes.remove(posicion);
+    Paquete p = repositorioPaquete.findById(idPaquete).orElse(null);
+
+        if (p == null) {
+            throw new ExcepcionNoExiste("El paquete no existe.");
+        }
+
+        try {
+
+            repositorioPaquete.deleteById(idPaquete);
+
+        } catch (DataIntegrityViolationException e) {
+            throw new ExcepcionTieneVinculos("El paquete tiene clientes.");
+        }
   }
+  
 
   /*
    * @Override
