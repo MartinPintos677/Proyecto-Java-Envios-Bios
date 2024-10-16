@@ -11,6 +11,7 @@ import com.example.envios_bios.excepciones.ExcepcionEnviosBios;
 import com.example.envios_bios.excepciones.ExcepcionNoExiste;
 import com.example.envios_bios.excepciones.ExcepcionTieneVinculos;
 import com.example.envios_bios.excepciones.ExcepcionYaExiste;
+import com.example.envios_bios.repositorio.IRepositorioEmpleados;
 import com.example.envios_bios.repositorio.IRepositorioSucursal;
 
 @Service
@@ -18,6 +19,9 @@ public class ServicioSucursales implements IServicioSucursales {
 
     @Autowired
     private IRepositorioSucursal repositorioSucursal;
+
+    @Autowired
+    private IRepositorioEmpleados repositorioEmpleados;
 
     @Override
     public List<Sucursal> listar() {
@@ -68,13 +72,12 @@ public class ServicioSucursales implements IServicioSucursales {
             throw new ExcepcionNoExiste("La Sucursal no existe.");
         }
 
-        try {
-
-            repositorioSucursal.deleteById(numero);
-
-        } catch (DataIntegrityViolationException e) {
-            throw new ExcepcionTieneVinculos("La sucursal tiene empleados.");
+        // Verificar si hay empleados asociados a la sucursal
+        boolean tieneEmpleadosAsociados = repositorioEmpleados.existsBySucursal(s);
+        if (tieneEmpleadosAsociados) {
+            throw new ExcepcionTieneVinculos("No se puede eliminar sucursal con empleados asociados.");
         }
 
+        repositorioSucursal.deleteById(numero);
     }
 }

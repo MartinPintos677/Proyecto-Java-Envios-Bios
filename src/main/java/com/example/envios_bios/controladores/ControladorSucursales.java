@@ -21,7 +21,7 @@ import jakarta.validation.Valid;
 @Controller
 @RequestMapping("/sucursales")
 public class ControladorSucursales {
-    
+
     @Autowired
     private IServicioSucursales servicioSucursales;
 
@@ -36,39 +36,38 @@ public class ControladorSucursales {
 
     @GetMapping("/agregar")
     public String mostrarAgregar(Model model) {
-            // Crear un objeto sucursal vacío para el formulario
+        // Crear un objeto sucursal vacío para el formulario
         Sucursal sucursal = new Sucursal();
         model.addAttribute("sucursal", sucursal);
         // Pasar el valor del botón de acción al formulario
         model.addAttribute("textoBoton", "Agregar Sucursal");
         return "sucursales/agregar";
     }
-       
-    
+
     @PostMapping("/agregar")
-    public String agregarSucursal(@ModelAttribute("sucursal") @Valid Sucursal sucursal, BindingResult result, RedirectAttributes redirectAttributes, Model model) {
-        
+    public String agregarSucursal(@ModelAttribute("sucursal") @Valid Sucursal sucursal, BindingResult result,
+            RedirectAttributes redirectAttributes, Model model) {
+
         if (result.hasErrors()) {
             return "sucursales/agregar";
         }
-        try { 
+        try {
             servicioSucursales.agregar(sucursal);
 
-             // Añadir un mensaje de éxito a los atributos redireccionados
+            // Añadir un mensaje de éxito a los atributos redireccionados
             redirectAttributes.addFlashAttribute("mensaje", "Sucursal agregada exitosamente!");
-            
+
             // Redireccionar a la lista de sucursales
             return "redirect:/sucursales";
-        }
-        catch (ExcepcionEnviosBios e) {
+        } catch (ExcepcionEnviosBios e) {
             model.addAttribute("mensaje", e.getMessage());
             return "sucursales/agregar";
-        }   
+        }
     }
 
     @GetMapping("/modificar")
     public String mostrarModificar(Long numero, Model model) {
-    model.addAttribute("categorias", servicioSucursales.listar());
+        model.addAttribute("categorias", servicioSucursales.listar());
 
         Sucursal sucursal = servicioSucursales.obtener(numero);
 
@@ -79,22 +78,22 @@ public class ControladorSucursales {
         }
 
         return "sucursales/modificar";
-}
+    }
 
-@PostMapping("/modificar")
-    public String procesarModificar(@ModelAttribute @Valid Sucursal sucursal, BindingResult result, Model model, RedirectAttributes attributes) {
+    @PostMapping("/modificar")
+    public String procesarModificar(@ModelAttribute @Valid Sucursal sucursal, BindingResult result, Model model,
+            RedirectAttributes attributes) {
         model.addAttribute("sucursales", servicioSucursales.listar());
 
         if (result.hasErrors()) {
             return "sucursales/modificar";
         }
         try {
-            
+
             servicioSucursales.modificar(sucursal);
             attributes.addFlashAttribute("mensaje", "Sucursal modificada con éxito.");
             return "redirect:/sucursales";
-        }
-        catch (ExcepcionEnviosBios e) {
+        } catch (ExcepcionEnviosBios e) {
             model.addAttribute("mensaje", "¡ERROR! " + e.getMessage());
 
             return "sucursales/modificar";
@@ -117,15 +116,12 @@ public class ControladorSucursales {
     @PostMapping("/eliminar")
     public String procesarEliminar(Long numero, Model model, RedirectAttributes attributes) {
         try {
-            servicioSucursales.eliminar(numero);           
-
+            servicioSucursales.eliminar(numero);
             attributes.addFlashAttribute("mensaje", "Sucursal eliminada con éxito.");
-
             return "redirect:/sucursales";
         } catch (ExcepcionEnviosBios e) {
-            model.addAttribute("mensaje", "¡ERROR! " + e.getMessage());
-
-            return "sucursales/eliminar";
+            attributes.addFlashAttribute("mensaje", "¡ERROR! " + e.getMessage());
+            return "redirect:/sucursales";
         }
     }
 
