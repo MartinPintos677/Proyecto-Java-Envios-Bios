@@ -10,12 +10,16 @@ import com.example.envios_bios.excepciones.ExcepcionEnviosBios;
 import com.example.envios_bios.excepciones.ExcepcionNoExiste;
 import com.example.envios_bios.excepciones.ExcepcionYaExiste;
 import com.example.envios_bios.repositorio.IRepositorioCategorias;
+import com.example.envios_bios.repositorio.IRepositorioPaquete;
 
 @Service
 public class ServicioCategoria implements IServicioCategorias {
 
     @Autowired
     private IRepositorioCategorias repositorioCategorias;
+
+    @Autowired
+    private IRepositorioPaquete repositorioPaquetes;
 
     @Override
     public List<Categoria> listar() {
@@ -64,6 +68,15 @@ public class ServicioCategoria implements IServicioCategorias {
         if (categoriaExistente == null) {
             throw new ExcepcionNoExiste("La categoría no existe.");
         }
+
+        // Verificar si hay paquetes asociados a la categoría
+        boolean tienePaquetesAsociados = repositorioPaquetes.existsByCategoria(categoriaExistente);
+
+        if (tienePaquetesAsociados) {
+            throw new ExcepcionEnviosBios(
+                    "No se puede eliminar la categoría porque está asociada a uno o más paquetes.");
+        }
+
         repositorioCategorias.deleteById(idCat);
     }
 

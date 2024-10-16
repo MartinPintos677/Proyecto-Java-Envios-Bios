@@ -129,14 +129,11 @@ public class ControladorCategoria {
     public String procesarEliminar(Integer idCat, Model model, RedirectAttributes attributes) {
         try {
             servicioCategorias.eliminar(idCat);
-
-            attributes.addFlashAttribute("mensaje", "Categoria eliminada con éxito.");
-
+            attributes.addFlashAttribute("mensaje", "Categoría eliminada con éxito.");
             return "redirect:/categorias";
         } catch (ExcepcionEnviosBios e) {
-            model.addAttribute("mensaje", "¡ERROR! " + e.getMessage());
-
-            return "categorias/categorias";
+            attributes.addFlashAttribute("mensaje", "¡ERROR! " + e.getMessage());
+            return "redirect:/categorias"; // Redirigir con el mensaje de error
         }
     }
 
