@@ -10,6 +10,7 @@ import com.example.envios_bios.excepciones.ExcepcionEnviosBios;
 import com.example.envios_bios.excepciones.ExcepcionNoExiste;
 import com.example.envios_bios.excepciones.ExcepcionYaExiste;
 import com.example.envios_bios.repositorio.IRepositorioEstadoRastreo;
+import com.example.envios_bios.repositorio.IRepositorioPaquete;
 
 @Service
 public class ServicioEstadoRastreo implements IServicioEstadoRastreo {
@@ -17,9 +18,12 @@ public class ServicioEstadoRastreo implements IServicioEstadoRastreo {
     @Autowired
     private IRepositorioEstadoRastreo repositorioEstadoRastreo;
 
+    @Autowired
+    private IRepositorioPaquete repositorioPaquetes;
+
     @Override
     public List<EstadoRastreo> listar() {
-        return repositorioEstadoRastreo.findAll();
+        return repositorioEstadoRastreo.findAllActivos();
     }
 
     @Override
@@ -29,21 +33,27 @@ public class ServicioEstadoRastreo implements IServicioEstadoRastreo {
 
     @Override
     public List<EstadoRastreo> buscar(String criterio) {
-        return repositorioEstadoRastreo.findAll();
-
+        return repositorioEstadoRastreo.findAllActivos();
     }
 
     @Override
     public void agregar(EstadoRastreo rastreo) throws ExcepcionEnviosBios {
-        // Si deseas evitar duplicados basados en la descripción, puedes verificarlo
-        // aquí
+        // Verificar si ya existe un estado con la misma descripción, sea activo o
+        // inactivo
         EstadoRastreo rastreoExistente = repositorioEstadoRastreo.findByDescripcion(rastreo.getDescripcion());
 
         if (rastreoExistente != null) {
-            throw new ExcepcionYaExiste("Ya existe un Estado de Rastreo con esa descripción.");
+            if (!rastreoExistente.isActivo()) {
+                // Si ya existe y está inactivo, lo volvemos a activar
+                rastreoExistente.setActivo(true);
+                repositorioEstadoRastreo.save(rastreoExistente);
+                return; // Finalizamos aquí ya que reactivamos el estado
+            } else {
+                throw new ExcepcionYaExiste("Ya existe un Estado de Rastreo con esa descripción y está activo.");
+            }
         }
 
-        // Guardar el nuevo estado de rastreo; el idRastreo se autogenerará
+        // Si no existe, lo guardamos como un nuevo estado
         repositorioEstadoRastreo.save(rastreo);
     }
 
@@ -66,12 +76,23 @@ public class ServicioEstadoRastreo implements IServicioEstadoRastreo {
         if (rastreoExistente == null) {
             throw new ExcepcionNoExiste("El estado de Rastreo no existe.");
         }
-        repositorioEstadoRastreo.deleteById(idRastreo);
+
+        // Verificar si hay paquetes asociados a este estado de rastreo
+        boolean tienePaquetesAsociados = repositorioPaquetes.existsByEstadoRastreo(rastreoExistente);
+
+        if (tienePaquetesAsociados) {
+            // Si tiene paquetes, realizamos la baja lógica
+            rastreoExistente.setActivo(false);
+            repositorioEstadoRastreo.save(rastreoExistente);
+        } else {
+            // Si no tiene paquetes, lo eliminamos físicamente
+            repositorioEstadoRastreo.deleteById(idRastreo);
+        }
     }
 
     @Override
     public Page<EstadoRastreo> listarPaginado(Pageable pageable) {
-        return repositorioEstadoRastreo.findAll(pageable); // Soporta paginación
+        return repositorioEstadoRastreo.buscarPagina("", pageable); // Busca solo los activos
     }
 
     @Override

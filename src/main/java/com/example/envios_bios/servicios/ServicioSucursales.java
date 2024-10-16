@@ -3,9 +3,7 @@ package com.example.envios_bios.servicios;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
-
 import com.example.envios_bios.dominio.Sucursal;
 import com.example.envios_bios.excepciones.ExcepcionEnviosBios;
 import com.example.envios_bios.excepciones.ExcepcionNoExiste;

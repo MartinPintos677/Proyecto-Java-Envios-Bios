@@ -8,11 +8,14 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.example.envios_bios.dominio.Categoria;
+import com.example.envios_bios.dominio.EstadoRastreo;
 import com.example.envios_bios.dominio.Paquete;
 
 public interface IRepositorioPaquete extends JpaRepository<Paquete, Long> {
 
         boolean existsByCategoria(Categoria categoria);
+
+        boolean existsByEstadoRastreo(EstadoRastreo estadoRastreo);
 
         Page<Paquete> findByEstadoRastreo_DescripcionInAndCliente_CedulaAndFechaHoraRegistro(
                         List<String> descripcionEstados,

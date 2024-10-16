@@ -119,12 +119,10 @@ public class ControladorEstadoRastreo {
         try {
             servicioEstadoRastreo.eliminar(idRastreo);
 
-            attributes.addFlashAttribute("mensaje", "Estado de Rastreo eliminado con éxito.");
-
+            attributes.addFlashAttribute("mensaje", "Estado de Rastreo eliminado o desactivado con éxito.");
             return "redirect:/estadosRastreos";
         } catch (ExcepcionEnviosBios e) {
             model.addAttribute("mensaje", "¡ERROR! " + e.getMessage());
-
             return "estadosRastreos/estadosRastreos";
         }
     }
