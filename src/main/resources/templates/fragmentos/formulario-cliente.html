@@ -1,9 +1,9 @@
-<div xmlns:th="http://www.thymeleaf.org" th:fragment="formulario-empleado(textoBoton)">
+<div xmlns:th="http://www.thymeleaf.org" th:fragment="formulario-empleado(textoBoton)" th:with="deshabilitarClave = ${deshabilitarClave} ?: false, foco= ${foco} ?: 'nombreUsuario'"></div>>
   <link rel="stylesheet" th:href="@{/css/estiloFormularioGenerales.css}">
   <form method="post" th:object="${empleado}" align="center" style="padding-bottom: 50px;">
     <div>
       <label for="nombreUsuario">Nombre de Usuario</label>
-      <input type="text" th:field="*{nombreUsuario}" />
+      <input type="text" th:field="*{nombreUsuario}" th:disabled="${deshabilitarClave}" />
       <p th:errors="*{nombreUsuario}" style="color: red;"></p>
     </div>
     <div>
@@ -16,7 +16,27 @@
       <input type="password" th:field="*{claveDeAcceso}" />
       <p th:errors="*{claveDeAcceso}" class="error"></p>
     </div>
-
+    <div>
+      <label for="repetirClaveDeAcceso">Repetir Clave de Acceso</label>
+      <input type="text" th:field="*{repetirClaveDeAcceso}" />
+      <p th:errors="*{repetirClaveDeAcceso}" style="color: red;"></p>
+    </div>
+    <div>
+      <label for="cedula">cedula</label>
+      <input type="text" th:field="*{cedula}" />
+      <p th:errors="*{cedula}" style="color: red;"></p>
+    </div>
+    <div>
+      <label for="domicilio">Domicilio</label>
+      <input type="text" th:field="*{domicilio}" />
+      <p th:errors="*{domicilio}" style="color: red;"></p>
+    </div>
+    <div>
+      <label for="telefono">Telefono</label>
+      <input type="text" th:field="*{telefono}" />
+      <p th:errors="*{telefono}" style="color: red;"></p>
+    </div>
+  
     <div>
       <input type="submit" th:value="${textoBoton}" />
     </div>
