@@ -2,9 +2,7 @@ package com.example.envios_bios.servicios;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,9 +28,6 @@ public class ServicioPaquete implements IServicioPaquete {
   @Autowired
   private IRepositorioClientes repositorioCliente;
 
-  @Autowired
-  private ServicioEstadoRastreo servicioEstadoRastreo;
-
   @Override
   public Paquete obtenerPaquetePorId(Long idPaquete) {
     Optional<Paquete> paqueteOpt = repositorioPaquete.findById(idPaquete);
@@ -42,18 +37,15 @@ public class ServicioPaquete implements IServicioPaquete {
   @Override
   public void agregarPaquete(Paquete paquete) throws ExcepcionEnviosBios {
     Paquete p = repositorioPaquete.findById(paquete.getIdPaquete()).orElse(null);// Buscamos el paquete
-
     if (p != null) { // Si la encuentra, tira mensaje de error
       throw new ExcepcionYaExiste("El paquete ya existe.");
     }
-
     repositorioPaquete.save(paquete);// sino, la guardamos en la BD
   }
 
   @Override
   public void modificarPaquete(Paquete paquete) throws ExcepcionEnviosBios {
     Paquete p = repositorioPaquete.findById(paquete.getIdPaquete()).orElse(null);
-
     if (p == null) {
       throw new ExcepcionNoExiste("El paquete no existe.");
     }
@@ -62,11 +54,15 @@ public class ServicioPaquete implements IServicioPaquete {
 
   @Override
   public void eliminarPaquete(Long idPaquete) throws ExcepcionEnviosBios {
-    int posicion = obtenerPosicion(idPaquete);
-    if (posicion == -1) {
-      throw new ExcepcionEnviosBios("El paquete a eliminar no existe.");
+    Paquete p = repositorioPaquete.findById(idPaquete).orElse(null);
+    if (p == null) {
+      throw new ExcepcionNoExiste("El paquete no existe.");
     }
-    paquetes.remove(posicion);
+    try {
+      repositorioPaquete.deleteById(idPaquete);
+    } catch (DataIntegrityViolationException e) {
+      throw new ExcepcionTieneVinculos("El paquete tiene clientes.");
+    }
   }
 
   @Override
