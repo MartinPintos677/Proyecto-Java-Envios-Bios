@@ -11,8 +11,8 @@
 
   <p th:replace="~{fragmentos/parrafo-mensaje}"></p>
 
-  <th:block th:if="${clientes}">
-    <p>¿Confirma que desea eliminar el Cliente con nombre de usuario <strong th:text="${clientes.nombreUsuario}"></strong>?</p>
+  <th:block th:if="${cliente}">
+    <p>¿Confirma que desea eliminar el Cliente con nombre de usuario <strong th:text="${cliente.nombreUsuario}"></strong>?</p>
 
     <form method="post">
       <div>

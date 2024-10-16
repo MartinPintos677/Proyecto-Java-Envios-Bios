@@ -23,6 +23,11 @@ public class ServicioCliente implements IServicioCliente{
 
     @Autowired
     private IRepositorioPaquete repositorioPaquete;
+
+    @Override
+    public Cliente obtener(String nombreUsuario) {
+        return repositorioClientes.findById(nombreUsuario).orElse(null);
+    }
     
     @Override
     public void modificar(Cliente cliente) throws ExcepcionEnviosBios {
