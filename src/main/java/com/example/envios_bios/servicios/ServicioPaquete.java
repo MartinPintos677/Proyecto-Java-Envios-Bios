@@ -4,15 +4,20 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import com.example.envios_bios.dominio.Cliente;
 import com.example.envios_bios.dominio.Paquete;
 import com.example.envios_bios.excepciones.ExcepcionEnviosBios;
+import com.example.envios_bios.excepciones.ExcepcionNoExiste;
+import com.example.envios_bios.excepciones.ExcepcionTieneVinculos;
+import com.example.envios_bios.excepciones.ExcepcionYaExiste;
 import com.example.envios_bios.repositorio.IRepositorioClientes;
 import com.example.envios_bios.repositorio.IRepositorioPaquete;
 
@@ -36,26 +41,32 @@ public class ServicioPaquete implements IServicioPaquete {
 
   @Override
   public void agregarPaquete(Paquete paquete) throws ExcepcionEnviosBios {
-    if (repositorioPaquete.existsById(paquete.getIdPaquete())) {
-      throw new ExcepcionEnviosBios("El paquete ya existe con el ID: " + paquete.getIdPaquete());
+    Paquete p = repositorioPaquete.findById(paquete.getIdPaquete()).orElse(null);// Buscamos el paquete
+
+    if (p != null) { // Si la encuentra, tira mensaje de error
+      throw new ExcepcionYaExiste("El paquete ya existe.");
     }
-    repositorioPaquete.save(paquete);
+
+    repositorioPaquete.save(paquete);// sino, la guardamos en la BD
   }
 
   @Override
   public void modificarPaquete(Paquete paquete) throws ExcepcionEnviosBios {
-    if (!repositorioPaquete.existsById(paquete.getIdPaquete())) {
-      throw new ExcepcionEnviosBios("El paquete no existe con el ID: " + paquete.getIdPaquete());
+    Paquete p = repositorioPaquete.findById(paquete.getIdPaquete()).orElse(null);
+
+    if (p == null) {
+      throw new ExcepcionNoExiste("El paquete no existe.");
     }
     repositorioPaquete.save(paquete);
   }
 
   @Override
   public void eliminarPaquete(Long idPaquete) throws ExcepcionEnviosBios {
-    if (!repositorioPaquete.existsById(idPaquete)) {
-      throw new ExcepcionEnviosBios("El paquete no existe con el ID: " + idPaquete);
+    int posicion = obtenerPosicion(idPaquete);
+    if (posicion == -1) {
+      throw new ExcepcionEnviosBios("El paquete a eliminar no existe.");
     }
-    repositorioPaquete.deleteById(idPaquete);
+    paquetes.remove(posicion);
   }
 
   @Override

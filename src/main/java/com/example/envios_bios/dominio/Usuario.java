@@ -12,6 +12,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -31,6 +32,9 @@ public class Usuario {
     @Size(max = 50)
     @Column(nullable = false, length = 50)
     private String claveDeAcceso;
+
+    @Transient
+    private String repetirClaveDeAcceso;
 
     @Email
     @Size(max = 100)
@@ -56,6 +60,14 @@ public class Usuario {
 
     public void setClaveDeAcceso(String claveDeAcceso) {
         this.claveDeAcceso = claveDeAcceso;
+    }
+
+    public String getRepetirClaveDeAcceso() {
+        return repetirClaveDeAcceso;
+    }
+
+    public void setRepetirClaveDeAcceso(String repetirClaveDeAcceso) {
+        this.repetirClaveDeAcceso = repetirClaveDeAcceso;
     }
 
     public String getEmail() {
