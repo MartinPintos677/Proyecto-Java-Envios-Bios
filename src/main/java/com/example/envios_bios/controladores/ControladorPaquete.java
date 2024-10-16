@@ -3,6 +3,7 @@ package com.example.envios_bios.controladores;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -14,10 +15,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-// import com.envios_bios.dominio.Cliente;
+import org.springframework.data.domain.Page;
+
+import org.springframework.data.domain.Pageable;
+
+import com.example.envios_bios.dominio.EstadoRastreo;
 import com.example.envios_bios.dominio.Paquete;
 import com.example.envios_bios.excepciones.ExcepcionEnviosBios;
 import com.example.envios_bios.servicios.IServicioPaquete;
+import com.example.envios_bios.servicios.ServicioEstadoRastreo;
 
 import jakarta.validation.Valid;
 
@@ -28,35 +34,37 @@ public class ControladorPaquete {
   @Autowired
   private IServicioPaquete servicioPaquete;
 
+  @Autowired
+  private ServicioEstadoRastreo servicioEstadoRastreo;
+
   @GetMapping
   public String mostrarPaquetes(
-      @RequestParam(required = false) String criterio,
       @RequestParam(required = false) String cedulaCliente,
       @RequestParam(required = false) String fechaRegistro,
       @RequestParam(required = false) String estadoRastreo,
+      Pageable pageable,
       Model model) {
 
-    List<Paquete> paquetes = servicioPaquete.buscar(criterio, cedulaCliente, fechaRegistro, estadoRastreo);
+    // Llamar al servicio con paginación y filtros
+    Page<Paquete> paquetesPage = servicioPaquete.buscarConPaginacion(cedulaCliente, fechaRegistro, estadoRastreo,
+        pageable);
 
-    model.addAttribute("paquetes", paquetes);
+    // Añadir los paquetes y la información de paginación al modelo
+    model.addAttribute("paquetes", paquetesPage.getContent());
+    model.addAttribute("totalPages", paquetesPage.getTotalPages());
+    model.addAttribute("currentPage", paquetesPage.getNumber());
+    model.addAttribute("pageSize", paquetesPage.getSize());
 
-    // Opcional: también pasar la lista de posibles estados de rastreo para el
-    // dropdown
-    List<String> estadosRastreo = List.of("Registrado", "En tránsito", "Entregado", "Devuelto");
+    // Obtener los estados de rastreo filtrados
+    List<String> estadosFiltrados = List.of("a levantar", "levantado", "en reparto", "entregado", "devuelto");
+    List<EstadoRastreo> estadosRastreo = servicioEstadoRastreo.listar()
+        .stream()
+        .filter(estado -> estadosFiltrados.contains(estado.getDescripcion()))
+        .toList();
+
     model.addAttribute("estadosRastreo", estadosRastreo);
 
-    return "paquetes/paquetes";
-  }
-
-  @GetMapping("/agregar")
-  public String mostrarAgregar(Model model) {
-    // Crear un objeto Paquete vacío para el formulario
-    model.addAttribute("clientes", servicioPaquete.listarClientes());
-
-    Paquete paquete = new Paquete();
-    model.addAttribute("paquete", paquete);
-    model.addAttribute("textoBoton", "Agregar Paquete");
-    return "paquetes/agregar"; // Vista que contiene el formulario para agregar un paquete
+    return "paquetes/paquetes"; // Vista para mostrar los paquetes
   }
 
   @PostMapping("/agregar")
@@ -140,6 +148,6 @@ public class ControladorPaquete {
     } else {
       model.addAttribute("mensaje", "¡ERROR! No se encontró el paquete con el id " + idPaquete + ".");
     }
-    return "paquetes/detalle"; // Vista para mostrar el detalle del paquete
+    return "paquetes/detalle";
   }
 }

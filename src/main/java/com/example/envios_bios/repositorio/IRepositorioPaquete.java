@@ -1,36 +1,49 @@
 package com.example.envios_bios.repositorio;
 
-import java.util.List;
-import java.util.Optional;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
-import org.springframework.data.jpa.repository.EntityGraph;
-import org.springframework.data.jpa.repository.EntityGraph.EntityGraphType;
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-import org.springframework.lang.Nullable;
 
 import com.example.envios_bios.dominio.Paquete;
 
-public interface IRepositorioPaquete extends JpaRepository<Paquete, Long>, JpaSpecificationExecutor<Paquete>{
+public interface IRepositorioPaquete extends JpaRepository<Paquete, Long> {
 
-    @Override
-    @EntityGraph(type = EntityGraphType.LOAD, attributePaths = { "cliente","categoria","estadoRastreo" })
-    List<Paquete> findAll();
+    Page<Paquete> findByEstadoRastreo_DescripcionInAndCliente_CedulaAndFechaHoraRegistro(
+            List<String> descripcionEstados,
+            String cedulaCliente,
+            LocalDateTime fechaHoraRegistro, // Cambiar LocalDate por LocalDateTime
+            Pageable pageable);
 
-    @Override
-    @EntityGraph(type = EntityGraphType.LOAD, attributePaths = { "cliente","categoria","estadoRastreo" })
-    Page<Paquete> findAll(Pageable pageable);
+    Page<Paquete> findByEstadoRastreo_DescripcionInAndCliente_Cedula(
+            List<String> descripcionEstados,
+            String cedulaCliente,
+            Pageable pageable);
 
-    //comentar si no usamos Specification
-    // @Override
-    // @EntityGraph(type = EntityGraphType.LOAD, attributePaths = { "cliente","categoria","estadoRastreo" })
-    // Page<Paquete> findAll(@Nullable Specification<Paquete> spec, Pageable pageable);
+    Page<Paquete> findByEstadoRastreo_DescripcionInAndFechaHoraRegistro(
+            List<String> descripcionEstados,
+            LocalDateTime fechaHoraRegistro,
+            Pageable pageable);
 
-    @Override
-    @EntityGraph(type = EntityGraphType.LOAD, attributePaths = { "cliente","categoria","estadoRastreo" })
-    Optional<Paquete> findById(Long id);
-    
+    Page<Paquete> findByEstadoRastreo_DescripcionIn(
+            List<String> descripcionEstados,
+            Pageable pageable);
+
+    Page<Paquete> findByEstadoRastreo_DescripcionInAndCliente_CedulaAndFechaHoraRegistroBetween(
+            List<String> descripcionEstados,
+            String cedulaCliente,
+            LocalDateTime fechaInicio,
+            LocalDateTime fechaFin,
+            Pageable pageable);
+
+    Page<Paquete> findByEstadoRastreo_DescripcionInAndFechaHoraRegistroBetween(
+            List<String> descripcionEstados,
+            LocalDateTime fechaInicio,
+            LocalDateTime fechaFin,
+            Pageable pageable);
+
 }
