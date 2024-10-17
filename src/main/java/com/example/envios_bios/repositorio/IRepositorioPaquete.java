@@ -1,9 +1,5 @@
 package com.example.envios_bios.repositorio;
 
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
 import java.time.LocalDateTime;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

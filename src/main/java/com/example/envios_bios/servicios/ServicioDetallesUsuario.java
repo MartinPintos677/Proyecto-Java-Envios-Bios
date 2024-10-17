@@ -19,14 +19,13 @@ import com.example.envios_bios.repositorio.IRepositorioClientes;
 import com.example.envios_bios.repositorio.IRepositorioEmpleados;
 
 @Service
-public class ServicioDetallesUsuario implements UserDetailsService{
-    
+public class ServicioDetallesUsuario implements UserDetailsService {
+
     @Autowired
     private IRepositorioEmpleados repositorioEmpleados;
 
     @Autowired
     private IRepositorioClientes repositorioClientes;
-
 
     @Override
     public UserDetails loadUserByUsername(String username)
@@ -35,8 +34,16 @@ public class ServicioDetallesUsuario implements UserDetailsService{
 
         if (usuario == null) {
             usuario = repositorioClientes.findById(username).orElse(null);
-            Cliente cli = (Cliente)usuario;
-            if(usuario == null || cli == null || !cli.isActivo()) throw new UsernameNotFoundException("El usuario no existe.");
+
+            // Verifica que sea un Cliente antes de hacer el cast
+            if (usuario instanceof Cliente) {
+                Cliente cli = (Cliente) usuario;
+                if (!cli.isActivo()) {
+                    throw new UsernameNotFoundException("El cliente no está activo.");
+                }
+            } else {
+                throw new UsernameNotFoundException("El usuario no existe.");
+            }
         }
 
         Set<GrantedAuthority> roles = new HashSet<>();
@@ -45,6 +52,6 @@ public class ServicioDetallesUsuario implements UserDetailsService{
             roles.add(new SimpleGrantedAuthority(r.getNombreRol()));
         }
 
-        return new User(usuario.getNombreUsuario(), usuario.getClaveDeAcceso(), true, true, true,true,roles);
+        return new User(usuario.getNombreUsuario(), usuario.getClaveDeAcceso(), true, true, true, true, roles);
     }
 }

@@ -29,8 +29,8 @@ public class Usuario {
     private String nombreUsuario;
 
     @NotBlank
-    @Size(max = 50)
-    @Column(nullable = false, length = 50)
+    @Size(max = 60)
+    @Column(nullable = false, length = 60)
     private String claveDeAcceso;
 
     @Transient
@@ -42,7 +42,8 @@ public class Usuario {
     private String email;
 
     @ManyToMany
-    @JoinTable(joinColumns = { @JoinColumn(name = "usuario_nombre_usuario") }, inverseJoinColumns = { @JoinColumn(name = "rol_nombre_rol") })
+    @JoinTable(joinColumns = { @JoinColumn(name = "usuario_nombre_usuario") }, inverseJoinColumns = {
+            @JoinColumn(name = "rol_nombre_rol") })
     private Set<Rol> roles;
 
     // Getter y Setter
@@ -84,7 +85,7 @@ public class Usuario {
 
     // Constructor por defecto
     public Usuario() {
-        this(null,null,null);
+        this(null, null, null);
     }
 
     // Constructor Completo

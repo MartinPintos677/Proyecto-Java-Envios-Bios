@@ -11,10 +11,11 @@ BEGIN
 
         -- Datos de prueba para la tabla usuarios
         INSERT INTO usuarios (nombre_usuario, clave_de_acceso, email) VALUES        
-        ('cliente1', 'clave123', 'cliente1@gmail.com'),
-        ('cliente2', 'clave456', 'cliente2@gmail.com'),
-        ('empleado1', 'empleado123', 'empleado1@enviosbios.com'),
-        ('empleado2', 'empleado456', 'empleado2@gmail.com');
+        ('cliente1', '$2a$10$QJu21AwLWBpyOGoRV3zH7ecZIM4.piwNLuQjnLtcoCUDzoyKLXnAG', 'cliente1@gmail.com'),
+        ('cliente2', '$2a$10$pjnPm1rV49t0qcxsaDjJN.HUZ8i2l521t8pOkTX52O3IbI1XSVVsa', 'cliente2@gmail.com'),
+        ('empleado1', '$2a$10$DiSj/4qyqVBNBkBWVVFHNO1ND5mZ4xXt1BmtCcFjJODlJzWeTs6Dq', 'empleado1@enviosbios.com'),
+        ('empleado2', '$2a$10$Il1qsPOCz9fQ0ri1S9Z2Gu.rPDyigosoMBJhtz03ZbwTLFxA5JsCa', 'empleado2@gmail.com');
+
 
         -- Datos de prueba para la tabla clientes (sin claveDeAcceso y email)
         INSERT INTO clientes (nombre_usuario, cedula, domicilio, telefono, activo) VALUES
@@ -33,7 +34,10 @@ BEGIN
 
         INSERT INTO usuarios_roles(usuario_nombre_usuario, rol_nombre_rol) VALUES
         ('empleado1', 'empleado'),
-        ('cliente1', 'cliente');   
+        ('empleado2', 'empleado'),  
+        ('cliente1', 'cliente'),
+        ('cliente2', 'cliente'); 
+
 
         -- Datos de prueba para la tabla categorias
         INSERT INTO categorias (id_cat, nombre) VALUES
