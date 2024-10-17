@@ -11,10 +11,10 @@ BEGIN
 
         -- Datos de prueba para la tabla usuarios
         INSERT INTO usuarios (nombre_usuario, clave_de_acceso, email) VALUES        
-        ('cliente1', 'clave123', 'cliente1@gmail.com'),
-        ('cliente2', 'clave456', 'cliente2@gmail.com'),
-        ('empleado1', 'empleado123', 'empleado1@enviosbios.com'),
-        ('empleado2', 'empleado456', 'empleado2@gmail.com');
+        ('cliente1', '$2a$10$e5yXhTjo9.dK/j38hOXyBe5Zh1rB7ay3QhxLk7PI2R7z.qy7olnCG', 'cliente1@gmail.com'),
+        ('cliente2', '$2a$10$e5yXhTjo9.dK/j38hOXyBe5Zh1rB7ay3QhxLk7PI2R7z.qy7olnCG', 'cliente2@gmail.com'),
+        ('empleado1', '$2a$10$yIOOCjM7R0iPBAmvDJ/GReFNTugPgE0a4LLDzE14l1GPFPqqYuHjC', 'empleado1@enviosbios.com'),
+        ('empleado2', '$2a$10$OxiDDmDe3GmrODIylXYwz.FjkekrbwbRtPmXJwV6fuxj5Fbznf2jK', 'empleado2@gmail.com');
 
         -- Datos de prueba para la tabla clientes (sin claveDeAcceso y email)
         INSERT INTO clientes (nombre_usuario, cedula, domicilio, telefono, activo) VALUES
@@ -40,8 +40,8 @@ BEGIN
         (1, 'Documentos'),
         (2, 'Paquetes Grandes'),
         (3, 'Paquetes Pequeños'),
-        (4, 'Paquetes Otros'),
-        (5, 'Paquetes Pesados');
+        (4, 'Paquetes Fragiles Pequeños'),
+        (5, 'Paquetes Fragiles Grandes');
 
 
         -- Datos de prueba para la tabla estadoRastreo

@@ -29,8 +29,8 @@ public class Usuario {
     private String nombreUsuario;
 
     @NotBlank
-    @Size(max = 50)
-    @Column(nullable = false, length = 50)
+    @Size(max = 60)
+    @Column(nullable = false, length = 60)
     private String claveDeAcceso;
 
     @Transient

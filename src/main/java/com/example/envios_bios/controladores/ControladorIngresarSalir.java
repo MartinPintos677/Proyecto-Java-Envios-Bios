@@ -12,9 +12,9 @@ public class ControladorIngresarSalir {
     @GetMapping("/login")
     public String ingresar(Principal principal) {
         if (principal == null || principal instanceof AnonymousAuthenticationToken) {
-            return "ingresar";
+            return "Ingresar";
         } else {
-            return "redirect:/";
+            return "redirect:/index";
         }
     }
 
