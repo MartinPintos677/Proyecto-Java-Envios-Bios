@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" th:replace="~{fragmentos/plantilla-maestra::html(~{::title}, ~{::body})}">
+    <head>
+        <title>Local de Comida Rápida - Ingresar</title>
+    </head>
+    <body th:remove="tag">
+        <div align="center">
+            <h1>Ingresar</h1>
+
+            <p th:replace="~{fragmentos/parrafo-mensaje}"></p>
+
+            <p th:if="${param.error}" class="error">¡ERROR! Usuario y/o contraseña incorrecto(s).</p>
+
+            <form method="post">
+                <div>
+                    <label for="nombreUsuario">Nombre de Usuario</label>
+                    <input type="text" name="username" id="nombreUsuario" />
+                </div>
+                <div>
+                    <label for="claveDeAcceso">Contraseña</label>
+                    <input type="password" name="password" id="claveDeAcceso" />
+                </div>
+                <div>
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                    <input type="submit" value="Ingresar" />
+                </div>
+            </form>
+
+            <br />
+
+            <p>¿No tienes cuenta? <a th:href="@{/clientes/registrarcliente}">Regístrate aquí</a>.</p>
+        </div>
+
+        <script>
+            document.getElementById('nombreUsuario').focus();
+            document.getElementById('nombreUsuario').select();
+        </script>
+    </body>
+</html>
