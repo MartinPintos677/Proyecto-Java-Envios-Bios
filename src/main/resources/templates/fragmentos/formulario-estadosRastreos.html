@@ -19,6 +19,7 @@
             </div>
 
             <div>
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
                 <input type="submit" th:value="${textoBoton}" />
             </div>
         </form>

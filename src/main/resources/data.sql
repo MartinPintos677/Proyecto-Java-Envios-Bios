@@ -44,8 +44,8 @@ BEGIN
         (1, 'Documentos'),
         (2, 'Paquetes Grandes'),
         (3, 'Paquetes Pequeños'),
-        (4, 'Paquetes Otros'),
-        (5, 'Paquetes Pesados');
+        (4, 'Paquetes Fragiles Pequeños'),
+        (5, 'Paquetes Fragiles Grandes');
 
 
         -- Datos de prueba para la tabla estadoRastreo
