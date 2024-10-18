@@ -5,16 +5,15 @@
     <form method="post" th:object="${paquete}">
       <div>
         <label for="idPaquete">ID</label>
-        <input type="number" th:field="*{idPaquete}" />
+        <input type="number" th:field="*{idPaquete}" readonly="readonly" />
       </div>
 
       <div>
         <label for="cliente">Cliente (Remitente)</label>
-        <!-- Aquí añadimos un dropdown list para seleccionar el cliente -->
-        <select th:field="*{nombreUsuario}" id="cliente">
-          <option th:each="cliente : ${clientes}" th:value="${cliente}" th:text="${cliente.nombreUsuario}">Seleccionar
-            cliente
-          </option>
+        <!-- Aquí añadimos un dropdown list para seleccionar el cliente VER PORQ SERIA UN DROP???
+         DEBERIA AGREGARSE SOLO SI ES POR CLIENTE Y SI ES ECHO POR EMPLEADO QUIZA SI BUSCAR O Q INGRESE LA CI -->
+        <label for="cliente">Cliente</label>
+        <input type="text" th:field="*{cliente}" />
         </select>
       </div>
       <div>
@@ -26,17 +25,21 @@
         <input type="text" th:field="*{direccionDestinatario}" />
       </div>
       <div>
-        <label for="categoria">Categoría</label>
-        <input type="text" th:field="*{categoria.nombre}" />
+        <label for="categoria">Categoria</label>
+        <select th:field="*{categoria.idCat}" id="categoria">
+          <option th:each="categoria : ${categorias}" th:value="${categoria.idCat}" th:text="${categoria.nombre}">Seleccionar categoría</option>
+      </select>
       </div>
       <div>
-        <label for="estadoRastreo">Estado</label>
-        <input type="text" th:field="*{estadoRastreo.descripcion}" />
+        <label for="estadoRastreo">Estado de Rastreo</label>
+        <select th:field="*{estadoRastreo.idRastreo}" id="estadoRastreo">
+          <option th:each="estado : ${estadosRastreo}" th:value="${estado.idRastreo}" th:text="${estado.descripcion}">Seleccionar estado</option>
+      </select>
       </div>
       <div>
         <label for="fechaHoraRegistro">Fecha de Registro</label>
         <input type="text" th:field="*{fechaHoraRegistro}"
-          th:value="${#temporals.format(paquete.fechaHoraRegistro, 'dd/MM/yyyy HH:mm')}" disabled="disabled" />
+          th:value="${#temporals.format(paquete.fechaHoraRegistro, 'dd/MM/yyyy HH:mm')}" readonly="readonly" />
       </div>
       <div>
         <label for="cobroDestinatario">Cobro a Destinatario</label>

@@ -1,5 +1,7 @@
 package com.example.envios_bios.controladores;
 
+
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,15 +16,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import org.springframework.data.domain.Page;
-
 import org.springframework.data.domain.Pageable;
-
+import com.example.envios_bios.dominio.Categoria;
 import com.example.envios_bios.dominio.EstadoRastreo;
 import com.example.envios_bios.dominio.Paquete;
 import com.example.envios_bios.excepciones.ExcepcionEnviosBios;
 import com.example.envios_bios.servicios.IServicioPaquete;
+import com.example.envios_bios.servicios.ServicioCategoria;
 import com.example.envios_bios.servicios.ServicioEstadoRastreo;
 
 import jakarta.validation.Valid;
@@ -32,8 +33,12 @@ import jakarta.validation.Valid;
 public class ControladorPaquete {
 
   @Autowired
+  private ServicioCategoria servicioCategoria;  
+
+  @Autowired
   private IServicioPaquete servicioPaquete;
 
+  
   @Autowired
   private ServicioEstadoRastreo servicioEstadoRastreo;
 
@@ -66,6 +71,25 @@ public class ControladorPaquete {
 
     return "paquetes/paquetes"; // Vista para mostrar los paquetes
   }
+
+  @GetMapping("/agregar")
+public String mostrarFormularioAgregarPaquete(Model model) {
+    // Crear un objeto paquete vacío para el formulario
+    Paquete paquete = new Paquete();
+    paquete.setFechaHoraRegistro(LocalDateTime.now()); // Inicializa con la fecha actual
+    model.addAttribute("paquete", paquete);     
+
+    // Cargar datos para los dropdowns
+    List<Categoria> categorias = servicioCategoria.listar();
+    List<EstadoRastreo> estadosRastreo = servicioEstadoRastreo.listar();
+    model.addAttribute("categorias", categorias);
+    model.addAttribute("estadosRastreo", estadosRastreo);
+    
+    // Pasar el valor del botón de acción al formulario
+    model.addAttribute("textoBoton", "Agregar");
+    return "paquetes/agregar";  
+}
+
 
   @PostMapping("/agregar")
   public String agregarPaquete(@ModelAttribute("paquete") @Valid Paquete paquete,

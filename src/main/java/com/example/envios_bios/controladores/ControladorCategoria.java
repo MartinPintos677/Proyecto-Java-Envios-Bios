@@ -51,30 +51,25 @@ public class ControladorCategoria {
 
     @PostMapping("/agregar")
     public String agregarCategoria(@ModelAttribute("categoria") @Valid Categoria categoria,
-            RedirectAttributes redirectAttributes,
-            BindingResult result,
-            Model model) {
+            RedirectAttributes redirectAttributes, BindingResult result, Model model) {
 
-        if (result.hasErrors()) {
-            return "categorias/agregar";
-        }
-        try {
-            // Asegúrate de que el ID sea nulo al agregar
-            categoria.setIdCat(null);
-
-            servicioCategorias.agregar(categoria);
-
-            // Añadir un mensaje de éxito a los atributos redireccionados
-            redirectAttributes.addFlashAttribute("mensaje", "¡Categoría agregada exitosamente!");
-
-            // Redireccionar a la lista de categorías
-            return "redirect:/categorias";
-
-        } catch (ExcepcionEnviosBios e) {
-            model.addAttribute("mensaje", e.getMessage());
-            return "categorias/agregar";
-        }
-    }
+                if (result.hasErrors()) {
+                    return "categorias/agregar";
+                }
+                try {
+                    servicioCategorias.agregar(categoria);
+        
+                    // Añadir un mensaje de éxito a los atributos redireccionados
+                    redirectAttributes.addFlashAttribute("mensaje", "Categoria agregada exitosamente!");
+        
+                    // Redireccionar a la lista de categorias
+                    return "redirect:/categorias";
+                } catch (ExcepcionEnviosBios e) {
+                    model.addAttribute("mensaje", e.getMessage());
+                    return "categorias/agregar";
+                }
+            }
+    
 
     @GetMapping("/modificar")
     public String mostrarModificar(@RequestParam("idCat") Integer idCat, Model model) {

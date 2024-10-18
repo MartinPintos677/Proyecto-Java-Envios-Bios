@@ -10,7 +10,7 @@
             </div>
             <div>
                 <label for="nombre">Nombre</label>
-                <input type="text" th:field="*{nombre}" />
+                <input type="text" th:field="*{nombre}" id="nombre"/>
                 <p th:errors="*{nombre}" style="color: red;"></p>
             </div>
             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
