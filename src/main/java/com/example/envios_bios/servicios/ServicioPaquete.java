@@ -78,35 +78,64 @@ public class ServicioPaquete implements IServicioPaquete {
   @Override
   public Page<Paquete> buscarConPaginacion(String cedulaCliente, String fechaRegistro, String estadoRastreo,
       Pageable pageable) {
-    List<String> estadosFiltrados = List.of("a levantar", "levantado", "en reparto", "entregado", "devuelto");
-
     LocalDateTime fechaInicio = null;
     LocalDateTime fechaFin = null;
+
+    // Convertir la fecha proporcionada (si existe) a un rango de inicio y fin del
+    // día
     if (fechaRegistro != null && !fechaRegistro.trim().isEmpty()) {
       try {
         LocalDate fecha = LocalDate.parse(fechaRegistro);
         fechaInicio = fecha.atStartOfDay(); // Inicio del día
-        fechaFin = fecha.atTime(23, 59, 59); // Final del día
+        fechaFin = fecha.atTime(23, 59, 59); // Fin del día
       } catch (DateTimeParseException e) {
         throw new IllegalArgumentException("Fecha inválida: " + fechaRegistro, e);
       }
     }
 
-    // Aplica los filtros con las fechas convertidas
-    if (cedulaCliente != null && !cedulaCliente.trim().isEmpty() && fechaInicio != null) {
-      return repositorioPaquete.findByEstadoRastreo_DescripcionInAndCliente_CedulaAndFechaHoraRegistroBetween(
-          estadosFiltrados, cedulaCliente, fechaInicio, fechaFin, pageable);
-    } else if (cedulaCliente != null && !cedulaCliente.trim().isEmpty()) {
-      return repositorioPaquete.findByEstadoRastreo_DescripcionInAndCliente_Cedula(
-          estadosFiltrados, cedulaCliente, pageable);
-    } else if (fechaInicio != null) {
-      return repositorioPaquete.findByEstadoRastreo_DescripcionInAndFechaHoraRegistroBetween(
-          estadosFiltrados, fechaInicio, fechaFin, pageable);
-    } else if (estadoRastreo != null && !estadoRastreo.trim().isEmpty()) {
-      return repositorioPaquete.findByEstadoRastreo_DescripcionIn(estadosFiltrados, pageable);
-    } else {
-      return repositorioPaquete.findAll(pageable);
+    // Si se proporciona cédula, estado de rastreo y fecha
+    if (cedulaCliente != null && !cedulaCliente.trim().isEmpty() && estadoRastreo != null
+        && !estadoRastreo.trim().isEmpty() && fechaInicio != null) {
+      return repositorioPaquete.findByEstadoRastreo_DescripcionAndCliente_CedulaAndFechaHoraRegistroBetween(
+          estadoRastreo, cedulaCliente, fechaInicio, fechaFin, pageable);
     }
+
+    // Si se proporciona cédula y estado de rastreo
+    if (cedulaCliente != null && !cedulaCliente.trim().isEmpty() && estadoRastreo != null
+        && !estadoRastreo.trim().isEmpty()) {
+      return repositorioPaquete.findByEstadoRastreo_DescripcionAndCliente_Cedula(
+          estadoRastreo, cedulaCliente, pageable);
+    }
+
+    // Si se proporciona cédula y fecha
+    if (cedulaCliente != null && !cedulaCliente.trim().isEmpty() && fechaInicio != null) {
+      return repositorioPaquete.findByCliente_CedulaAndFechaHoraRegistroBetween(
+          cedulaCliente, fechaInicio, fechaFin, pageable);
+    }
+
+    // Si solo se proporciona cédula
+    if (cedulaCliente != null && !cedulaCliente.trim().isEmpty()) {
+      return repositorioPaquete.findByCliente_Cedula(cedulaCliente, pageable);
+    }
+
+    // Si se proporciona estado de rastreo y fecha
+    if (estadoRastreo != null && !estadoRastreo.trim().isEmpty() && fechaInicio != null) {
+      return repositorioPaquete.findByEstadoRastreo_DescripcionAndFechaHoraRegistroBetween(
+          estadoRastreo, fechaInicio, fechaFin, pageable);
+    }
+
+    // Si solo se proporciona estado de rastreo
+    if (estadoRastreo != null && !estadoRastreo.trim().isEmpty()) {
+      return repositorioPaquete.findByEstadoRastreo_Descripcion(estadoRastreo, pageable);
+    }
+
+    // Si solo se proporciona fecha
+    if (fechaInicio != null) {
+      return repositorioPaquete.findByFechaHoraRegistroBetween(fechaInicio, fechaFin, pageable);
+    }
+
+    // Si no se aplican filtros, retornar todos los paquetes
+    return repositorioPaquete.findAll(pageable);
   }
 
 }

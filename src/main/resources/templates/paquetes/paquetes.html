@@ -53,7 +53,7 @@
     </div>
 
     <!-- Tabla para mostrar la lista de paquetes si hay resultados -->
-    <div class="datagrid" th:if="${not #lists.isEmpty(paquetes)}">
+    <div class="datagrid" id="resultadoPaquetes" th:if="${not #lists.isEmpty(paquetes)}">
       <table>
         <thead>
           <tr>
@@ -102,25 +102,63 @@
     </p>
 
     <!-- Controles de Paginación -->
-    <div class="pagination" align="center">
+    <div class="pagination" align="center" th:if="${not #lists.isEmpty(paquetes)}">
       <ul>
         <li th:if="${currentPage > 0}">
           <a
             th:href="@{/paquetes(pagina=${currentPage - 1}, tamanioPagina=${pageSize}, cedulaCliente=${param.cedulaCliente}, fechaRegistro=${param.fechaRegistro}, estadoRastreo=${param.estadoRastreo})}">←</a>
         </li>
         <li th:each="i : ${#numbers.sequence(0, totalPages - 1)}" th:classappend="${i == currentPage} ? 'active'">
-          <a th:href="@{/paquetes(pagina=${i}, tamanioPagina=${pageSize}, cedulaCliente=${param.cedulaCliente}, fechaRegistro=${param.fechaRegistro}, estadoRastreo=${param.estadoRastreo})}"
+          <a th:if="${i != currentPage}"
+            th:href="@{/paquetes(pagina=${i}, tamanioPagina=${pageSize}, cedulaCliente=${param.cedulaCliente}, fechaRegistro=${param.fechaRegistro}, estadoRastreo=${param.estadoRastreo})}"
             th:text="${i + 1}">1</a>
+          <span th:if="${i == currentPage}" th:text="${i + 1}" style="font-weight: bold; color: #0056b3;"></span>
         </li>
+
         <li th:if="${currentPage < totalPages - 1}">
           <a
             th:href="@{/paquetes(pagina=${currentPage + 1}, tamanioPagina=${pageSize}, cedulaCliente=${param.cedulaCliente}, fechaRegistro=${param.fechaRegistro}, estadoRastreo=${param.estadoRastreo})}">→</a>
         </li>
       </ul>
     </div>
+
   </div>
 
   <div th:replace="~{fragmentos/footer::html(~{::title}, ~{::body})}"></div>
+
+  <script>
+    // Función que hace scroll automático a la tabla
+    function irATablaPaquetes() {
+      const tabla = document.getElementById('resultadoPaquetes');
+      if (tabla) {
+        tabla.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
+    // Llamar a la función después de que la página haya cargado
+    window.onload = function () {
+      // Verificamos si es una recarga o navegación después de una paginación
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.has('pagina')) {
+        irATablaPaquetes();
+      }
+    };
+
+    // Escuchar el evento de envío del formulario de búsqueda
+    document.getElementById('formularioBusqueda').addEventListener('submit', function () {
+      // Establecer la página a 0 antes de enviar el formulario
+      const inputPagina = document.createElement('input');
+      inputPagina.type = 'hidden';
+      inputPagina.name = 'pagina';
+      inputPagina.value = '0';  // Resetear a la página 0
+      this.appendChild(inputPagina);
+    });
+
+    document.getElementById('cedulaCliente').focus();
+    document.getElementById('cedulaCliente').select();
+  </script>
+
+
 
 </body>
 

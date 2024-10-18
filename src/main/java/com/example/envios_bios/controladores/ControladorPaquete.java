@@ -1,6 +1,5 @@
 package com.example.envios_bios.controladores;
 
-
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -33,12 +32,11 @@ import jakarta.validation.Valid;
 public class ControladorPaquete {
 
   @Autowired
-  private ServicioCategoria servicioCategoria;  
+  private ServicioCategoria servicioCategoria;
 
   @Autowired
   private IServicioPaquete servicioPaquete;
 
-  
   @Autowired
   private ServicioEstadoRastreo servicioEstadoRastreo;
 
@@ -69,27 +67,26 @@ public class ControladorPaquete {
 
     model.addAttribute("estadosRastreo", estadosRastreo);
 
-    return "paquetes/paquetes"; // Vista para mostrar los paquetes
+    return "paquetes/paquetes";
   }
 
   @GetMapping("/agregar")
-public String mostrarFormularioAgregarPaquete(Model model) {
+  public String mostrarFormularioAgregarPaquete(Model model) {
     // Crear un objeto paquete vacío para el formulario
     Paquete paquete = new Paquete();
     paquete.setFechaHoraRegistro(LocalDateTime.now()); // Inicializa con la fecha actual
-    model.addAttribute("paquete", paquete);     
+    model.addAttribute("paquete", paquete);
 
     // Cargar datos para los dropdowns
     List<Categoria> categorias = servicioCategoria.listar();
     List<EstadoRastreo> estadosRastreo = servicioEstadoRastreo.listar();
     model.addAttribute("categorias", categorias);
     model.addAttribute("estadosRastreo", estadosRastreo);
-    
+
     // Pasar el valor del botón de acción al formulario
     model.addAttribute("textoBoton", "Agregar");
-    return "paquetes/agregar";  
-}
-
+    return "paquetes/agregar";
+  }
 
   @PostMapping("/agregar")
   public String agregarPaquete(@ModelAttribute("paquete") @Valid Paquete paquete,

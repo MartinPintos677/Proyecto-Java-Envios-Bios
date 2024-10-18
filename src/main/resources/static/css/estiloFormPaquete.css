@@ -30,6 +30,7 @@ label {
 input[type="text"],
 input[type="number"],
 input[type="password"],
+input[type="date"],
 select,
 textarea {
     padding: 10px; /* Espaciado interno */
@@ -271,12 +272,14 @@ a.agregar-paquete:active {
 }
 
 /* Estilo para el número de página actual (sin enlace) */
-.pagination ul li.active a{
+.pagination ul li.active {
     background-color: #E1EEF4; /* Fondo claro para la página activa */
     color: #00557F; /* Texto azul oscuro */
     font-weight: bold; /* Texto en negrita */    
     border-radius: 5px;    
     border: 2px solid #00557F;
+    font-size: 18px;
+    padding: 5px 12px;
 }
 
 /* Ocultar la paginación cuando no hay resultados */
