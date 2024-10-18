@@ -18,10 +18,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+
 import com.example.envios_bios.dominio.Categoria;
+import com.example.envios_bios.dominio.Cliente;
 import com.example.envios_bios.dominio.EstadoRastreo;
 import com.example.envios_bios.dominio.Paquete;
 import com.example.envios_bios.excepciones.ExcepcionEnviosBios;
+import com.example.envios_bios.servicios.IServicioCliente;
 import com.example.envios_bios.servicios.IServicioPaquete;
 import com.example.envios_bios.servicios.ServicioCategoria;
 import com.example.envios_bios.servicios.ServicioEstadoRastreo;
@@ -38,6 +42,8 @@ public class ControladorPaquete {
   @Autowired
   private IServicioPaquete servicioPaquete;
 
+  @Autowired
+  private IServicioCliente servicioCliente;
   
   @Autowired
   private ServicioEstadoRastreo servicioEstadoRastreo;
@@ -73,43 +79,74 @@ public class ControladorPaquete {
   }
 
   @GetMapping("/agregar")
-public String mostrarFormularioAgregarPaquete(Model model) {
-    // Crear un objeto paquete vacío para el formulario
-    Paquete paquete = new Paquete();
-    paquete.setFechaHoraRegistro(LocalDateTime.now()); // Inicializa con la fecha actual
-    model.addAttribute("paquete", paquete);     
+    public String mostrarFormularioAgregarPaquete(
+            @RequestParam(value = "cedula", required = false) String cedula,
+            @RequestParam(value = "buscarCliente", required = false) String buscarCliente,
+            Model model, Authentication authentication) {
+        
+        // Crear un objeto paquete vacío para el formulario
+        Paquete paquete = new Paquete();
+        paquete.setFechaHoraRegistro(LocalDateTime.now());
+        model.addAttribute("paquete", paquete);
 
-    // Cargar datos para los dropdowns
-    List<Categoria> categorias = servicioCategoria.listar();
-    List<EstadoRastreo> estadosRastreo = servicioEstadoRastreo.listar();
-    model.addAttribute("categorias", categorias);
-    model.addAttribute("estadosRastreo", estadosRastreo);
+        // Obtener el usuario autenticado
+        if (authentication != null) {
+            String nombreUsuario = authentication.getName();
+            
+            // Si es un cliente autenticado
+            if (authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("cliente"))) {
+                Cliente cliente = servicioCliente.obtener(nombreUsuario);
+                model.addAttribute("cliente", cliente); // Agrega el cliente al modelo
+            
+            // Si es un empleado autenticado
+            } else if (authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("empleado"))) {
+                
+                // Si se realizó una búsqueda de cliente por cédula
+                if (buscarCliente != null && cedula != null) {
+                    Cliente cliente = servicioCliente.obtener(cedula);
+                    
+                    if (cliente != null) {
+                        model.addAttribute("cliente", cliente); // Agregar cliente si se encuentra
+                    } else {
+                        model.addAttribute("error", "Cliente no encontrado con la cédula proporcionada.");
+                    }
+                }
+            }
+
+            // Cargar listas para los dropdowns
+            List<Categoria> categorias = servicioCategoria.listar();
+            List<EstadoRastreo> estadosRastreo = servicioEstadoRastreo.listar();
+            model.addAttribute("categorias", categorias);
+            model.addAttribute("estadosRastreo", estadosRastreo);
+        }
+
+        // Pasar el valor del botón de acción al formulario
+        model.addAttribute("textoBoton", "Agregar");
+
+        return "paquetes/agregar";
+    }
+
     
-    // Pasar el valor del botón de acción al formulario
-    model.addAttribute("textoBoton", "Agregar");
-    return "paquetes/agregar";  
-}
+    @PostMapping("/agregar")
+    public String agregarPaquete(@ModelAttribute("paquete") Paquete paquete, Model model,RedirectAttributes redirectAttributes) {
+        // Aquí iría la lógica para guardar el paquete
+        try{
+            servicioPaquete.agregarPaquete(paquete);
 
-
-  @PostMapping("/agregar")
-  public String agregarPaquete(@ModelAttribute("paquete") @Valid Paquete paquete,
-      RedirectAttributes redirectAttributes,
-      BindingResult result,
-      Model model) {
-
-    if (result.hasErrors()) {
-      return "paquetes/agregar";
-    }
-    try {
-      servicioPaquete.agregarPaquete(paquete);
-    } catch (ExcepcionEnviosBios e) {
-      model.addAttribute("error", e.getMessage());
-      return "paquetes/agregar";
+            // Mensaje de éxito
+            redirectAttributes.addFlashAttribute("mensaje", "Paquete agregado correctamente.");
+            return "redirect:/paquetes";
+        }catch (ExcepcionEnviosBios e) {
+            model.addAttribute("mensaje", e.getMessage());
+            //recarga los datos del formulario
+            List<Categoria> categorias = servicioCategoria.listar();
+            List<EstadoRastreo> estadosRastreo = servicioEstadoRastreo.listar();
+            model.addAttribute("categorias", categorias);
+            model.addAttribute("estadosRastreo", estadosRastreo);
+            return "paquetes/agregar";
+      }
     }
 
-    redirectAttributes.addFlashAttribute("mensaje", "¡Paquete agregado exitosamente!");
-    return "redirect:/paquetes";
-  }
 
   @GetMapping("/modificar")
   public String mostrarModificar(@RequestParam Long idPaquete, Model model) {
