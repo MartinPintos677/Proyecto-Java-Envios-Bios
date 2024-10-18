@@ -102,11 +102,11 @@
     </p>
 
     <!-- Controles de Paginación -->
-    <div class="paginacion" align="center">
+    <div class="pagination" align="center">
       <ul>
         <li th:if="${currentPage > 0}">
           <a
-            th:href="@{/paquetes(pagina=${currentPage - 1}, tamanioPagina=${pageSize}, cedulaCliente=${param.cedulaCliente}, fechaRegistro=${param.fechaRegistro}, estadoRastreo=${param.estadoRastreo})}">Anterior</a>
+            th:href="@{/paquetes(pagina=${currentPage - 1}, tamanioPagina=${pageSize}, cedulaCliente=${param.cedulaCliente}, fechaRegistro=${param.fechaRegistro}, estadoRastreo=${param.estadoRastreo})}">←</a>
         </li>
         <li th:each="i : ${#numbers.sequence(0, totalPages - 1)}" th:classappend="${i == currentPage} ? 'active'">
           <a th:href="@{/paquetes(pagina=${i}, tamanioPagina=${pageSize}, cedulaCliente=${param.cedulaCliente}, fechaRegistro=${param.fechaRegistro}, estadoRastreo=${param.estadoRastreo})}"
@@ -114,7 +114,7 @@
         </li>
         <li th:if="${currentPage < totalPages - 1}">
           <a
-            th:href="@{/paquetes(pagina=${currentPage + 1}, tamanioPagina=${pageSize}, cedulaCliente=${param.cedulaCliente}, fechaRegistro=${param.fechaRegistro}, estadoRastreo=${param.estadoRastreo})}">Siguiente</a>
+            th:href="@{/paquetes(pagina=${currentPage + 1}, tamanioPagina=${pageSize}, cedulaCliente=${param.cedulaCliente}, fechaRegistro=${param.fechaRegistro}, estadoRastreo=${param.estadoRastreo})}">→</a>
         </li>
       </ul>
     </div>

@@ -106,10 +106,13 @@ body {
 
 .datagrid table td,
 .datagrid table th {
-    padding: 8px 12px;
-    border: 1px solid #ddd;
-    white-space: nowrap;
+    padding: 8px 12px;    
     overflow: hidden;    
+}
+
+.datagrid table td {
+border: 1px solid #ddd; 
+    white-space: nowrap;
 }
 
 .datagrid table thead th {
@@ -227,6 +230,58 @@ a.agregar-paquete:hover {
 a.agregar-paquete:active {
     background-color: #00557F; /* Color más oscuro al hacer clic */
     transform: scale(1); /* Restablece el tamaño al hacer clic */
+}
+
+/* Estilo para la paginación */
+.pagination {
+    margin-top: 20px;
+    text-align: center;
+    font-family: 'Arial', sans-serif;
+    padding-bottom: 30px;
+}
+
+/* Estilo para los elementos de la lista de paginación */
+.pagination ul {
+    list-style: none;
+    padding: 0;
+    display: inline-block;
+}
+
+.pagination ul li {
+    display: inline-block;
+    margin: 0 5px;
+}
+
+/* Estilo para los enlaces de paginación */
+.pagination ul li a {
+    text-decoration: none;
+    padding: 5px 12px;
+    background-color: #006699; /* Fondo azul */
+    color: #fff; /* Texto blanco */
+    border-radius: 5px; /* Bordes redondeados */
+    border: 2px solid #006699;
+    transition: background-color 0.3s ease, color 0.3s ease; /* Transición suave */
+    font-size: 18px;
+}
+
+/* Efecto hover para los enlaces de paginación */
+.pagination ul li a:hover {
+    background-color: #00557F; /* Fondo más oscuro */
+    color: #fff; /* Asegurarse de que el texto siga siendo blanco */
+}
+
+/* Estilo para el número de página actual (sin enlace) */
+.pagination ul li.active a{
+    background-color: #E1EEF4; /* Fondo claro para la página activa */
+    color: #00557F; /* Texto azul oscuro */
+    font-weight: bold; /* Texto en negrita */    
+    border-radius: 5px;    
+    border: 2px solid #00557F;
+}
+
+/* Ocultar la paginación cuando no hay resultados */
+.pagination.hidden {
+    display: none;
 }
 
 

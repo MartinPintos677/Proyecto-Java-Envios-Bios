@@ -7,13 +7,23 @@ BEGIN
         -- Datos de prueba para la tabla sucursales
         INSERT INTO sucursal (numero, nombre) VALUES
         (1, 'Sucursal 1'),
-        (2, 'Sucursal 2');
+        (2, 'Sucursal 2'),
+        (3, 'Sucursal 3'),
+        (4, 'Sucursal 4');
 
         -- Datos de prueba para la tabla usuarios
         INSERT INTO usuarios (nombre_usuario, clave_de_acceso, email) VALUES        
+
+        -- Clave clave123
         ('cliente1', '$2a$10$QJu21AwLWBpyOGoRV3zH7ecZIM4.piwNLuQjnLtcoCUDzoyKLXnAG', 'cliente1@gmail.com'),
+
+        -- Clave clave456
         ('cliente2', '$2a$10$pjnPm1rV49t0qcxsaDjJN.HUZ8i2l521t8pOkTX52O3IbI1XSVVsa', 'cliente2@gmail.com'),
+
+        -- Clave empleado123
         ('empleado1', '$2a$10$DiSj/4qyqVBNBkBWVVFHNO1ND5mZ4xXt1BmtCcFjJODlJzWeTs6Dq', 'empleado1@enviosbios.com'),
+
+        -- Clave empleado456
         ('empleado2', '$2a$10$Il1qsPOCz9fQ0ri1S9Z2Gu.rPDyigosoMBJhtz03ZbwTLFxA5JsCa', 'empleado2@gmail.com');
 
 
@@ -60,7 +70,15 @@ BEGIN
         -- Datos de prueba para la tabla paquetes
         INSERT INTO paquete (id_paquete, nombre_usuario, nombre_destinatario, telefono_destinatario, fecha_hora_registro, direccion_destinatario, cobro_destinatario, id_cat, id_rastreo) VALUES
         (1, 'cliente1', 'Juan Perez', '091234567', NOW(), 'Calle de la Paz 456', false, 2, 1),
-        (2, 'cliente2', 'Maria Gomez', '098765432', NOW(), 'Avenida Libertador 123', true, 3, 1);  
+        (2, 'cliente2', 'Maria Gomez', '098765432', NOW(), 'Avenida Libertador 123', true, 3, 1),
+        (3, 'cliente1', 'Mario Martínez', '098423654', NOW(), 'Calle Colonia 3541', false, 2, 1),
+        (4, 'cliente2', 'Camila Sánchez', '091654987', NOW(), 'Avenida 18 de Julio 321', true, 3, 1),
+        (5, 'cliente1', 'Arturo González', '096369741', NOW(), 'Calle Columbia 1456', false, 2, 1),
+        (6, 'cliente2', 'Marina García', '093852147', NOW(), 'Avenida 8 de Octubre 3695', true, 3, 1),
+        (7, 'cliente1', 'Juan Rodríguez', '091596321', NOW(), 'Calle Yaguarón 4321', false, 2, 1),
+        (8, 'cliente2', 'Maria Gomez', '097569874', NOW(), 'Avenida 18 de Julio 123', true, 3, 1),
+        (9, 'cliente1', 'Juan Suarez', '099412521', NOW(), 'Calle Rio Branco 1385', false, 2, 1),
+        (10, 'cliente2', 'Mariana Gimenez', '098258777', NOW(), 'Avenida Libertador 6589', true, 3, 1);  
 
         -- Insertar registro en logs
         INSERT INTO logs(fecha_hora, mensaje) VALUES (NOW(), 'Datos iniciales cargados.');
