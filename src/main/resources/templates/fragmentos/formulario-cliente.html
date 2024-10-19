@@ -1,8 +1,9 @@
-<div xmlns:th="http://www.thymeleaf.org" th:fragment="formulario-empleado(textoBoton)" th:with="deshabilitarClave = ${deshabilitarClave} ?: false, foco= ${foco} ?: 'nombreUsuario'"></div>>
+<div xmlns:th="http://www.thymeleaf.org" th:fragment="formulario-empleado(textoBoton)" th:with="deshabilitarClave = ${deshabilitarClave} ?: false, foco= ${foco} ?: 'nombreUsuario'">
   <link rel="stylesheet" th:href="@{/css/estiloFormularioGenerales.css}">
-  <form method="post" th:object="${empleado}" align="center" style="padding-bottom: 50px;">
+  <form method="post" th:object="${cliente}" align="center" style="padding-bottom: 50px;">
     <div>
       <label for="nombreUsuario">Nombre de Usuario</label>
+      <input th:if="${deshabilitarClave}" type="hidden" th:field="*{nombreUsuario}" />
       <input type="text" th:field="*{nombreUsuario}" th:disabled="${deshabilitarClave}" />
       <p th:errors="*{nombreUsuario}" style="color: red;"></p>
     </div>
@@ -13,12 +14,13 @@
     </div>
     <div>
       <label for="claveDeAcceso">Clave de Acceso</label>
-      <input type="password" th:field="*{claveDeAcceso}" />
+      <input type="hidden" name="contrasenaFalsa" th:value="${contrasenaFalsa}" />
+      <input type="password" name="claveDeAcceso" id="claveDeAcceso" th:value="${contrasenaFalsa}"/>
       <p th:errors="*{claveDeAcceso}" class="error"></p>
     </div>
     <div>
       <label for="repetirClaveDeAcceso">Repetir Clave de Acceso</label>
-      <input type="text" th:field="*{repetirClaveDeAcceso}" />
+      <input type="password" name="repetirClaveDeAcceso" id="repetirClaveDeAcceso" th:value="${contrasenaFalsa}"/>
       <p th:errors="*{repetirClaveDeAcceso}" style="color: red;"></p>
     </div>
     <div>

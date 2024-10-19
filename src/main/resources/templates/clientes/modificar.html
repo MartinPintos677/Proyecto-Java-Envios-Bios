@@ -8,15 +8,15 @@
 
 <body th:remove="tag">
   <h1>Modificar Cliente</h1>
+  <div align="center">
+    <p th:replace="~{fragmentos/parrafo-mensaje}"></p>
 
-  <p th:replace="~{fragmentos/parrafo-mensaje}"></p>
+    <th:block th:if="${cliente}">
+      <div th:replace="~{fragmentos/formulario-cliente(textoBoton = 'Modificar', deshabilitarClave = true, foco = 'email')}"></div>
+    </th:block>
 
-  <th:block th:if="${empleado}">
-    <div th:replace="~{fragmentos/formulario-empleado(textoBoton = 'Modificar', deshabilitarClave = true, foco = 'email')}"></div>
-
-  </th:block>
-
-  <div th:replace="~{fragmentos/footer::html(~{::title}, ~{::body})}"></div>
+    <div th:replace="~{fragmentos/footer::html(~{::title}, ~{::body})}"></div>
+  </div>
 </body>
 
 </html>
