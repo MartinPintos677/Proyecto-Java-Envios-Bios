@@ -15,7 +15,6 @@ import com.example.envios_bios.dominio.Paquete;
 import com.example.envios_bios.excepciones.ExcepcionEnviosBios;
 import com.example.envios_bios.excepciones.ExcepcionNoExiste;
 import com.example.envios_bios.excepciones.ExcepcionTieneVinculos;
-import com.example.envios_bios.excepciones.ExcepcionYaExiste;
 import com.example.envios_bios.repositorio.IRepositorioClientes;
 import com.example.envios_bios.repositorio.IRepositorioPaquete;
 

@@ -5,18 +5,27 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Envios Bios - Modificar Paquete</title>
+  <title>Envios Bios - Detalle Paquete</title>
 
 <body th:remove="tag">
-    <h1>Modificar Paquete</h1>
+    <h1>Detalle Paquete</h1>
+
 
     <p th:replace="~{fragmentos/parrafo-mensaje}"></p>
 
-    <th:block th:if="${paquete}">
-        <div th:replace="fragmentos/formulario-paquete :: formulario-paquete('Modificar')"></div>
+    <th:block th:if="${paquetes}">
+        <div class="detalle-contenedor">
+            <h2 th:text="${paquetes.idPaquete}"></h2>
+            <ul>
+                <li><strong>Id</strong>: <span th:text="${paquetes.idPaquete}"></span></li>                
+            </ul>
+        </div>
     </th:block>
 
+    <div style="padding-bottom: 50px;"></div>
+
     <div th:replace="~{fragmentos/footer::html(~{::title}, ~{::body})}"></div>
+
 </body>
 
 </html>

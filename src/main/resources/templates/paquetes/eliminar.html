@@ -1,0 +1,30 @@
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+  th:replace="~{fragmentos/plantilla-maestra::html(~{::title}, ~{::body}, 'css/estiloFormPaquete.css')}">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Envios Bios - Eliminar Paquete</title>
+
+<body th:remove="tag">
+    <h1>Eliminar Paquete</h1>
+
+    <p th:replace="~{fragmentos/parrafo-mensaje}"></p>
+
+    <th:block th:if="${paquetes}">
+        <p>¿Confirma que desea eliminar el producto con código <strong th:text="${paquetes.idPaquete}"></strong> (<span
+                th:text="${paquetes.idPaquete}"></span>)?</p>
+
+        <form method="post">
+            <div>
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                <input type="submit" value="Eliminar" />
+            </div>
+        </form>
+    </th:block>
+
+    <div th:replace="~{fragmentos/footer::html(~{::title}, ~{::body})}"></div>
+
+</body>
+
+</html>

@@ -78,7 +78,7 @@ public class ControladorPaquete {
   }
 
   @GetMapping("/agregar")
-public String mostrarFormularioAgregarPaquete(Model model, Authentication authentication) {
+public String AgregarPaquete(Model model, Authentication authentication) {
     // Crear un objeto paquete vacío para el formulario
     Paquete paquete = new Paquete();
     paquete.setFechaHoraRegistro(LocalDateTime.now());
@@ -114,9 +114,9 @@ public String mostrarFormularioAgregarPaquete(Model model, Authentication authen
 }
 
 @PostMapping("/agregar")
-public String agregarPaquete(@ModelAttribute("paquete") Paquete paquete, 
+public String agregarPaquete(@ModelAttribute("paquete")  @Valid Paquete paquete, 
                              RedirectAttributes redirectAttributes, 
-                             Authentication authentication) {
+                             Authentication authentication, BindingResult result) {
     try {
         // Verifica si el usuario es cliente o empleado
         if (authentication != null) {
@@ -130,8 +130,12 @@ public String agregarPaquete(@ModelAttribute("paquete") Paquete paquete,
             // Si el usuario es un empleado, ya debería haber seleccionado un cliente desde el dropdown
             // por lo que no es necesario hacer nada en este caso
         }
+        if (result.hasErrors()) {
 
-        // guardar el paquete en la base de datos
+          return "paquetes/agregar";
+      }
+
+        // guarda el paquete en la base de datos
         servicioPaquete.agregarPaquete(paquete);
 
         // Agrega mensaje de éxito
@@ -148,35 +152,59 @@ public String agregarPaquete(@ModelAttribute("paquete") Paquete paquete,
     }
 }
 
-  @GetMapping("/modificar")
-  public String mostrarModificar(@RequestParam Long idPaquete, Model model) {
-    Paquete paquete = servicioPaquete.obtenerPaquetePorId(idPaquete);
+@GetMapping("/modificar")
+public String mostrarModificar(@RequestParam("idPaquete") Long idPaquete, Model model) {
+    Paquete paquete = servicioPaquete.obtenerPaquetePorId(idPaquete); // Buscamos el paquete por ID
+
     if (paquete != null) {
-      model.addAttribute("paquete", paquete);
+        model.addAttribute("paquete", paquete);
+        
+        // Obtenemos la lista de estados de rastreo para el dropdown
+        List<EstadoRastreo> estadosRastreo = servicioEstadoRastreo.listar();
+        model.addAttribute("estadosRastreo", estadosRastreo);
+        
+        model.addAttribute("textoBoton", "Modificar");
+        model.addAttribute("modoModificacion", true);  // Estamos en modo modificación
     } else {
-      model.addAttribute("mensaje", "¡ERROR! No se encontró el paquete con el id " + idPaquete + ".");
+        model.addAttribute("mensaje", "¡ERROR! No se encontró el paquete con el id " + idPaquete + ".");
     }
-    return "paquetes/modificar"; // Vista que contiene el formulario para modificar un paquete
-  }
 
-  @PostMapping("/modificar")
-  public String procesarModificar(@ModelAttribute("paquete") @Valid Paquete paquete,
-      BindingResult result,
-      Model model,
-      RedirectAttributes redirectAttributes) {
-
-    if (result.hasErrors()) {
-      return "paquetes/modificar";
-    }
+    return "paquetes/modificar";  
+}
+@PostMapping("/modificar")
+public String procesarModificar(@RequestParam("idPaquete") Long idPaquete, 
+                                      @RequestParam("estadoRastreo") Integer idRastreo, 
+                                      RedirectAttributes attributes, Model model) {
     try {
-      servicioPaquete.modificarPaquete(paquete);
-      redirectAttributes.addFlashAttribute("mensaje", "¡Paquete modificado exitosamente!");
-      return "redirect:/paquetes";
+        Paquete paquete = servicioPaquete.obtenerPaquetePorId(idPaquete);
+
+        if (paquete == null) {
+            attributes.addFlashAttribute("mensaje", "¡ERROR! No se encontró el paquete con el ID " + idPaquete);
+            return "redirect:/paquetes";
+        }
+
+        // Obtener el estado de rastreo seleccionado en el dropdown
+        EstadoRastreo estadoRastreo = servicioEstadoRastreo.obtener(idRastreo);
+        if (estadoRastreo == null) {
+            attributes.addFlashAttribute("mensaje", "¡ERROR! Estado de rastreo inválido.");
+            return "redirect:/paquetes";
+        }
+
+        // Actualizar solo el campo estadoRastreo
+        paquete.setEstadoRastreo(estadoRastreo);
+        servicioPaquete.modificarPaquete(paquete);  // Guarda los cambios
+
+        attributes.addFlashAttribute("mensaje", "Estado del paquete modificado con éxito.");
+        return "redirect:/paquetes";
+
     } catch (ExcepcionEnviosBios e) {
-      model.addAttribute("mensaje", "¡ERROR! " + e.getMessage());
-      return "paquetes/modificar";
+        model.addAttribute("mensaje", "¡ERROR! " + e.getMessage());
+        return "paquetes/modificar";
+    } catch (Exception e) {
+        model.addAttribute("mensaje", "Ocurrió un error al modificar el estado del paquete.");
+        return "paquetes/modificar";
     }
-  }
+}
 
   @GetMapping("/eliminar")
   public String mostrarEliminar(@RequestParam Long idPaquete, Model model) {
@@ -186,7 +214,7 @@ public String agregarPaquete(@ModelAttribute("paquete") Paquete paquete,
     } else {
       model.addAttribute("mensaje", "¡ERROR! No se encontró el paquete con el id " + idPaquete + ".");
     }
-    return "paquetes/eliminar"; // Vista que contiene el formulario para eliminar un paquete
+    return "paquetes/eliminar"; 
   }
 
   @PostMapping("/eliminar")

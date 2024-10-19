@@ -76,7 +76,7 @@ public class ControladorCategoria {
         Categoria categoria = servicioCategorias.obtener(idCat);
 
         if (categoria != null) {
-            model.addAttribute("categoria", categoria); // Cambiar a 'categoria'
+            model.addAttribute("categoria", categoria); 
             model.addAttribute("textoBoton", "Modificar Categoría");
         } else {
             model.addAttribute("mensaje", "¡ERROR! No se encontró la categoría con el id " + idCat + ".");
@@ -89,7 +89,7 @@ public class ControladorCategoria {
     public String procesarModificar(@ModelAttribute @Valid Categoria categoria, BindingResult result, Model model,
             RedirectAttributes attributes) {
         model.addAttribute("categorias", servicioCategorias.listar());
-        System.out.println(categoria);
+        
         if (result.hasErrors()) {
             return "categorias/modificar";
         }
