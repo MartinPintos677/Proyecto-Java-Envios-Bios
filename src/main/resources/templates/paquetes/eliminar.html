@@ -11,9 +11,8 @@
 
     <p th:replace="~{fragmentos/parrafo-mensaje}"></p>
 
-    <th:block th:if="${paquetes}">
-        <p>¿Confirma que desea eliminar el producto con código <strong th:text="${paquetes.idPaquete}"></strong> (<span
-                th:text="${paquetes.idPaquete}"></span>)?</p>
+    <th:block th:if="${paquete}">
+        <p>¿Confirma que desea eliminar el paquete con código <strong th:text="${paquete.idPaquete}"></strong>?</p>
 
         <form method="post">
             <div>
