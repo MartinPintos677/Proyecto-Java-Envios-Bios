@@ -8,20 +8,27 @@
         <input type="number" th:field="*{idPaquete}" readonly="readonly" />
       </div>
 
-            <!-- Campo de búsqueda de cliente por cédula, solo para empleados -->
-            <div th:if="${cliente == null}">
-              <label for="cedula">Buscar Cliente por Cédula</label>
-              <input type="text" id="cedula" name="cedula" th:value="${cedula}" placeholder="Ingrese cédula del cliente"/>
-              <button type="submit" name="buscarCliente" value="buscar">Buscar</button>
-          </div>
+      <div>
+        <label for="cliente">Cliente (Remitente)</label>
 
-          <!-- Mostrar los datos del cliente si fue encontrado -->
-          <div th:if="${cliente != null}">
-              <label for="cliente">Cliente (Remitente)</label>
-              <input type="text" th:value="${cliente.nombreUsuario}" readonly="readonly"/>
-              <input type="text" th:value="${cliente.direccion}" readonly="readonly"/>
-              <input type="text" th:value="${cliente.telefono}" readonly="readonly"/>
-          </div>
+        <!-- Mostrar si el usuario logueado es un cliente -->
+        <div th:if="${cliente != null}">
+            <input type="text" th:value="${cliente.nombreUsuario}" readonly="readonly"/>            
+        </div>
+
+        <!-- Mostrar si el usuario logueado es un empleado -->
+        <div th:if="${cliente == null}">
+            <select th:field="*{cliente.nombreUsuario}" id="cliente">
+                <option th:each="cliente : ${clientes}"
+                        th:value="${cliente.nombreUsuario}"
+                        th:text="${cliente.nombreUsuario}">Seleccionar cliente
+                </option>
+            </select>
+        </div>
+        <div>
+          <label for="nombreDestinatario">Nombre del Destinatario</label>
+          <input type="text" th:field="*{nombreDestinatario}" />
+        </div>
       <div>
         <label for="telefonoDestinatario">Teléfono</label>
         <input type="text" th:field="*{telefonoDestinatario}" />

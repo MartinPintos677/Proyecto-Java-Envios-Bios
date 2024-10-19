@@ -78,11 +78,7 @@ public class ControladorPaquete {
   }
 
   @GetMapping("/agregar")
-  public String mostrarFormularioAgregarPaquete(
-      @RequestParam(value = "cedula", required = false) String cedula,
-      @RequestParam(value = "buscarCliente", required = false) String buscarCliente,
-      Model model, Authentication authentication) {
-
+public String mostrarFormularioAgregarPaquete(Model model, Authentication authentication) {
     // Crear un objeto paquete vacío para el formulario
     Paquete paquete = new Paquete();
     paquete.setFechaHoraRegistro(LocalDateTime.now());
@@ -90,61 +86,67 @@ public class ControladorPaquete {
 
     // Obtener el usuario autenticado
     if (authentication != null) {
-      String nombreUsuario = authentication.getName();
+        String nombreUsuario = authentication.getName();
 
-      // Si es un cliente autenticado
-      if (authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("cliente"))) {
-        Cliente cliente = servicioCliente.obtener(nombreUsuario);
-        model.addAttribute("cliente", cliente); // Agrega el cliente al modelo
-
-        // Si es un empleado autenticado
-      } else if (authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("empleado"))) {
-
-        // Si se realizó una búsqueda de cliente por cédula
-        if (buscarCliente != null && cedula != null) {
-          Cliente cliente = servicioCliente.obtener(cedula);
-
-          if (cliente != null) {
-            model.addAttribute("cliente", cliente); // Agregar cliente si se encuentra
-          } else {
-            model.addAttribute("error", "Cliente no encontrado con la cédula proporcionada.");
-          }
+        // Si el usuario logueado tiene el rol "cliente"
+        if (authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("cliente"))) {
+            Cliente cliente = servicioCliente.obtener(nombreUsuario); // Obtener el cliente logueado
+            model.addAttribute("cliente", cliente); // Agregar el cliente al modelo
+        } 
+        // Si el usuario logueado tiene el rol "empleado"
+        else if (authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("empleado"))) {
+            List<Cliente> clientes = servicioPaquete.listarClientes(); // Listar todos los clientes
+            model.addAttribute("clientes", clientes); // Agregar la lista de clientes al modelo
         }
-      }
 
-      // Cargar listas para los dropdowns
-      List<Categoria> categorias = servicioCategoria.listar();
-      List<EstadoRastreo> estadosRastreo = servicioEstadoRastreo.listar();
-      model.addAttribute("categorias", categorias);
-      model.addAttribute("estadosRastreo", estadosRastreo);
+        // Cargar las listas necesarias para los dropdowns
+        List<Categoria> categorias = servicioCategoria.listar();
+        List<EstadoRastreo> estadosRastreo = servicioEstadoRastreo.listar();
+
+        model.addAttribute("categorias", categorias);
+        model.addAttribute("estadosRastreo", estadosRastreo);
+
+        // Pasar el valor del botón de acción al formulario
+        model.addAttribute("textoBoton", "Agregar");
     }
-
-    // Pasar el valor del botón de acción al formulario
-    model.addAttribute("textoBoton", "Agregar");
 
     return "paquetes/agregar";
-  }
+}
 
-  @PostMapping("/agregar")
-  public String agregarPaquete(@ModelAttribute("paquete") Paquete paquete, Model model,
-      RedirectAttributes redirectAttributes) {
-    // Aquí iría la lógica para guardar el paquete
+@PostMapping("/agregar")
+public String agregarPaquete(@ModelAttribute("paquete") Paquete paquete, 
+                             RedirectAttributes redirectAttributes, 
+                             Authentication authentication) {
     try {
-      servicioPaquete.agregarPaquete(paquete);
+        // Verifica si el usuario es cliente o empleado
+        if (authentication != null) {
+            String nombreUsuario = authentication.getName();
 
-      // Mensaje de éxito
-      redirectAttributes.addFlashAttribute("mensaje", "Paquete agregado correctamente.");
-      return "redirect:/paquetes";
+            // Si el usuario es un cliente, asignar su nombreUsuario al paquete
+            if (authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("cliente"))) {
+                Cliente cliente = servicioCliente.obtener(nombreUsuario);
+                paquete.setCliente(cliente);
+            }
+            // Si el usuario es un empleado, ya debería haber seleccionado un cliente desde el dropdown
+            // por lo que no es necesario hacer nada en este caso
+        }
+
+        // guardar el paquete en la base de datos
+        servicioPaquete.agregarPaquete(paquete);
+
+        // Agrega mensaje de éxito
+        redirectAttributes.addFlashAttribute("mensaje", "Paquete agregado correctamente.");
+        return "redirect:/paquetes";
     } catch (ExcepcionEnviosBios e) {
-      model.addAttribute("mensaje", e.getMessage());
-      // recarga los datos del formulario
-      List<Categoria> categorias = servicioCategoria.listar();
-      List<EstadoRastreo> estadosRastreo = servicioEstadoRastreo.listar();
-      model.addAttribute("categorias", categorias);
-      model.addAttribute("estadosRastreo", estadosRastreo);
-      return "paquetes/agregar";
+        // Si ocurre una excepción personalizada, mostrar mensaje de error
+        redirectAttributes.addFlashAttribute("mensajeError", e.getMessage());
+        return "redirect:/agregar";
+    } catch (Exception e) {
+        // En caso de un error general, agregar un mensaje genérico
+        redirectAttributes.addFlashAttribute("mensajeError", "Ocurrió un error al agregar el paquete.");
+        return "redirect:/paquetes";
     }
-  }
+}
 
   @GetMapping("/modificar")
   public String mostrarModificar(@RequestParam Long idPaquete, Model model) {

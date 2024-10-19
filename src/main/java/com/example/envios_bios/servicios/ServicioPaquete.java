@@ -36,11 +36,9 @@ public class ServicioPaquete implements IServicioPaquete {
 
   @Override
   public void agregarPaquete(Paquete paquete) throws ExcepcionEnviosBios {
-    Paquete p = repositorioPaquete.findById(paquete.getIdPaquete()).orElse(null);// Buscamos el paquete
-    if (p != null) { // Si la encuentra, tira mensaje de error
-      throw new ExcepcionYaExiste("El paquete ya existe.");
-    }
-    repositorioPaquete.save(paquete);// sino, la guardamos en la BD
+    
+      repositorioPaquete.save(paquete);// la guardamos en la BD
+    
   }
 
   @Override
