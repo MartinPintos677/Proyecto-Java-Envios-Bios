@@ -43,7 +43,7 @@ public class ConfiguracionSeguridad {
                 .requestMatchers("/empleados/**").hasAuthority("empleado")
                 .requestMatchers("/mierror").permitAll()
                 .requestMatchers("/estadosRastreos/**").hasAuthority("empleado")
-                .requestMatchers("/paquetes/**").hasAuthority("empleado")
+                .requestMatchers("/paquetes/**").hasAnyAuthority("empleado", "cliente")
                 .requestMatchers("/sucursales/**").hasAuthority("empleado")
                 .anyRequest().authenticated()
             )

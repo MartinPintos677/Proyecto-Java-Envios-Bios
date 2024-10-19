@@ -8,14 +8,20 @@
         <input type="number" th:field="*{idPaquete}" readonly="readonly" />
       </div>
 
-      <div>
-        <label for="cliente">Cliente (Remitente)</label>
-        <!-- Aquí añadimos un dropdown list para seleccionar el cliente VER PORQ SERIA UN DROP???
-         DEBERIA AGREGARSE SOLO SI ES POR CLIENTE Y SI ES ECHO POR EMPLEADO QUIZA SI BUSCAR O Q INGRESE LA CI -->
-        <label for="cliente">Cliente</label>
-        <input type="text" th:field="*{cliente}" />
-        </select>
-      </div>
+            <!-- Campo de búsqueda de cliente por cédula, solo para empleados -->
+            <div th:if="${cliente == null}">
+              <label for="cedula">Buscar Cliente por Cédula</label>
+              <input type="text" id="cedula" name="cedula" th:value="${cedula}" placeholder="Ingrese cédula del cliente"/>
+              <button type="submit" name="buscarCliente" value="buscar">Buscar</button>
+          </div>
+
+          <!-- Mostrar los datos del cliente si fue encontrado -->
+          <div th:if="${cliente != null}">
+              <label for="cliente">Cliente (Remitente)</label>
+              <input type="text" th:value="${cliente.nombreUsuario}" readonly="readonly"/>
+              <input type="text" th:value="${cliente.direccion}" readonly="readonly"/>
+              <input type="text" th:value="${cliente.telefono}" readonly="readonly"/>
+          </div>
       <div>
         <label for="telefonoDestinatario">Teléfono</label>
         <input type="text" th:field="*{telefonoDestinatario}" />
@@ -48,6 +54,10 @@
       <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
       <input type="submit" th:value="${textoBoton}" />
     </form>
+     <!-- Mensaje de error si no se encontró el cliente -->
+     <div th:if="${error != null}">
+      <p th:text="${error}" style="color: red;"></p>
+  </div>
   </div>
 </div>
 
