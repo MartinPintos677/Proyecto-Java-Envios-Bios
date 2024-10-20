@@ -19,9 +19,10 @@
         <!-- Mostrar si el usuario logueado es un empleado -->
         <div th:if="${cliente == null}">
             <select th:field="*{cliente.nombreUsuario}" id="cliente" th:disabled="${modoModificacion}">
-                <option th:each="cliente : ${clientes}"
-                        th:value="${cliente.nombreUsuario}"
-                        th:text="${cliente.nombreUsuario}">Seleccionar cliente
+                <option th:each="cliente : ${clientes}" 
+                        th:value="${cliente.nombreUsuario}" 
+                        th:selected="${paquete.cliente.nombreUsuario == cliente.nombreUsuario}"                       
+                        th:text="${cliente.nombreUsuario}">Seleccionar cliente                        
                 </option>
             </select>
         </div>
@@ -43,7 +44,11 @@
       <div>
         <label for="categoria">Categoria</label>
         <select th:field="*{categoria.idCat}" id="categoria" th:disabled="${modoModificacion}">
-          <option th:each="categoria : ${categorias}" th:value="${categoria.idCat}" th:text="${categoria.nombre}">Seleccionar categoría</option>
+          <option th:each="categoria : ${categorias}" 
+                  th:value="${categoria.idCat}" 
+                  th:text="${categoria.nombre}"
+                  th:selected="${paquete.categoria.idCat == categoria.idCat}">
+          </option>
       </select>
       </div>
       <div>

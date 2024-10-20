@@ -159,6 +159,14 @@ public String mostrarModificar(@RequestParam("idPaquete") Long idPaquete, Model 
     if (paquete != null) {
         model.addAttribute("paquete", paquete);
         
+        // Cargar la lista de clientes para el dropdown
+        List<Cliente> clientes = servicioPaquete.listarClientes();
+        model.addAttribute("clientes", clientes);
+
+        // Cargar la lista de categorías para el dropdown
+        List<Categoria> categorias = servicioCategoria.listar();
+        model.addAttribute("categorias", categorias);
+
         // Obtenemos la lista de estados de rastreo para el dropdown
         List<EstadoRastreo> estadosRastreo = servicioEstadoRastreo.listar();
         model.addAttribute("estadosRastreo", estadosRastreo);
