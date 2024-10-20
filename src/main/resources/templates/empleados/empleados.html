@@ -15,6 +15,7 @@
         <h1>Empleados</h1>
 
         <p th:replace="~{fragmentos/parrafo-mensaje}"></p>
+
         <!-- Formulario de búsqueda -->
         <form id="formularioBusqueda">
             <div>
@@ -25,7 +26,7 @@
         </form>
 
         <!-- Tabla para mostrar la lista de empleados -->
-        <div class="datagrid">
+        <div class="datagrid" th:if="${!#lists.isEmpty(empleado)}">
             <table>
                 <thead>
                     <tr>
@@ -47,10 +48,15 @@
                                     class="icono icono-eliminar"></i></a>
                         </td>
                     </tr>
-
                 </tbody>
-
             </table>
+        </div>
+
+        <!-- Mostrar mensaje si no se encuentran empleados -->
+        <div th:if="${#lists.isEmpty(empleado)}">
+            <p style="color:red !important;">No se encontró ningún empleado con el
+                criterio
+                proporcionado.</p>
         </div>
 
         <p>
@@ -68,5 +74,6 @@
             document.getElementById('criterio').select();
         </script>
 </body>
+
 
 </html>

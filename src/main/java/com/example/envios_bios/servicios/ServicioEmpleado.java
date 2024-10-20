@@ -25,7 +25,14 @@ public class ServicioEmpleado implements IServicioEmpleado {
 
     @Override
     public List<Empleado> buscar(String criterio) {
-        return repositorioEmpleados.findAll();
+        if (criterio == null || criterio.isEmpty()) {
+            // Si no se proporciona ningún criterio, devuelve todos los empleados
+            return repositorioEmpleados.findAll();
+        } else {
+            // Devolver los empleados cuyo nombre de usuario contenga el criterio de
+            // búsqueda
+            return repositorioEmpleados.findByNombreUsuarioContainingIgnoreCase(criterio);
+        }
     }
 
     @Override

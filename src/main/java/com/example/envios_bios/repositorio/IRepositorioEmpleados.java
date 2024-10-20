@@ -27,4 +27,5 @@ public interface IRepositorioEmpleados extends JpaRepository<Empleado, String>, 
     @EntityGraph(type = EntityGraphType.LOAD, attributePaths = { "roles", "sucursal" })
     Optional<Empleado> findById(String id);
 
+    List<Empleado> findByNombreUsuarioContainingIgnoreCase(String nombreUsuario);
 }
