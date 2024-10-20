@@ -311,3 +311,13 @@ i.icono-modificar {
 i.icono-eliminar {
     background-image: url("../imagenes/iconos/delete_forever_FILL1_wght400_GRAD0_opsz24.png");
 }
+
+a i.icono {
+    text-decoration: none; /* Evita que los iconos tengan subrayado */
+    /*vertical-align: middle; /* Asegura que los íconos estén alineados con el texto */
+}
+
+a {
+    text-decoration: none; /* Asegura que los enlaces no tengan subrayado */
+}
+

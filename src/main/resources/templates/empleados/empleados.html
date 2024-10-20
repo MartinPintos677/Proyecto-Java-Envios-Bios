@@ -41,7 +41,7 @@
                         <td th:text="${e.sucursal.nombre}"></td>
                         <td>
                             <a th:href="@{/empleados/{nombreUsuario}(nombreUsuario=${e.nombreUsuario})}"
-                                title="Ver Detalle"><i class="icono icono-ver"></i></a>&nbsp;&nbsp; |
+                                title="Ver Detalle"><i class="icono icono-ver"></i></a>&nbsp;&nbsp; | &nbsp;
                             <a th:href="@{/empleados/modificar(nombreUsuario=${e.nombreUsuario})}" title="Modificar"><i
                                     class="icono icono-modificar"></i></a>&nbsp;&nbsp; |
                             <a th:href="@{/empleados/eliminar(nombreUsuario=${e.nombreUsuario})}" title="Eliminar"><i
