@@ -40,6 +40,8 @@ public class ServicioCliente implements IServicioCliente{
 
         cliente.getRoles().clear();//Limpiamos los roles que tenga
 
+        cliente.setActivo(true);
+
         for (Rol r : clienteExistente.getRoles()) { //Se los agregamos
             cliente.getRoles().add(r);
         }
