@@ -233,7 +233,7 @@ public String procesarModificar(@RequestParam("idPaquete") Long idPaquete,
       return "redirect:/paquetes";
     } catch (ExcepcionEnviosBios e) {
       model.addAttribute("mensaje", "¡ERROR! " + e.getMessage());
-      return "paquetes/paquetes"; // Regresar a la lista en caso de error
+      return "redirect:/paquetes"; // Regresar a la lista en caso de error
     }
   }
 

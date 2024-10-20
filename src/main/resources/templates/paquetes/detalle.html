@@ -13,11 +13,19 @@
 
     <p th:replace="~{fragmentos/parrafo-mensaje}"></p>
 
-    <th:block th:if="${paquetes}">
+    <th:block th:if="${paquete}">
         <div class="detalle-contenedor">
-            <h2 th:text="${paquetes.idPaquete}"></h2>
+            <h2 th:text="${paquete.idPaquete}"></h2>
             <ul>
-                <li><strong>Id</strong>: <span th:text="${paquetes.idPaquete}"></span></li>                
+                <li><strong>Id</strong>: <span th:text="${paquete.idPaquete}"></span></li>
+                <li><strong>Cliente</strong>: <span th:text="${paquete.cliente.nombreUsuario}"></span></li>
+                <li><strong>Nombre del Destinatario</strong>: <span th:text="${paquete.nombreDestinatario}"></span></li>
+                <li><strong>Teléfono del Destinatario</strong>: <span th:text="${paquete.telefonoDestinatario}"></span></li>
+                <li><strong>Dirección del Destinatario</strong>: <span th:text="${paquete.direccionDestinatario}"></span></li>
+                <li><strong>Categoría</strong>: <span th:text="${paquete.categoria.nombre}"></span></li>
+                <li><strong>Estado de Rastreo</strong>: <span th:text="${paquete.estadoRastreo.descripcion}"></span></li>                 
+                <li><strong>Cobro a Destinatario: </strong>: <span th:text="${paquete.cobroDestinatario ? 'Sí' : 'No'}"></span></li>
+                <li><strong>Fecha y Hora del Registro: </strong>: <span th:text="${#temporals.format(paquete.fechaHoraRegistro, 'dd/MM/yyyy HH:mm')}"></span></li>          
             </ul>
         </div>
     </th:block>

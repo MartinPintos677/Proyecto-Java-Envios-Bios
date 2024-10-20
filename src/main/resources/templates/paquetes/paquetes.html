@@ -81,7 +81,7 @@
             <td th:text="${#temporals.format(paquete.fechaHoraRegistro, 'dd/MM/yyyy HH:mm')}"></td>
             <td th:text="${paquete.cobroDestinatario ? 'Sí' : 'No'}"></td>
             <td>
-              <a th:href="@{'/paquetes/detalle?idPaquete=' + ${paquete.idPaquete}}" title="Ver Detalle">
+              <a th:href="@{'/paquetes/' + ${paquete.idPaquete}}" title="Ver Detalle">
                 <i class="icono icono-ver"></i>
               </a>&nbsp;&nbsp; |
               <a th:href="@{'/paquetes/modificar?idPaquete=' + ${paquete.idPaquete}}" title="Modificar">
