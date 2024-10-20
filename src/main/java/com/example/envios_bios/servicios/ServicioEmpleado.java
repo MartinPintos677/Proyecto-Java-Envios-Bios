@@ -59,6 +59,16 @@ public class ServicioEmpleado implements IServicioEmpleado {
             throw new ExcepcionNoExiste("El empleado no existe.");
         }
 
+        // Si la contraseña fue modificada (es diferente de la actual), encripta la
+        // nueva clave
+        if (!empleado.getClaveDeAcceso().equals(empleadoExistente.getClaveDeAcceso())) {
+            String claveEncriptada = passwordEncoder.encode(empleado.getClaveDeAcceso());
+            empleado.setClaveDeAcceso(claveEncriptada);
+        } else {
+            // Mantener la clave original si no fue modificada
+            empleado.setClaveDeAcceso(empleadoExistente.getClaveDeAcceso());
+        }
+
         empleado.getRoles().clear();// Limpiamos los roles que tenga
 
         for (Rol r : empleadoExistente.getRoles()) { // Se los agregamos
@@ -66,7 +76,6 @@ public class ServicioEmpleado implements IServicioEmpleado {
         }
 
         repositorioEmpleados.save(empleado);
-
     }
 
     @Override
