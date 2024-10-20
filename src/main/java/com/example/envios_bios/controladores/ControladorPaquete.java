@@ -180,19 +180,18 @@ public String mostrarModificar(@RequestParam("idPaquete") Long idPaquete, Model 
     return "paquetes/modificar";  
 }
 @PostMapping("/modificar")
-public String procesarModificar(@RequestParam("idPaquete") Long idPaquete, 
-                                      @RequestParam("estadoRastreo") Integer idRastreo, 
-                                      RedirectAttributes attributes, Model model) {
+public String procesarModificar(@ModelAttribute("paquete") Paquete paqueteModificado, 
+                                RedirectAttributes attributes, Model model) {
     try {
-        Paquete paquete = servicioPaquete.obtenerPaquetePorId(idPaquete);
+        Paquete paquete = servicioPaquete.obtenerPaquetePorId(paqueteModificado.getIdPaquete());
 
         if (paquete == null) {
-            attributes.addFlashAttribute("mensaje", "¡ERROR! No se encontró el paquete con el ID " + idPaquete);
+            attributes.addFlashAttribute("mensaje", "¡ERROR! No se encontró el paquete con el ID " + paqueteModificado.getIdPaquete());
             return "redirect:/paquetes";
         }
 
-        // Obtener el estado de rastreo seleccionado en el dropdown
-        EstadoRastreo estadoRastreo = servicioEstadoRastreo.obtener(idRastreo);
+        // Obtener el estado de rastreo del paquete modificado
+        EstadoRastreo estadoRastreo = servicioEstadoRastreo.obtener(paqueteModificado.getEstadoRastreo().getIdRastreo());
         if (estadoRastreo == null) {
             attributes.addFlashAttribute("mensaje", "¡ERROR! Estado de rastreo inválido.");
             return "redirect:/paquetes";

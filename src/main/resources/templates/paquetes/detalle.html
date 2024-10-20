@@ -16,8 +16,7 @@
     <th:block th:if="${paquete}">
         <div class="detalle-contenedor">
             <h2 th:text="${paquete.idPaquete}"></h2>
-            <ul>
-                <li><strong>Id</strong>: <span th:text="${paquete.idPaquete}"></span></li>
+            <ul>                
                 <li><strong>Cliente</strong>: <span th:text="${paquete.cliente.nombreUsuario}"></span></li>
                 <li><strong>Nombre del Destinatario</strong>: <span th:text="${paquete.nombreDestinatario}"></span></li>
                 <li><strong>Teléfono del Destinatario</strong>: <span th:text="${paquete.telefonoDestinatario}"></span></li>
