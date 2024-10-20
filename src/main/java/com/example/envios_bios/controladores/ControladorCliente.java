@@ -127,7 +127,10 @@ public class ControladorCliente {
     }
 
     @GetMapping("/eliminar")
-    public String mostrarEliminar() {
+    public String mostrarEliminar(Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Cliente cli = servicioCliente.obtener(authentication.getName());
+        model.addAttribute("cliente", cli);
         return "clientes/eliminar";
     }
 
