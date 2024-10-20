@@ -48,7 +48,7 @@
 
 
     <!-- Mensaje si no se encontraron paquetes -->
-    <div th:if="${#lists.isEmpty(paquetes)}">
+    <div th:if="${#lists.isEmpty(paquetes)}" style="color: red;">
       <p>No se encontraron paquetes con los filtros seleccionados.</p>
     </div>
 

@@ -15,7 +15,7 @@
   <!-- Mensaje de éxito o error -->
   <p th:replace="~{fragmentos/parrafo-mensaje}"></p>
 
-  <div th:replace="fragmentos/formulario-paquete :: formulario-paquete('Agregar')"></div>
+  <div class="paquete-agregar" th:replace="fragmentos/formulario-paquete :: formulario-paquete('Agregar')"></div>
 
   <div th:replace="~{fragmentos/footer::html(~{::title}, ~{::body})}"></div>
 </body>

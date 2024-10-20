@@ -8,30 +8,32 @@
   <title>Envios Bios - Detalle Paquete</title>
 
 <body th:remove="tag">
-    <h1>Detalle Paquete</h1>
+  <h1>Detalle Paquete</h1>
 
 
-    <p th:replace="~{fragmentos/parrafo-mensaje}"></p>
+  <p th:replace="~{fragmentos/parrafo-mensaje}"></p>
 
-    <th:block th:if="${paquete}">
-        <div class="detalle-contenedor">
-            <h2 th:text="${paquete.idPaquete}"></h2>
-            <ul>                
-                <li><strong>Cliente</strong>: <span th:text="${paquete.cliente.nombreUsuario}"></span></li>
-                <li><strong>Nombre del Destinatario</strong>: <span th:text="${paquete.nombreDestinatario}"></span></li>
-                <li><strong>Teléfono del Destinatario</strong>: <span th:text="${paquete.telefonoDestinatario}"></span></li>
-                <li><strong>Dirección del Destinatario</strong>: <span th:text="${paquete.direccionDestinatario}"></span></li>
-                <li><strong>Categoría</strong>: <span th:text="${paquete.categoria.nombre}"></span></li>
-                <li><strong>Estado de Rastreo</strong>: <span th:text="${paquete.estadoRastreo.descripcion}"></span></li>                 
-                <li><strong>Cobro a Destinatario: </strong>: <span th:text="${paquete.cobroDestinatario ? 'Sí' : 'No'}"></span></li>
-                <li><strong>Fecha y Hora del Registro: </strong>: <span th:text="${#temporals.format(paquete.fechaHoraRegistro, 'dd/MM/yyyy HH:mm')}"></span></li>          
-            </ul>
-        </div>
-    </th:block>
+  <th:block th:if="${paquete}">
+    <div class="detalle-contenedor">
+      <h2 th:text="${paquete.idPaquete}"></h2>
+      <ul>
+        <li><strong>Cliente:</strong><span th:text="${paquete.cliente.nombreUsuario}"></span></li>
+        <li><strong>Nombre del Destinatario:</strong><span th:text="${paquete.nombreDestinatario}"></span></li>
+        <li><strong>Teléfono del Destinatario:</strong><span th:text="${paquete.telefonoDestinatario}"></span></li>
+        <li><strong>Dirección del Destinatario:</strong><span th:text="${paquete.direccionDestinatario}"></span></li>
+        <li><strong>Categoría:</strong><span th:text="${paquete.categoria.nombre}"></span></li>
+        <li><strong>Estado de Rastreo:</strong><span th:text="${paquete.estadoRastreo.descripcion}"></span></li>
+        <li><strong>Cobro a Destinatario: </strong>: <span th:text="${paquete.cobroDestinatario ? 'Sí' : 'No'}"></span>
+        </li>
+        <li><strong>Fecha y Hora del Registro: </strong>: <span
+            th:text="${#temporals.format(paquete.fechaHoraRegistro, 'dd/MM/yyyy HH:mm')}"></span></li>
+      </ul>
+    </div>
+  </th:block>
 
-    <div style="padding-bottom: 50px;"></div>
+  <div style="padding-bottom: 50px;"></div>
 
-    <div th:replace="~{fragmentos/footer::html(~{::title}, ~{::body})}"></div>
+  <div th:replace="~{fragmentos/footer::html(~{::title}, ~{::body})}"></div>
 
 </body>
 

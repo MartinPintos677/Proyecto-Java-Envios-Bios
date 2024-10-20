@@ -7,22 +7,29 @@
   <title>Envios Bios - Eliminar Paquete</title>
 
 <body th:remove="tag">
-    <h1>Eliminar Paquete</h1>
+  <h1>Eliminar Paquete</h1>
 
-    <p th:replace="~{fragmentos/parrafo-mensaje}"></p>
+  <p th:replace="~{fragmentos/parrafo-mensaje}"></p>
 
+  <div class="contenedor-eliminar">
     <th:block th:if="${paquete}">
-        <p>¿Confirma que desea eliminar el paquete con código <strong th:text="${paquete.idPaquete}"></strong>?</p>
+      <p class="confirmacion">¿Confirma que desea eliminar el paquete con código <strong
+          th:text="${paquete.idPaquete}"></strong>?</p>
 
-        <form method="post">
-            <div>
-                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-                <input type="submit" value="Eliminar" />
-            </div>
-        </form>
+      <form method="post">
+        <div class="botones-accion">
+          <a href="/paquetes" class="btn-cancelar">Cancelar</a> <!-- Botón Cancelar -->
+          <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+          <input type="submit" class="eliminar" value="Eliminar" />
+        </div>
+      </form>
     </th:block>
+  </div>
 
-    <div th:replace="~{fragmentos/footer::html(~{::title}, ~{::body})}"></div>
+
+  <div style="padding-bottom: 50px;"></div>
+
+  <div th:replace="~{fragmentos/footer::html(~{::title}, ~{::body})}"></div>
 
 </body>
 
