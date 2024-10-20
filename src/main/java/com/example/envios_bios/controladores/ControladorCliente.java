@@ -46,8 +46,9 @@ public class ControladorCliente {
         }
 
         try {
-            if (cliente.getRepetirClaveDeAcceso() == null || !cliente.getRepetirClaveDeAcceso().equals(cliente.getClaveDeAcceso())) {
-                throw new ExcepcionEnviosBios("Las contraseñas no coinciden.");
+            if (!cliente.getClaveDeAcceso().equals(cliente.getRepetirClaveDeAcceso())) {
+                model.addAttribute("mensaje", "¡ERROR! Las contraseñas no coinciden ");
+                return "clientes/registro";
             }
 
             cliente.setClaveDeAcceso(passwordEncoder.encode(cliente.getClaveDeAcceso()));

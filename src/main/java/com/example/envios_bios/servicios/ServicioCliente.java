@@ -58,6 +58,7 @@ public class ServicioCliente implements IServicioCliente{
         }
 
         cliente.getRoles().add(new Rol("cliente"));//Le damos el rol
+        cliente.setActivo(true);
 
         repositorioClientes.save(cliente); //Registramos el Cliente
     }
