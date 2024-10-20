@@ -14,7 +14,7 @@
     <th:block th:if="${cliente}">
       <div th:replace="~{fragmentos/formulario-cliente(textoBoton = 'Modificar', deshabilitarClave = true, foco = 'email')}"></div>
     </th:block>
-
+    <p><a th:href="@{/clientes/eliminar}">Eliminar mi cuenta...</a></p>
     <div th:replace="~{fragmentos/footer::html(~{::title}, ~{::body})}"></div>
   </div>
 </body>
