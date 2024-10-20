@@ -14,8 +14,7 @@ form {
 form div {
     margin-bottom: 15px; /* Separación entre los campos */
     display: flex; /* Alineación de etiquetas e inputs */
-    flex-direction: column; /* Alineación vertical */   
-    
+    flex-direction: column; /* Alineación vertical */    
 }
 
 /* Estilo para las etiquetas */

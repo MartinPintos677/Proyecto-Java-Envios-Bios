@@ -54,6 +54,7 @@ public class ServicioEstadoRastreo implements IServicioEstadoRastreo {
         }
 
         // Si no existe, lo guardamos como un nuevo estado
+        rastreo.setActivo(true);
         repositorioEstadoRastreo.save(rastreo);
     }
 
@@ -66,6 +67,7 @@ public class ServicioEstadoRastreo implements IServicioEstadoRastreo {
             throw new ExcepcionNoExiste("El estado de Rastreo no existe.");
         }
 
+        rastreo.setActivo(true);
         repositorioEstadoRastreo.save(rastreo);
     }
 
