@@ -108,6 +108,9 @@ public class ControladorCliente {
 
             Cliente bdCli = servicioCliente.obtener(principal.getName());
 
+            System.out.println("Contraseña en bd: " + bdCli.getClaveDeAcceso());
+            
+
             if (contrasenaFalsa.equals(cliente.getClaveDeAcceso())) {
                 cliente.setClaveDeAcceso(bdCli.getClaveDeAcceso());
             } else {
