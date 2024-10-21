@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org" th:replace="~{fragmentos/plantilla-maestra::html(~{::title}, ~{::body}, 'css/estiloFormPaquete.css')}">
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+  th:replace="~{fragmentos/plantilla-maestra::html(~{::title}, ~{::body}, '/css/estiloFormPaquete.css')}">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -61,7 +63,7 @@
             <td>
               <a th:href="@{'/paquetes/' + ${paquete.idPaquete}}" title="Ver Detalle">
                 <i class="icono icono-ver"></i>
-              </a>&nbsp; | &nbsp;
+              </a>
             </td>
           </tr>
         </tbody>
