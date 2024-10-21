@@ -31,10 +31,13 @@
           <input type="text" th:field="*{nombreDestinatario}" th:readonly="${modoModificacion}" />
           <p th:errors="*{nombreDestinatario}" style="color: red;"></p>
         </div>
-      <div>
-        <label for="telefonoDestinatario">Teléfono</label>
-        <input type="text" th:field="*{telefonoDestinatario}" th:readonly="${modoModificacion}"/>
-        <p th:errors="*{telefonoDestinatario}" style="color: red;"></p>
+        <div>
+          <label for="telefonoDestinatario">Teléfono</label>
+          <input type="text" th:field="*{telefonoDestinatario}" 
+                 th:readonly="${modoModificacion}"
+                 pattern="[0-9]+" title="Solo se permiten números"
+                 maxlength="20" />
+          <p th:errors="*{telefonoDestinatario}" style="color: red;"></p>
       </div>
       <div>
         <label for="direccionDestinatario">Dirección</label>
@@ -79,4 +82,7 @@
 <script th:inline="javascript">
   document.getElementById(/*[[${foco}]]*/'idPaquete').focus();
   document.getElementById(/*[[${foco}]]*/'idPaquete').select();
+  document.querySelector('input[name="telefonoDestinatario"]').addEventListener('input', function (e) {
+    this.value = this.value.replace(/[^0-9]/g, '');  // Elimina cualquier carácter que no sea un número
+  });
 </script>

@@ -69,16 +69,16 @@ BEGIN
 
         -- Datos de prueba para la tabla paquetes
         INSERT INTO paquete (id_paquete, nombre_usuario, nombre_destinatario, telefono_destinatario, fecha_hora_registro, direccion_destinatario, cobro_destinatario, id_cat, id_rastreo) VALUES
-        (1, 'cliente1', 'Juan Perez', '091234567', NOW(), 'Calle de la Paz 456', false, 2, 1),
-        (2, 'cliente2', 'Maria Gomez', '098765432', NOW(), 'Avenida Libertador 123', true, 3, 1),
-        (3, 'cliente1', 'Mario Martínez', '098423654', NOW(), 'Calle Colonia 3541', false, 2, 4),
-        (4, 'cliente2', 'Camila Sánchez', '091654987', NOW(), 'Avenida 18 de Julio 321', true, 3, 1),
-        (5, 'cliente1', 'Arturo González', '096369741', NOW(), 'Calle Columbia 1456', false, 2, 1),
-        (6, 'cliente2', 'Marina García', '093852147', NOW(), 'Avenida 8 de Octubre 3695', true, 3, 4),
-        (7, 'cliente1', 'Juan Rodríguez', '091596321', NOW(), 'Calle Yaguarón 4321', false, 2, 1),
-        (8, 'cliente2', 'Maria Gomez', '097569874', NOW(), 'Avenida 18 de Julio 123', true, 3, 2),
-        (9, 'cliente1', 'Juan Suarez', '099412521', NOW(), 'Calle Rio Branco 1385', false, 2, 1),
-        (10, 'cliente2', 'Mariana Gimenez', '098258777', NOW(), 'Avenida Libertador 6589', true, 3, 4);  
+        (1, 'cliente1', 'Juan Perez', '091234567', '2024-10-15 22:35:36.000000', 'Calle de la Paz 456', false, 2, 1),
+        (2, 'cliente2', 'Maria Gomez', '098765432', '2024-10-16 18:12:21.000000', 'Avenida Libertador 123', true, 3, 1),
+        (3, 'cliente1', 'Mario Martínez', '098423654', '2024-10-16 20:35:36.000000', 'Calle Colonia 3541', false, 2, 4),
+        (4, 'cliente2', 'Camila Sánchez', '091654987', '2024-10-16 22:40:11.000000', 'Avenida 18 de Julio 321', true, 3, 1),
+        (5, 'cliente1', 'Arturo González', '096369741', '2024-10-17 10:15:05.000000', 'Calle Columbia 1456', false, 2, 1),
+        (6, 'cliente2', 'Marina García', '093852147', '2024-10-17 21:22:12.000000', 'Avenida 8 de Octubre 3695', true, 3, 4),
+        (7, 'cliente1', 'Juan Rodríguez', '091596321', '2024-10-18 12:35:36.000000', 'Calle Yaguarón 4321', false, 2, 1),
+        (8, 'cliente2', 'Maria Gomez', '097569874', '2024-10-19 15:23:06.000000', 'Avenida 18 de Julio 123', true, 3, 2),
+        (9, 'cliente1', 'Juan Suarez', '099412521', '2024-10-20 22:35:36.000000', 'Calle Rio Branco 1385', false, 2, 1),
+        (10, 'cliente2', 'Mariana Gimenez', '098258777','2024-10-21 16:18:36.000000', 'Avenida Libertador 6589', true, 3, 4);  
 
         -- Insertar registro en logs
         INSERT INTO logs(fecha_hora, mensaje) VALUES (NOW(), 'Datos iniciales cargados.');
