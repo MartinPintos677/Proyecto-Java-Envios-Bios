@@ -1,6 +1,6 @@
 /* Estilo general para el formulario */
 form {
-    max-width: 600px; /* Limitar el ancho máximo del formulario */
+    max-width: 350px; /* Limitar el ancho máximo del formulario */
     margin: 0 auto; /* Centrar el formulario en la página */
     background-color: #f9f9f9; /* Fondo claro */
     padding: 20px 30px; /* Espaciado interno */
@@ -14,8 +14,7 @@ form {
 form div {
     margin-bottom: 15px; /* Separación entre los campos */
     display: flex; /* Alineación de etiquetas e inputs */
-    flex-direction: column; /* Alineación vertical */
-    width: 50%;
+    flex-direction: column; /* Alineación vertical */    
 }
 
 /* Estilo para las etiquetas */
@@ -286,7 +285,6 @@ a.agregar-paquete:active {
 .pagination.hidden {
     display: none;
 }
-
 
 @media (max-width: 1300px) {
     .datagrid{

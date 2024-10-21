@@ -137,7 +137,7 @@ h1{
 
 /* Contenedor para el detalle */
 .detalle-contenedor {
-    max-width: 350px;
+    max-width: 400px;
     margin: 0 auto; /* Centrar el contenedor */
     background-color: #f9f9f9;
     padding: 10px 30px;
@@ -183,6 +183,86 @@ h1{
     color: #006699;
     font-weight: normal;
 }
+
+/* Estilo para el contenedor del formulario */
+.contenedor-eliminar {
+    max-width: 600px;
+    margin: 0 auto; 
+    padding: 20px 20px; 
+    background-color: #f9f9f9; 
+    border: 1px solid #ddd; 
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); 
+    border-radius: 8px;  
+}
+
+.contenedor-eliminar:hover{
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); 
+}
+
+/* Estilo para el botón de eliminar */
+.contenedor-eliminar input[type="submit"] {
+    background-color: #d9534f; 
+    color: white;
+    border: none; 
+    padding: 10px 20px; 
+    font-size: 16px;
+    border-radius: 4px; 
+    cursor: pointer; 
+    transition: background-color 0.3s ease-in-out, transform 0.2s ease-in-out; 
+    width: 40%; 
+    margin-top: 15px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); 
+}
+
+/* Efecto hover para el botón de eliminar */
+.contenedor-eliminar input[type="submit"]:hover {
+    background-color: orangered; /* Fondo más oscuro al pasar el cursor */
+    transform: scale(1.05); /* Aumenta ligeramente el tamaño */
+}
+
+/* Efecto al hacer clic en el botón de eliminar */
+.contenedor-eliminar input[type="submit"]:active {
+    background-color: #ac2925; /* Fondo aún más oscuro al hacer clic */
+    transform: scale(1); /* Restablece el tamaño */
+}
+
+/* Contenedor para alinear los botones */
+.botones-accion {
+    display: flex;
+    justify-content: space-between; /* Espaciar los botones */
+    gap: 10px; /* Espacio entre los botones */
+    padding-bottom: 10px;
+}
+
+/* Estilo para el botón de cancelar */
+a.btn-cancelar {
+    display: inline-block;
+    background-color: #6c757d; 
+    color: white;
+    padding: 10px 20px; 
+    font-size: 16px; 
+    border-radius: 4px; 
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out, transform 0.2s ease-in-out; 
+    width: 36%;
+    margin-top: 15px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); 
+}
+
+/* Efecto hover para el botón de cancelar */
+a.btn-cancelar:hover {
+    background-color: #5a6268; 
+    transform: scale(1.05); 
+}
+
+/* Efecto al hacer clic en el botón de cancelar */
+a.btn-cancelar:active {
+    background-color: #545b62; 
+    transform: scale(1); 
+}
+
 
 @media (max-width: 1200px) {
   .logo-header {   
@@ -231,3 +311,13 @@ i.icono-modificar {
 i.icono-eliminar {
     background-image: url("../imagenes/iconos/delete_forever_FILL1_wght400_GRAD0_opsz24.png");
 }
+
+a i.icono {
+    text-decoration: none; /* Evita que los iconos tengan subrayado */
+    /*vertical-align: middle; /* Asegura que los íconos estén alineados con el texto */
+}
+
+a {
+    text-decoration: none; /* Asegura que los enlaces no tengan subrayado */
+}
+

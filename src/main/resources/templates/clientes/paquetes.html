@@ -1,7 +1,5 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org"
-  th:replace="~{fragmentos/plantilla-maestra::html(~{::title}, ~{::body}, 'css/estiloFormPaquete.css')}">
-
+<html lang="es" xmlns:th="http://www.thymeleaf.org" th:replace="~{fragmentos/plantilla-maestra::html(~{::title}, ~{::body}, 'css/estiloFormPaquete.css')}">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,36 +14,16 @@
 
     <p th:replace="~{fragmentos/parrafo-mensaje}"></p>
 
-    <form id="formularioBusqueda" th:action="@{/paquetes}" method="get">
+    <form id="formularioBusqueda" th:action="@{/clientes/listarpaquetes}" method="get">
       <div>
-        <label for="cedulaCliente">Filtrar por cédula</label>
-        <input type="text" name="cedulaCliente" th:value="${param.cedulaCliente}" id="cedulaCliente"
-          placeholder="Número de cédula de cliente">
+        <label for="destinatario">Filtrar por destinatario</label>
+        <input type="text" name="destinatario" th:value="${param.destinatario}" id="destinatario"
+          placeholder="Nombre destinatario">
       </div>
-
-      <div>
-        <label for="fechaRegistro">Filtrar por fecha de registro</label>
-        <input type="date" name="fechaRegistro" th:value="${param.fechaRegistro}" id="fechaRegistro">
-      </div>
-
-      <div>
-        <label for="estadoRastreo">Filtrar por estado de rastreo</label>
-        <select name="estadoRastreo" id="estadoRastreo">
-          <option value="">Seleccionar estado</option>
-          <th:block th:each="estado : ${estadosRastreo}">
-            <option th:value="${estado.descripcion}" th:text="${estado.descripcion}"
-              th:selected="${param.estadoRastreo == estado.descripcion}"></option>
-          </th:block>
-        </select>
-      </div>
-
       <div>
         <input type="submit" value="Buscar">
       </div>
     </form>
-
-
-
 
     <!-- Mensaje si no se encontraron paquetes -->
     <div th:if="${#lists.isEmpty(paquetes)}" style="color: red;">
@@ -84,42 +62,28 @@
               <a th:href="@{'/paquetes/' + ${paquete.idPaquete}}" title="Ver Detalle">
                 <i class="icono icono-ver"></i>
               </a>&nbsp; | &nbsp;
-              <a th:href="@{'/paquetes/modificar?idPaquete=' + ${paquete.idPaquete}}" title="Modificar">
-                <i class="icono icono-modificar"></i>
-              </a>&nbsp; |
-              <a th:href="@{'/paquetes/eliminar?idPaquete=' + ${paquete.idPaquete}}" title="Eliminar">
-                <i class="icono icono-eliminar"></i>
-              </a>
             </td>
           </tr>
         </tbody>
       </table>
-
-
     </div>
-
-
-    <p>
-      <a class="agregar-paquete" th:href="@{/paquetes/agregar}" title="Agregar Paquete">Agregar Paquete</a>
-    </p>
-
     <!-- Controles de Paginación -->
     <div class="pagination" align="center" th:if="${not #lists.isEmpty(paquetes)}">
       <ul>
         <li th:if="${currentPage > 0}">
           <a
-            th:href="@{/paquetes(pagina=${currentPage - 1}, tamanioPagina=${pageSize}, cedulaCliente=${param.cedulaCliente}, fechaRegistro=${param.fechaRegistro}, estadoRastreo=${param.estadoRastreo})}">←</a>
+            th:href="@{/clientes/listarpaquetes(pagina=${currentPage - 1}, tamanioPagina=${pageSize}, destinatario=${param.destinatario})}">←</a>
         </li>
         <li th:each="i : ${#numbers.sequence(0, totalPages - 1)}" th:classappend="${i == currentPage} ? 'active'">
           <a th:if="${i != currentPage}"
-            th:href="@{/paquetes(pagina=${i}, tamanioPagina=${pageSize}, cedulaCliente=${param.cedulaCliente}, fechaRegistro=${param.fechaRegistro}, estadoRastreo=${param.estadoRastreo})}"
+            th:href="@{/clientes/listarpaquetes(pagina=${i}, tamanioPagina=${pageSize}, destinatario=${param.destinatario})}"
             th:text="${i + 1}">1</a>
           <span th:if="${i == currentPage}" th:text="${i + 1}" style="font-weight: bold; color: #0056b3;"></span>
         </li>
 
         <li th:if="${currentPage < totalPages - 1}">
           <a
-            th:href="@{/paquetes(pagina=${currentPage + 1}, tamanioPagina=${pageSize}, cedulaCliente=${param.cedulaCliente}, fechaRegistro=${param.fechaRegistro}, estadoRastreo=${param.estadoRastreo})}">→</a>
+            th:href="@{/clientes/listarpaquetes(pagina=${currentPage + 1}, tamanioPagina=${pageSize}, destinatario=${param.destinatario})}">→</a>
         </li>
       </ul>
     </div>
@@ -156,8 +120,8 @@
       this.appendChild(inputPagina);
     });
 
-    document.getElementById('cedulaCliente').focus();
-    document.getElementById('cedulaCliente').select();
+    document.getElementById('destinatario').focus();
+    document.getElementById('destinatario').select();
   </script>
 
 

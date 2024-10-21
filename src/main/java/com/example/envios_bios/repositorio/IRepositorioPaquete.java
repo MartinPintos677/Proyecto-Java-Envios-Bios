@@ -17,6 +17,10 @@ public interface IRepositorioPaquete extends JpaRepository<Paquete, Long> {
 
         boolean existsByEstadoRastreo(EstadoRastreo estadoRastreo);
 
+        Page<Paquete> findByCliente_NombreUsuarioAndNombreDestinatarioContaining(String cliente, String destinatario, Pageable pageable);
+
+        Page<Paquete> findByCliente_NombreUsuario(String cliente, Pageable pageable);
+        
         // Filtro por estado de rastreo (lista) y cédula
         Page<Paquete> findByEstadoRastreo_DescripcionInAndCliente_CedulaAndFechaHoraRegistroBetween(
                         List<String> descripcionEstados,

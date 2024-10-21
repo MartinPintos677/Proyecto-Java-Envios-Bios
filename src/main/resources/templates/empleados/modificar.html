@@ -12,9 +12,13 @@
     <div align="center">
         <p th:replace="~{fragmentos/parrafo-mensaje}"></p>
         <th:block th:if="${empleado}">
-            <div th:replace="~{fragmentos/formulario-empleado(textoBoton = 'Modificar', deshabilitarClave = true, foco = 'email')}"></div>
+            <div
+                th:replace="~{fragmentos/formulario-empleado(textoBoton = 'Modificar', deshabilitarClave = true, foco = 'email')}">
+            </div>
         </th:block>
     </div>
+
+    <div th:replace="~{fragmentos/footer::html(~{::title}, ~{::body})}"></div>
 </body>
 
 </html>
