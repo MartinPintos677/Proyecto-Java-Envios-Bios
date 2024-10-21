@@ -2,6 +2,8 @@ package com.example.envios_bios.controladores;
 
 import java.security.Principal;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -13,14 +15,21 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.envios_bios.dominio.Cliente;
+import com.example.envios_bios.dominio.EstadoRastreo;
+import com.example.envios_bios.dominio.Paquete;
 import com.example.envios_bios.excepciones.ExcepcionEnviosBios;
 import com.example.envios_bios.servicios.IServicioCliente;
+import com.example.envios_bios.servicios.IServicioPaquete;
+import com.example.envios_bios.servicios.ServicioEstadoRastreo;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+
+import java.util.List;
 import java.util.UUID;
 import org.springframework.security.core.Authentication;
 
@@ -33,6 +42,12 @@ public class ControladorCliente {
 
     @Autowired
     private IServicioCliente servicioCliente;
+
+    @Autowired
+    private IServicioPaquete servicioPaquete;
+
+    @Autowired
+    private ServicioEstadoRastreo servicioEstadoRastreo;
 
     @GetMapping("/registrarcliente")
     public String mostrarRegistroCliente(@ModelAttribute Cliente cliente) {
@@ -161,5 +176,28 @@ public class ControladorCliente {
             return "clientes/eliminar";
         }
     }
+
+    @GetMapping("/listarpaquetes")
+    public String mostrarPaquetes(@RequestParam(required = false) String destinatario,Pageable pageable,Model model, Principal principal) {
+        // Llamar al servicio con paginación y filtros
+        Page<Paquete> paquetesPage = servicioPaquete.listarPaquetesCliente(principal.getName(),destinatario,pageable);
+
+        // Añadir los paquetes y la información de paginación al modelo
+        model.addAttribute("paquetes", paquetesPage.getContent());
+        model.addAttribute("totalPages", paquetesPage.getTotalPages());
+        model.addAttribute("currentPage", paquetesPage.getNumber());
+        model.addAttribute("pageSize", paquetesPage.getSize());
+
+        // Obtener los estados de rastreo filtrados
+        List<String> estadosFiltrados = List.of("a levantar", "levantado", "en reparto", "entregado", "devuelto");
+        List<EstadoRastreo> estadosRastreo = servicioEstadoRastreo.listar()
+            .stream()
+            .filter(estado -> estadosFiltrados.contains(estado.getDescripcion()))
+            .toList();
+
+        model.addAttribute("estadosRastreo", estadosRastreo);
+
+        return "clientes/paquetes";
+  }
     
 }

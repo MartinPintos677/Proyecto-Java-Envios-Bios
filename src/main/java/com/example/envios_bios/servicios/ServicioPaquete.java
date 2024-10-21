@@ -135,4 +135,14 @@ public class ServicioPaquete implements IServicioPaquete {
     return repositorioPaquete.findAll(pageable);
   }
 
+  @Override
+  public Page<Paquete> listarPaquetesCliente(String cliente, String destinatario, Pageable pageable) {
+    if (destinatario != null && !destinatario.isEmpty()) {
+      // Si se proporciona un destinatario, filtra por cliente y destinatario
+      return repositorioPaquete.findByCliente_NombreUsuarioAndNombreDestinatarioContaining(cliente, destinatario, pageable);
+    } else {
+        // Si no se proporciona un destinatario, busca solo por cliente
+        return repositorioPaquete.findByCliente_NombreUsuario(cliente, pageable);
+    }
+  }
 }

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" th:replace="~{fragmentos/plantilla-maestra::html(~{::title}, ~{::body}, 'css/estiloFormPaquete.css')}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Paquetes</title>
+</head>
+
+<body th:remove="tag">
+
+  <div class="contenedor" align="center">
+    <h1>Paquetes Registrados</h1>
+
+    <p th:replace="~{fragmentos/parrafo-mensaje}"></p>
+
+    <form id="formularioBusqueda" th:action="@{/clientes/listarpaquetes}" method="get">
+      <div>
+        <label for="destinatario">Filtrar por destinatario</label>
+        <input type="text" name="destinatario" th:value="${param.destinatario}" id="destinatario"
+          placeholder="Nombre destinatario">
+      </div>
+      <div>
+        <input type="submit" value="Buscar">
+      </div>
+    </form>
+
+    <!-- Mensaje si no se encontraron paquetes -->
+    <div th:if="${#lists.isEmpty(paquetes)}" style="color: red;">
+      <p>No se encontraron paquetes con los filtros seleccionados.</p>
+    </div>
+
+    <!-- Tabla para mostrar la lista de paquetes si hay resultados -->
+    <div class="datagrid" id="resultadoPaquetes" th:if="${not #lists.isEmpty(paquetes)}">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Remitente</th>
+            <th>Destinatario</th>
+            <th>Teléfono</th>
+            <th>Dirección</th>
+            <th>Categoría</th>
+            <th>Estado</th>
+            <th>Fecha de Registro</th>
+            <th>Cobro a Destinatario</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="paquete : ${paquetes}">
+            <td th:text="${paquete.idPaquete}"></td>
+            <td th:text="${paquete.cliente.nombreUsuario}"></td> <!-- Cliente actualizado -->
+            <td th:text="${paquete.nombreDestinatario}"></td>
+            <td th:text="${paquete.telefonoDestinatario}"></td>
+            <td th:text="${paquete.direccionDestinatario}"></td>
+            <td th:text="${paquete.categoria.nombre}"></td>
+            <td th:text="${paquete.estadoRastreo.descripcion}"></td>
+            <td th:text="${#temporals.format(paquete.fechaHoraRegistro, 'dd/MM/yyyy HH:mm')}"></td>
+            <td th:text="${paquete.cobroDestinatario ? 'Sí' : 'No'}"></td>
+            <td>
+              <a th:href="@{'/paquetes/' + ${paquete.idPaquete}}" title="Ver Detalle">
+                <i class="icono icono-ver"></i>
+              </a>&nbsp; | &nbsp;
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- Controles de Paginación -->
+    <div class="pagination" align="center" th:if="${not #lists.isEmpty(paquetes)}">
+      <ul>
+        <li th:if="${currentPage > 0}">
+          <a
+            th:href="@{/clientes/listarpaquetes(pagina=${currentPage - 1}, tamanioPagina=${pageSize}, destinatario=${param.destinatario})}">←</a>
+        </li>
+        <li th:each="i : ${#numbers.sequence(0, totalPages - 1)}" th:classappend="${i == currentPage} ? 'active'">
+          <a th:if="${i != currentPage}"
+            th:href="@{/clientes/listarpaquetes(pagina=${i}, tamanioPagina=${pageSize}, destinatario=${param.destinatario})}"
+            th:text="${i + 1}">1</a>
+          <span th:if="${i == currentPage}" th:text="${i + 1}" style="font-weight: bold; color: #0056b3;"></span>
+        </li>
+
+        <li th:if="${currentPage < totalPages - 1}">
+          <a
+            th:href="@{/clientes/listarpaquetes(pagina=${currentPage + 1}, tamanioPagina=${pageSize}, destinatario=${param.destinatario})}">→</a>
+        </li>
+      </ul>
+    </div>
+
+  </div>
+
+  <div th:replace="~{fragmentos/footer::html(~{::title}, ~{::body})}"></div>
+
+  <script>
+    // Función que hace scroll automático a la tabla
+    function irATablaPaquetes() {
+      const tabla = document.getElementById('resultadoPaquetes');
+      if (tabla) {
+        tabla.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
+    // Llamar a la función después de que la página haya cargado
+    window.onload = function () {
+      // Verificamos si es una recarga o navegación después de una paginación
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.has('pagina')) {
+        irATablaPaquetes();
+      }
+    };
+
+    // Escuchar el evento de envío del formulario de búsqueda
+    document.getElementById('formularioBusqueda').addEventListener('submit', function () {
+      // Establecer la página a 0 antes de enviar el formulario
+      const inputPagina = document.createElement('input');
+      inputPagina.type = 'hidden';
+      inputPagina.name = 'pagina';
+      inputPagina.value = '0';  // Resetear a la página 0
+      this.appendChild(inputPagina);
+    });
+
+    document.getElementById('destinatario').focus();
+    document.getElementById('destinatario').select();
+  </script>
+
+
+
+</body>
+
+</html>
