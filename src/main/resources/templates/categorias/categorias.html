@@ -63,15 +63,21 @@
 
         <!-- Controles de paginación -->
         <div class="pagination" th:if="${!#lists.isEmpty(categorias)}">
-            <ul class="li-pagination">
+            <ul>
                 <!-- Link para ir a la página anterior -->
                 <li th:if="${page.hasPrevious()}">
                     <a
                         th:href="@{/categorias(pagina=${page.number - 1}, tamanioPagina=${page.size}, criterio=${criterio})}">←</a>
                 </li>
 
-                <!-- Mostrar número de página actual y total de páginas -->
-                <li th:text="'Página ' + (${page.number + 1}) + ' de ' + ${page.totalPages}"></li>
+                <!-- Mostrar número de páginas -->
+                <li th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}"
+                    th:classappend="${i == page.number} ? 'active'">
+                    <a th:if="${i != page.number}"
+                        th:href="@{/categorias(pagina=${i}, tamanioPagina=${page.size}, criterio=${criterio})}"
+                        th:text="${i + 1}">1</a>
+                    <span th:if="${i == page.number}" th:text="${i + 1}"></span>
+                </li>
 
                 <!-- Link para ir a la página siguiente -->
                 <li th:if="${page.hasNext()}">
@@ -101,6 +107,16 @@
 
             document.getElementById('formularioBusqueda').addEventListener('search', function () {
                 document.getElementById('formularioBusqueda').submit();
+            });
+
+            // Escuchar el evento de envío del formulario de búsqueda
+            document.getElementById('formularioBusqueda').addEventListener('submit', function (event) {
+                // Establecer la página a 0 antes de enviar el formulario
+                const inputPagina = document.createElement('input');
+                inputPagina.type = 'hidden';
+                inputPagina.name = 'pagina';
+                inputPagina.value = '0';  // Resetear a la página 0
+                this.appendChild(inputPagina);
             });
 
             document.getElementById('criterio').focus();

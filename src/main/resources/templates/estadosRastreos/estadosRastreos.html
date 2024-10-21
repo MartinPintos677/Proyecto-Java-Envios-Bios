@@ -64,15 +64,21 @@
 
         <!-- Controles de paginación -->
         <div class="pagination" th:if="${!#lists.isEmpty(rastreo)}">
-            <ul class="li-pagination">
+            <ul>
                 <!-- Link para ir a la página anterior -->
                 <li th:if="${page.hasPrevious()}">
                     <a
                         th:href="@{/estadosRastreos(pagina=${page.number - 1}, tamanioPagina=${page.size}, criterio=${criterio})}">←</a>
                 </li>
 
-                <!-- Mostrar número de página actual y total de páginas -->
-                <li th:text="'Página ' + (${page.number + 1}) + ' de ' + ${page.totalPages}"></li>
+                <!-- Mostrar número de páginas -->
+                <li th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}"
+                    th:classappend="${i == page.number} ? 'active'">
+                    <a th:if="${i != page.number}"
+                        th:href="@{/estadosRastreos(pagina=${i}, tamanioPagina=${page.size}, criterio=${criterio})}"
+                        th:text="${i + 1}">1</a>
+                    <span th:if="${i == page.number}" th:text="${i + 1}"></span>
+                </li>
 
                 <!-- Link para ir a la página siguiente -->
                 <li th:if="${page.hasNext()}">
@@ -81,6 +87,7 @@
                 </li>
             </ul>
         </div>
+
 
         <script>
             // Función que hace scroll automático a la tabla

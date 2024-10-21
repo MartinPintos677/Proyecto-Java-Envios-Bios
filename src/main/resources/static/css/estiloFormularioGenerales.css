@@ -235,16 +235,12 @@ a.agregar:active {
     transform: scale(1); 
 }
 
-.li-pagination{
-    list-style:none;
-    padding: 0;
-}
-
 /* Estilo para la paginación */
 .pagination {
     margin-top: 20px;
     text-align: center;
     font-family: 'Arial', sans-serif;
+    padding-bottom: 30px;
 }
 
 /* Estilo para los elementos de la lista de paginación */
@@ -266,7 +262,7 @@ a.agregar:active {
     background-color: #006699; /* Fondo azul */
     color: #fff; /* Texto blanco */
     border-radius: 5px; /* Bordes redondeados */
-    border: 1px solid #00557F;
+    border: 2px solid #006699;
     transition: background-color 0.3s ease, color 0.3s ease; /* Transición suave */
     font-size: 18px;
 }
@@ -280,17 +276,19 @@ a.agregar:active {
 /* Estilo para el número de página actual (sin enlace) */
 .pagination ul li.active {
     background-color: #E1EEF4; /* Fondo claro para la página activa */
-    color: #00496B; /* Texto azul oscuro */
+    color: #00557F; /* Texto azul oscuro */
     font-weight: bold; /* Texto en negrita */
-    padding: 8px 12px;
     border-radius: 5px;
-    border: 1px solid #00496B; /* Borde azul */
+    border: 2px solid #00557F;
+    font-size: 18px;
+    padding: 5px 12px;
 }
 
 /* Ocultar la paginación cuando no hay resultados */
 .pagination.hidden {
     display: none;
 }
+
 
 @media (max-width: 1200px) {
 .datagrid {
