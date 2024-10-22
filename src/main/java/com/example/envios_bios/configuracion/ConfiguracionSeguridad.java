@@ -36,6 +36,7 @@ public class ConfiguracionSeguridad {
         http
             .authorizeHttpRequests(authorize -> authorize
                 .requestMatchers("/").permitAll()
+                .requestMatchers("/login").permitAll()
                 .requestMatchers("/index").permitAll()
                 .requestMatchers("/categorias/**").hasAuthority("empleado")
                 .requestMatchers("/clientes/registrarcliente").anonymous()
@@ -44,11 +45,12 @@ public class ConfiguracionSeguridad {
                 .requestMatchers("/mierror").permitAll()
                 .requestMatchers("/estadosRastreos/**").hasAuthority("empleado")
                 .requestMatchers("/paquetes/**").hasAnyAuthority("empleado", "cliente")
+                .requestMatchers("/bienvenida").hasAnyAuthority("empleado", "cliente")
                 .requestMatchers("/sucursales/**").hasAuthority("empleado")
                 .anyRequest().authenticated()
             )
             .formLogin(form -> form
-                .loginPage("/login").permitAll()
+                .loginPage("/login").defaultSuccessUrl("/bienvenida").permitAll()
                 .successHandler(new SimpleUrlAuthenticationSuccessHandler() {
                     @Override
                     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication)

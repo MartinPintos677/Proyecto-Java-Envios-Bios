@@ -14,7 +14,7 @@ public class ControladorIngresarSalir {
         if (principal == null || principal instanceof AnonymousAuthenticationToken) {
             return "ingresar";
         } else {
-            return "redirect:/index";
+            return "redirect:/bienvenida";
         }
     }
 
