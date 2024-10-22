@@ -15,10 +15,11 @@ public interface IServicioPaquete {
 
     Paquete obtenerPaquetePorId(Long idPaquete);
 
-    Page<Paquete> buscarConPaginacion(String cedulaCliente, String fechaRegistro, String estadoRastreo,Pageable pageable);
+    Page<Paquete> buscarConPaginacion(Long idPaquete, String cedulaCliente, String fechaRegistro, String estadoRastreo,
+            Pageable pageable);
 
     Page<Paquete> listarPaquetesCliente(String cliente, String destinatario, Pageable pageable);
-    
+
     void eliminarPaquete(Long idPaquete) throws ExcepcionEnviosBios;
 
     void modificarPaquete(Paquete paquete) throws ExcepcionEnviosBios;
