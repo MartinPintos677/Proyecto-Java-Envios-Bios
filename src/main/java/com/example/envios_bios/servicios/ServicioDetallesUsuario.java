@@ -61,6 +61,9 @@ public class ServicioDetallesUsuario implements UserDetailsService {
                 roles.add(new SimpleGrantedAuthority(r.getNombreRol()));
             }
         }
+        //Mostramos el rol en la consola
+        roles.forEach(role -> System.out.println("Rol asignado: " + role.getAuthority()));
+        
         // Retorna el objeto User
         return new User(usuario.getNombreUsuario(), usuario.getClaveDeAcceso(), true, true, true, true, roles);
     }
