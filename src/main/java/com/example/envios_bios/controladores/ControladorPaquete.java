@@ -18,7 +18,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
-
 import com.example.envios_bios.dominio.Categoria;
 import com.example.envios_bios.dominio.Cliente;
 import com.example.envios_bios.dominio.EstadoRastreo;
@@ -90,16 +89,23 @@ public String AgregarPaquete(Model model, Authentication authentication) {
 
         // Si el usuario logueado tiene el rol "cliente"
         if (authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("cliente"))) {
-            Cliente cliente = servicioCliente.obtener(nombreUsuario); // Obtener el cliente logueado
+            Cliente cliente = servicioCliente.obtener(nombreUsuario); // Obtenemos el cliente logueado
             model.addAttribute("cliente", cliente); // Agregar el cliente al modelo
+            // Filtra los estados de rastreo solo para el cliente
+            List<String> estadosFiltrados = List.of("a levantar", "en sucursal");
+            List<EstadoRastreo> estadosRastreo = servicioEstadoRastreo.listar()
+                .stream()
+                .filter(estado -> estadosFiltrados.contains(estado.getDescripcion()))
+                .toList();
+            model.addAttribute("estadosRastreo", estadosRastreo);
         } 
         // Si el usuario logueado tiene el rol "empleado"
         else if (authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("empleado"))) {
-            List<Cliente> clientes = servicioPaquete.listarClientes(); // Listar todos los clientes
-            model.addAttribute("clientes", clientes); // Agregar la lista de clientes al modelo
+            List<Cliente> clientes = servicioPaquete.listarClientes(); // Lista todos los clientes
+            model.addAttribute("clientes", clientes); // Agrega la lista de clientes al modelo
         }
 
-        // Cargar las listas necesarias para los dropdowns
+        // Carga las listas necesarias para los dropdowns
         List<Categoria> categorias = servicioCategoria.listar();
         List<EstadoRastreo> estadosRastreo = servicioEstadoRastreo.listar();
 
