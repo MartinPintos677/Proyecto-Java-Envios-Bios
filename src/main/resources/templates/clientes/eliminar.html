@@ -8,21 +8,25 @@
 
 <body th:remove="tag">
   <h1>Eliminar Cliente</h1>
-  <div>
-      <p th:replace="~{fragmentos/parrafo-mensaje}"></p>
-      <th:block th:if="${cliente}">
-        <p>¿Confirma que desea eliminar el Cliente con nombre de usuario <strong th:text="${cliente.nombreUsuario}"></strong>?</p>
 
-        <form method="post">
-          <div>
-            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-            <input type="submit" value="Eliminar" />
-          </div>
-        </form>
-      </th:block>
-  </div>
-  <div th:replace="~{fragmentos/footer::html(~{::title}, ~{::body})}"></div>
+    <p th:replace="~{fragmentos/parrafo-mensaje}"></p>
 
+    <div class="contenedor-eliminar">
+        <th:block th:if="${cliente}">
+            <p>¿Confirma que desea eliminar el cliente <strong th:text="${cliente.nombreUsuario}"></strong>
+            <form method="post">
+                <div class="botones-accion">
+                    <a href="/clientes" class="btn-cancelar">Cancelar</a>
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                    <input type="submit" value="Eliminar" />
+                </div>
+            </form>
+        </th:block>
+    </div>
+
+    <div style="padding-bottom: 50px;"></div>
+
+    <div th:replace="~{fragmentos/footer::html(~{::title}, ~{::body})}"></div>
 </body>
 
 </html>

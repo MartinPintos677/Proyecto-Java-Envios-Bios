@@ -1,6 +1,5 @@
 package com.example.envios_bios.controladores;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,23 +47,24 @@ public class ControladorPaquete {
 
   @GetMapping
   public String mostrarPaquetes(
+      @RequestParam(required = false) Long idPaquete, // Filtro por ID separado
       @RequestParam(required = false) String cedulaCliente,
       @RequestParam(required = false) String fechaRegistro,
       @RequestParam(required = false) String estadoRastreo,
       Pageable pageable,
       Model model) {
 
-    // Llamar al servicio con paginación y filtros
-    Page<Paquete> paquetesPage = servicioPaquete.buscarConPaginacion(cedulaCliente, fechaRegistro, estadoRastreo,
-        pageable);
+    // Utilizar el servicio para buscar con paginación y con ID de paquete si se
+    // proporciona
+    Page<Paquete> paquetesPage = servicioPaquete.buscarConPaginacion(idPaquete, cedulaCliente, fechaRegistro,
+        estadoRastreo, pageable);
 
-    // Añadir los paquetes y la información de paginación al modelo
     model.addAttribute("paquetes", paquetesPage.getContent());
     model.addAttribute("totalPages", paquetesPage.getTotalPages());
     model.addAttribute("currentPage", paquetesPage.getNumber());
     model.addAttribute("pageSize", paquetesPage.getSize());
 
-    // Obtener los estados de rastreo filtrados
+    // Obtener y filtrar estados de rastreo
     List<String> estadosFiltrados = List.of("a levantar", "levantado", "en reparto", "entregado", "devuelto");
     List<EstadoRastreo> estadosRastreo = servicioEstadoRastreo.listar()
         .stream()
@@ -76,148 +76,108 @@ public class ControladorPaquete {
     return "paquetes/paquetes";
   }
 
-  @GetMapping("/agregar")
-public String AgregarPaquete(Model model, Authentication authentication) {
-    // Crear un objeto paquete vacío para el formulario
-    Paquete paquete = new Paquete();
-    paquete.setFechaHoraRegistro(LocalDateTime.now());
-    model.addAttribute("paquete", paquete);
-
-    // Obtener el usuario autenticado
-    if (authentication != null) {
+  @PostMapping("/agregar")
+  public String agregarPaquete(@ModelAttribute("paquete") @Valid Paquete paquete,
+      RedirectAttributes redirectAttributes,
+      Authentication authentication, BindingResult result) {
+    try {
+      // Verifica si el usuario es cliente o empleado
+      if (authentication != null) {
         String nombreUsuario = authentication.getName();
 
-        // Si el usuario logueado tiene el rol "cliente"
+        // Si el usuario es un cliente, asignar su nombreUsuario al paquete
         if (authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("cliente"))) {
-            Cliente cliente = servicioCliente.obtener(nombreUsuario); // Obtenemos el cliente logueado
-            model.addAttribute("cliente", cliente); // Agregar el cliente al modelo
-            // Filtra los estados de rastreo solo para el cliente
-            List<String> estadosFiltrados = List.of("a levantar", "en sucursal");
-            List<EstadoRastreo> estadosRastreo = servicioEstadoRastreo.listar()
-                .stream()
-                .filter(estado -> estadosFiltrados.contains(estado.getDescripcion()))
-                .toList();
-            model.addAttribute("estadosRastreo", estadosRastreo);
-        } 
-        // Si el usuario logueado tiene el rol "empleado"
-        else if (authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("empleado"))) {
-            List<Cliente> clientes = servicioPaquete.listarClientes(); // Lista todos los clientes
-            model.addAttribute("clientes", clientes); // Agrega la lista de clientes al modelo
+          Cliente cliente = servicioCliente.obtener(nombreUsuario);
+          paquete.setCliente(cliente);
         }
+        // Si el usuario es un empleado, ya debería haber seleccionado un cliente desde
+        // el dropdown
+        // por lo que no es necesario hacer nada en este caso
+      }
+      if (result.hasErrors()) {
 
-        // Carga las listas necesarias para los dropdowns
-        List<Categoria> categorias = servicioCategoria.listar();
-        List<EstadoRastreo> estadosRastreo = servicioEstadoRastreo.listar();
-
-        model.addAttribute("categorias", categorias);
-        model.addAttribute("estadosRastreo", estadosRastreo);
-
-        // Pasar el valor del botón de acción al formulario
-        model.addAttribute("textoBoton", "Agregar");
-    }
-
-    return "paquetes/agregar";
-}
-
-@PostMapping("/agregar")
-public String agregarPaquete(@ModelAttribute("paquete")  @Valid Paquete paquete, 
-                             RedirectAttributes redirectAttributes, 
-                             Authentication authentication, BindingResult result) {
-    try {
-        // Verifica si el usuario es cliente o empleado
-        if (authentication != null) {
-            String nombreUsuario = authentication.getName();
-
-            // Si el usuario es un cliente, asignar su nombreUsuario al paquete
-            if (authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("cliente"))) {
-                Cliente cliente = servicioCliente.obtener(nombreUsuario);
-                paquete.setCliente(cliente);
-            }
-            // Si el usuario es un empleado, ya debería haber seleccionado un cliente desde el dropdown
-            // por lo que no es necesario hacer nada en este caso
-        }
-        if (result.hasErrors()) {
-
-          return "paquetes/agregar";
+        return "paquetes/agregar";
       }
 
-        // guarda el paquete en la base de datos
-        servicioPaquete.agregarPaquete(paquete);
+      // guarda el paquete en la base de datos
+      servicioPaquete.agregarPaquete(paquete);
 
-        // Agrega mensaje de éxito
-        redirectAttributes.addFlashAttribute("mensaje", "Paquete agregado correctamente.");
-        return "redirect:/paquetes";
+      // Agrega mensaje de éxito
+      redirectAttributes.addFlashAttribute("mensaje", "Paquete agregado correctamente.");
+      return "redirect:/paquetes";
     } catch (ExcepcionEnviosBios e) {
-        // Si ocurre una excepción personalizada, mostrar mensaje de error
-        redirectAttributes.addFlashAttribute("mensajeError", e.getMessage());
-        return "redirect:/agregar";
+      // Si ocurre una excepción personalizada, mostrar mensaje de error
+      redirectAttributes.addFlashAttribute("mensajeError", e.getMessage());
+      return "redirect:/agregar";
     } catch (Exception e) {
-        // En caso de un error general, agregar un mensaje genérico
-        redirectAttributes.addFlashAttribute("mensajeError", "Ocurrió un error al agregar el paquete.");
-        return "redirect:/paquetes";
+      // En caso de un error general, agregar un mensaje genérico
+      redirectAttributes.addFlashAttribute("mensajeError", "Ocurrió un error al agregar el paquete.");
+      return "redirect:/paquetes";
     }
-}
+  }
 
-@GetMapping("/modificar")
-public String mostrarModificar(@RequestParam("idPaquete") Long idPaquete, Model model) {
+  @GetMapping("/modificar")
+  public String mostrarModificar(@RequestParam("idPaquete") Long idPaquete, Model model) {
     Paquete paquete = servicioPaquete.obtenerPaquetePorId(idPaquete); // Buscamos el paquete por ID
 
     if (paquete != null) {
-        model.addAttribute("paquete", paquete);
-        
-        // Cargar la lista de clientes para el dropdown
-        List<Cliente> clientes = servicioPaquete.listarClientes();
-        model.addAttribute("clientes", clientes);
+      model.addAttribute("paquete", paquete);
 
-        // Cargar la lista de categorías para el dropdown
-        List<Categoria> categorias = servicioCategoria.listar();
-        model.addAttribute("categorias", categorias);
+      // Cargar la lista de clientes para el dropdown
+      List<Cliente> clientes = servicioPaquete.listarClientes();
+      model.addAttribute("clientes", clientes);
 
-        // Obtenemos la lista de estados de rastreo para el dropdown
-        List<EstadoRastreo> estadosRastreo = servicioEstadoRastreo.listar();
-        model.addAttribute("estadosRastreo", estadosRastreo);
-        
-        model.addAttribute("textoBoton", "Modificar");
-        model.addAttribute("modoModificacion", true);  // Estamos en modo modificación
+      // Cargar la lista de categorías para el dropdown
+      List<Categoria> categorias = servicioCategoria.listar();
+      model.addAttribute("categorias", categorias);
+
+      // Obtenemos la lista de estados de rastreo para el dropdown
+      List<EstadoRastreo> estadosRastreo = servicioEstadoRastreo.listar();
+      model.addAttribute("estadosRastreo", estadosRastreo);
+
+      model.addAttribute("textoBoton", "Modificar");
+      model.addAttribute("modoModificacion", true); // Estamos en modo modificación
     } else {
-        model.addAttribute("mensaje", "¡ERROR! No se encontró el paquete con el id " + idPaquete + ".");
+      model.addAttribute("mensaje", "¡ERROR! No se encontró el paquete con el id " + idPaquete + ".");
     }
 
-    return "paquetes/modificar";  
-}
-@PostMapping("/modificar")
-public String procesarModificar(@ModelAttribute("paquete") Paquete paqueteModificado, 
-                                RedirectAttributes attributes, Model model) {
+    return "paquetes/modificar";
+  }
+
+  @PostMapping("/modificar")
+  public String procesarModificar(@ModelAttribute("paquete") Paquete paqueteModificado,
+      RedirectAttributes attributes, Model model) {
     try {
-        Paquete paquete = servicioPaquete.obtenerPaquetePorId(paqueteModificado.getIdPaquete());
+      Paquete paquete = servicioPaquete.obtenerPaquetePorId(paqueteModificado.getIdPaquete());
 
-        if (paquete == null) {
-            attributes.addFlashAttribute("mensaje", "¡ERROR! No se encontró el paquete con el ID " + paqueteModificado.getIdPaquete());
-            return "redirect:/paquetes";
-        }
-
-        // Obtener el estado de rastreo del paquete modificado
-        EstadoRastreo estadoRastreo = servicioEstadoRastreo.obtener(paqueteModificado.getEstadoRastreo().getIdRastreo());
-        if (estadoRastreo == null) {
-            attributes.addFlashAttribute("mensaje", "¡ERROR! Estado de rastreo inválido.");
-            return "redirect:/paquetes";
-        }
-
-        // Actualizar solo el campo estadoRastreo
-        paquete.setEstadoRastreo(estadoRastreo);
-        servicioPaquete.modificarPaquete(paquete);  // Guarda los cambios
-
-        attributes.addFlashAttribute("mensaje", "Estado del paquete modificado con éxito.");
+      if (paquete == null) {
+        attributes.addFlashAttribute("mensaje",
+            "¡ERROR! No se encontró el paquete con el ID " + paqueteModificado.getIdPaquete());
         return "redirect:/paquetes";
+      }
+
+      // Obtener el estado de rastreo del paquete modificado
+      EstadoRastreo estadoRastreo = servicioEstadoRastreo.obtener(paqueteModificado.getEstadoRastreo().getIdRastreo());
+      if (estadoRastreo == null) {
+        attributes.addFlashAttribute("mensaje", "¡ERROR! Estado de rastreo inválido.");
+        return "redirect:/paquetes";
+      }
+
+      // Actualizar solo el campo estadoRastreo
+      paquete.setEstadoRastreo(estadoRastreo);
+      servicioPaquete.modificarPaquete(paquete); // Guarda los cambios
+
+      attributes.addFlashAttribute("mensaje", "Estado del paquete modificado con éxito.");
+      return "redirect:/paquetes";
 
     } catch (ExcepcionEnviosBios e) {
-        model.addAttribute("mensaje", "¡ERROR! " + e.getMessage());
-        return "paquetes/modificar";
+      model.addAttribute("mensaje", "¡ERROR! " + e.getMessage());
+      return "paquetes/modificar";
     } catch (Exception e) {
-        model.addAttribute("mensaje", "Ocurrió un error al modificar el estado del paquete.");
-        return "paquetes/modificar";
+      model.addAttribute("mensaje", "Ocurrió un error al modificar el estado del paquete.");
+      return "paquetes/modificar";
     }
-}
+  }
 
   @GetMapping("/eliminar")
   public String mostrarEliminar(@RequestParam Long idPaquete, Model model) {
@@ -227,7 +187,7 @@ public String procesarModificar(@ModelAttribute("paquete") Paquete paqueteModifi
     } else {
       model.addAttribute("mensaje", "¡ERROR! No se encontró el paquete con el id " + idPaquete + ".");
     }
-    return "paquetes/eliminar"; 
+    return "paquetes/eliminar";
   }
 
   @PostMapping("/eliminar")

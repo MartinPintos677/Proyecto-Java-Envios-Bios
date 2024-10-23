@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org" th:fragment="html(titulo, contenido, cssPath)">
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" th:fragment="html(titulo, contenido, cssPath)">
 
 <head>
   <meta charset="UTF-8">
@@ -19,19 +19,33 @@
   </header>
   <nav class="navegacion-principal">
     <ul>
-      <li><a th:href="@{/bienvenida}">Inicio</a></li> <!-- Talvez lo saco -->
-      <li>
+      <li><a th:href="@{/bienvenida}">Inicio</a></li>
+      
+      <li sec:authorize="hasAuthority('cliente')">
         <a href="#">Secciones</a>
         <ul>
-          <li><a href="/sucursales">Enviar paquete</a></li>
-          <li><a href="/empleados">Paquetes enviados</a></li>
-          <li><a href="/categorias">Modificar datos</a></li>
-          <li><a href="/estadosRastreos">Eliminar usuario</a></li>
+          <li><a th:href="@{/paquetes/agregar}">Agregar paquetes</a></li>
+          <li><a th:href="@{/clientes}">Modificar</a></li>
+          <li><a th:href="@{/clientes/listarpaquetes}">Paquetes enviados</a></li>
+          <li><a th:href="@{/clientes/eliminar}">Eliminar cuenta</a></li>
         </ul>
       </li>
+      
+      <li sec:authorize="hasAuthority('empleado')">
+        <a href="#">Secciones</a>
+        <ul>
+          <li><a th:href="@{/sucursales}">CRUD sucursales</a></li>
+          <li><a th:href="@{/empleados}">CRUD empleados</a></li>
+          <li><a th:href="@{/categorias}">CRUD categorias</a></li>
+          <li><a th:href="@{/estadosRastreos}">CRUD estadosRastreos</a></li>
+          <li><a th:href="@{/paquetes}">CRUD paquetes</a></li>
+        </ul>
+      </li>
+
+      <li sec:authorize="hasAuthority('empleado')"><a href="#">prueba</a></li><!--Esto es de prueba-->
     </ul>
-    <ul id="menu-cerrar-sesion">
-      <li id="iniciar-sesion"><a th:href="@{logout}">Cerrar sesión</a></li>
+    <ul class="menu-cerrar-sesion">
+      <li><a href="@{/logout}">Cerrar sesion</a></li>
     </ul>
   </nav>
   <main class="contenido" th:insert="${contenido}"></main>
