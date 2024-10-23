@@ -20,7 +20,6 @@ public interface IServicioEstadoRastreo {
     void modificar(EstadoRastreo rastreo) throws ExcepcionEnviosBios;
 
     void eliminar(Integer idRastreo) throws ExcepcionEnviosBios;
-    // Paginación
 
     Page<EstadoRastreo> listarPaginado(Pageable pageable);
 

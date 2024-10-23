@@ -1,6 +1,5 @@
 package com.example.envios_bios.controladores;
 
-import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +9,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import com.example.envios_bios.dominio.Empleado;
 import com.example.envios_bios.servicios.IServicioEmpleado;
 import com.example.envios_bios.servicios.IServicioSucursales;
@@ -34,15 +34,22 @@ public class ControladorEmpleado {
     private IServicioEmpleado servicioEmpleado;
 
     @GetMapping
-    public String mostrarEmpleado(@RequestParam(required = false) String criterio, Model model) {
+    public String mostrarEmpleado(@RequestParam(required = false) String criterio, Pageable pageable, Model model) {
         if (criterio == null) {
             criterio = ""; // Evitar nulos
         }
-        List<Empleado> empleados = servicioEmpleado.buscar(criterio);
 
-        model.addAttribute("empleado", empleados);
+        // Llamar al servicio para obtener los empleados con paginación
+        Page<Empleado> empleadosPage = servicioEmpleado.buscarConPaginacion(criterio, pageable);
 
-        return "empleados/empleados";
+        // Agregar los resultados y la información de paginación al modelo
+        model.addAttribute("empleado", empleadosPage.getContent()); // Lista de empleados
+        model.addAttribute("totalPages", empleadosPage.getTotalPages());
+        model.addAttribute("currentPage", empleadosPage.getNumber());
+        model.addAttribute("pageSize", empleadosPage.getSize());
+        model.addAttribute("criterio", criterio); // Para mantener el criterio de búsqueda
+
+        return "empleados/empleados"; // Renderiza la vista de empleados
     }
 
     @GetMapping("/agregar")

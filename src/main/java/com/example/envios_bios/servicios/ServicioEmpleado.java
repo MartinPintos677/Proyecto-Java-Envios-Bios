@@ -1,11 +1,10 @@
 package com.example.envios_bios.servicios;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import com.example.envios_bios.dominio.Empleado;
 import com.example.envios_bios.dominio.Rol;
 import com.example.envios_bios.dominio.Usuario;
@@ -24,14 +23,16 @@ public class ServicioEmpleado implements IServicioEmpleado {
     private PasswordEncoder passwordEncoder;
 
     @Override
-    public List<Empleado> buscar(String criterio) {
+    public Page<Empleado> listarPaginado(Pageable pageable) {
+        return repositorioEmpleados.findAll(pageable);
+    }
+
+    @Override
+    public Page<Empleado> buscarConPaginacion(String criterio, Pageable pageable) {
         if (criterio == null || criterio.isEmpty()) {
-            // Si no se proporciona ningún criterio, devuelve todos los empleados
-            return repositorioEmpleados.findAll();
+            return repositorioEmpleados.findAll(pageable);
         } else {
-            // Devolver los empleados cuyo nombre de usuario contenga el criterio de
-            // búsqueda
-            return repositorioEmpleados.findByNombreUsuarioContainingIgnoreCase(criterio);
+            return repositorioEmpleados.findByNombreUsuarioContainingIgnoreCase(criterio, pageable);
         }
     }
 

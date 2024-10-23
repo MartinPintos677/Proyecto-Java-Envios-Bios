@@ -7,7 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" th:href="@{/css/estiloFormularioGenerales.css}">
     <title>Empleados</title>
-
 </head>
 
 <body th:remove="tag">
@@ -17,7 +16,7 @@
         <p th:replace="~{fragmentos/parrafo-mensaje}"></p>
 
         <!-- Formulario de búsqueda -->
-        <form id="formularioBusqueda">
+        <form id="formularioBusqueda" method="get">
             <div>
                 <input type="search" name="criterio" th:value="${param.criterio}" id="criterio"
                     placeholder="Nombre de Empleado">
@@ -26,7 +25,7 @@
         </form>
 
         <!-- Tabla para mostrar la lista de empleados -->
-        <div class="datagrid" th:if="${!#lists.isEmpty(empleado)}">
+        <div class="datagrid" id="tablaEmpleados" th:if="${!#lists.isEmpty(empleado)}">
             <table>
                 <thead>
                     <tr>
@@ -55,25 +54,77 @@
         <!-- Mostrar mensaje si no se encuentran empleados -->
         <div th:if="${#lists.isEmpty(empleado)}">
             <p style="color:red !important;">No se encontró ningún empleado con el
-                criterio
-                proporcionado.</p>
+                criterio proporcionado.</p>
         </div>
 
         <p>
             <a class="agregar" th:href="@{/empleados/agregar}" title="Agregar">Agregar Empleado</a>
         </p>
 
+        <!-- Paginación -->
+        <div class="pagination" th:if="${totalPages > 1}">
+            <ul>
+                <!-- Link para ir a la página anterior -->
+                <li th:if="${currentPage > 0}">
+                    <a
+                        th:href="@{/empleados(pagina=${currentPage - 1}, tamanioPagina=${pageSize}, criterio=${param.criterio})}">←</a>
+                </li>
+
+                <!-- Mostrar número de páginas -->
+                <li th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+                    th:classappend="${i == currentPage} ? 'active'">
+                    <a th:if="${i != currentPage}"
+                        th:href="@{/empleados(pagina=${i}, tamanioPagina=${pageSize}, criterio=${param.criterio})}"
+                        th:text="${i + 1}">1</a>
+                    <span th:if="${i == currentPage}" th:text="${i + 1}"></span>
+                </li>
+
+                <!-- Link para ir a la página siguiente -->
+                <li th:if="${currentPage < totalPages - 1}">
+                    <a
+                        th:href="@{/empleados(pagina=${currentPage + 1}, tamanioPagina=${pageSize}, criterio=${param.criterio})}">→</a>
+                </li>
+            </ul>
+        </div>
+
         <div th:replace="~{fragmentos/footer::html(~{::title}, ~{::body})}"></div>
 
         <script>
+            // Función que hace scroll automático a la tabla
+            function irATablaEmpleados() {
+                const tabla = document.getElementById('tablaEmpleados');
+                if (tabla) {
+                    tabla.scrollIntoView({ behavior: 'smooth' });
+                }
+            }
+
+            // Llamar a la función después de que la página haya cargado
+            window.onload = function () {
+                // Verificamos si es una recarga o navegación después de una paginación
+                const urlParams = new URLSearchParams(window.location.search);
+                if (urlParams.has('pagina')) {
+                    irATablaEmpleados();
+                }
+            };
+
             document.getElementById('formularioBusqueda').addEventListener('search', function () {
                 document.getElementById('formularioBusqueda').submit();
+            });
+
+            // Escuchar el evento de envío del formulario de búsqueda
+            document.getElementById('formularioBusqueda').addEventListener('submit', function (event) {
+                // Establecer la página a 0 antes de enviar el formulario
+                const inputPagina = document.createElement('input');
+                inputPagina.type = 'hidden';
+                inputPagina.name = 'pagina';
+                inputPagina.value = '0';  // Resetear a la página 0
+                this.appendChild(inputPagina);
             });
 
             document.getElementById('criterio').focus();
             document.getElementById('criterio').select();
         </script>
+    </div>
 </body>
-
 
 </html>
