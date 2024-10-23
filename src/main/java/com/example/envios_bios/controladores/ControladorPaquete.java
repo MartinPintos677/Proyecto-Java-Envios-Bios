@@ -1,5 +1,6 @@
 package com.example.envios_bios.controladores;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,6 +75,42 @@ public class ControladorPaquete {
     model.addAttribute("estadosRastreo", estadosRastreo);
 
     return "paquetes/paquetes";
+  }
+
+  @GetMapping("/agregar")
+  public String AgregarPaquete(Model model, Authentication authentication) {
+    // Crear un objeto paquete vacío para el formulario
+    Paquete paquete = new Paquete();
+    paquete.setFechaHoraRegistro(LocalDateTime.now());
+    model.addAttribute("paquete", paquete);
+
+    // Obtener el usuario autenticado
+    if (authentication != null) {
+      String nombreUsuario = authentication.getName();
+
+      // Si el usuario logueado tiene el rol "cliente"
+      if (authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("cliente"))) {
+        Cliente cliente = servicioCliente.obtener(nombreUsuario); // Obtener el cliente logueado
+        model.addAttribute("cliente", cliente); // Agregar el cliente al modelo
+      }
+      // Si el usuario logueado tiene el rol "empleado"
+      else if (authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("empleado"))) {
+        List<Cliente> clientes = servicioPaquete.listarClientes(); // Listar todos los clientes
+        model.addAttribute("clientes", clientes); // Agregar la lista de clientes al modelo
+      }
+
+      // Cargar las listas necesarias para los dropdowns
+      List<Categoria> categorias = servicioCategoria.listar();
+      List<EstadoRastreo> estadosRastreo = servicioEstadoRastreo.listar();
+
+      model.addAttribute("categorias", categorias);
+      model.addAttribute("estadosRastreo", estadosRastreo);
+
+      // Pasar el valor del botón de acción al formulario
+      model.addAttribute("textoBoton", "Agregar");
+    }
+
+    return "paquetes/agregar";
   }
 
   @PostMapping("/agregar")

@@ -2,6 +2,8 @@ package com.example.envios_bios.servicios;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.example.envios_bios.dominio.Sucursal;
@@ -27,16 +29,30 @@ public class ServicioSucursales implements IServicioSucursales {
     }
 
     @Override
+    public Page<Sucursal> listarPaginacion(Pageable pageable) {
+        return repositorioSucursal.findAll(pageable);
+    }
+
+    @Override
     public Sucursal obtener(Long numero) {
         return repositorioSucursal.findById(numero).orElse(null);
     }
 
     @Override
-    public List<Sucursal> buscar(String criterio) {
+    public Page<Sucursal> buscar(String criterio, Pageable pageable) {
         if (criterio == null || criterio.isEmpty()) {
-            return repositorioSucursal.findAll(); // Devuelve todas las sucursales si no hay criterio
+            return repositorioSucursal.findAll(pageable);
         } else {
-            return repositorioSucursal.findByNombreContaining(criterio); // Método que busca por nombre
+            return repositorioSucursal.findByNombreContaining(criterio, pageable);
+        }
+    }
+
+    @Override
+    public Page<Sucursal> buscarPaginado(String criterio, Pageable pageable) {
+        if (criterio == null || criterio.isEmpty()) {
+            return repositorioSucursal.findAll(pageable);
+        } else {
+            return repositorioSucursal.findByNombreContaining(criterio, pageable);
         }
     }
 

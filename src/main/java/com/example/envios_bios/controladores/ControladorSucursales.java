@@ -1,7 +1,7 @@
 package com.example.envios_bios.controladores;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,12 +26,20 @@ public class ControladorSucursales {
     private IServicioSucursales servicioSucursales;
 
     @GetMapping
-    public String mostrarSucursales(@RequestParam(required = false) String criterio, Model model) {
-        List<Sucursal> sucursales = servicioSucursales.buscar(criterio);
+    public String mostrarSucursales(@RequestParam(required = false) String criterio, Pageable pageable, Model model) {
+        if (criterio == null) {
+            criterio = ""; // Evitar nulos
+        }
 
-        model.addAttribute("sucursales", sucursales);
+        // Llamar al servicio para obtener las sucursales paginadas
+        Page<Sucursal> sucursalesP = servicioSucursales.buscarPaginado(criterio, pageable);
 
-        return "sucursales/sucursales";
+        // Agregar los resultados y los datos de la página al modelo
+        model.addAttribute("sucursales", sucursalesP.getContent()); // La lista de sucursales
+        model.addAttribute("page", sucursalesP); // El objeto de la página para la paginación
+        model.addAttribute("criterio", criterio); // Mantener el criterio de búsqueda
+
+        return "sucursales/sucursales"; // Renderiza la vista de sucursales
     }
 
     @GetMapping("/agregar")
