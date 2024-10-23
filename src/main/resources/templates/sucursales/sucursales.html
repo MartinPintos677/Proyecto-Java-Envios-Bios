@@ -7,7 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" th:href="@{/css/estiloFormularioGenerales.css}">
     <title>Sucursales</title>
-
 </head>
 
 <body th:remove="tag">
@@ -16,10 +15,11 @@
         <h1>Sucursales</h1>
 
         <p th:replace="~{fragmentos/parrafo-mensaje}"></p>
+
         <!-- Formulario de búsqueda -->
-        <form id="formularioBusqueda">
+        <form id="formularioBusqueda" method="get">
             <div>
-                <input type="search" name="criterio" th:value="${param.criterio}" id="criterio"
+                <input type="search" name="criterio" th:value="${criterio}" id="criterio"
                     placeholder="Digite número o nombre de sucursal">
                 <input type="submit" value="Buscar">
             </div>
@@ -27,11 +27,10 @@
 
         <!-- Mensaje si no hay resultados -->
         <p th:if="${#lists.isEmpty(sucursales)}" style="color: red;">No se encontró ninguna sucursal con el
-            criterio
-            proporcionado.</p>
+            criterio proporcionado.</p>
 
         <!-- Tabla para mostrar la lista de sucursales -->
-        <div class="datagrid" th:if="${!#lists.isEmpty(sucursales)}">
+        <div class="datagrid" id="tablaSucursales" th:if="${!#lists.isEmpty(sucursales)}">
             <table>
                 <thead>
                     <tr>
@@ -41,7 +40,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr th:each=" s : ${sucursales}">
+                    <tr th:each="s : ${sucursales}">
                         <td th:text="${s.numero}"></td>
                         <td th:text="${s.nombre}"></td>
                         <td>
@@ -53,17 +52,78 @@
                                     class="icono icono-eliminar"></i></a>
                         </td>
                     </tr>
-
                 </tbody>
-
             </table>
         </div>
 
         <p>
-            <a class="agregar" th:href="@{/sucursales/agregar}" title="Agregar">Agregar sucursal</a>
+            <a class="agregar" th:href="@{/sucursales/agregar}" title="Agregar">Agregar Sucursal</a>
         </p>
 
+        <!-- Paginación -->
+        <div class="pagination" th:if="${page.totalPages > 1}">
+            <ul>
+                <!-- Link para ir a la página anterior -->
+                <li th:if="${page.hasPrevious()}">
+                    <a
+                        th:href="@{/sucursales(pagina=${page.number - 1}, tamanioPagina=${page.size}, criterio=${criterio})}">←</a>
+                </li>
+
+                <!-- Mostrar número de páginas -->
+                <li th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}"
+                    th:classappend="${i == page.number} ? 'active'">
+                    <a th:if="${i != page.number}"
+                        th:href="@{/sucursales(pagina=${i}, tamanioPagina=${page.size}, criterio=${criterio})}"
+                        th:text="${i + 1}">1</a>
+                    <span th:if="${i == page.number}" th:text="${i + 1}"></span>
+                </li>
+
+                <!-- Link para ir a la página siguiente -->
+                <li th:if="${page.hasNext()}">
+                    <a
+                        th:href="@{/sucursales(pagina=${page.number + 1}, tamanioPagina=${page.size}, criterio=${criterio})}">→</a>
+                </li>
+            </ul>
+        </div>
+
         <div th:replace="~{fragmentos/footer::html(~{::title}, ~{::body})}"></div>
+    </div>
+
+    <script>
+        // Función que hace scroll automático a la tabla
+        function irATablaSucursales() {
+            const tabla = document.getElementById('tablaSucursales');
+            if (tabla) {
+                tabla.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        // Llamar a la función después de que la página haya cargado
+        window.onload = function () {
+            // Verificamos si es una recarga o navegación después de una paginación
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.has('pagina')) {
+                irATablaSucursales();
+            }
+        };
+
+        document.getElementById('formularioBusqueda').addEventListener('search', function () {
+            document.getElementById('formularioBusqueda').submit();
+        });
+
+        // Escuchar el evento de envío del formulario de búsqueda
+        document.getElementById('formularioBusqueda').addEventListener('submit', function (event) {
+            // Establecer la página a 0 antes de enviar el formulario
+            const inputPagina = document.createElement('input');
+            inputPagina.type = 'hidden';
+            inputPagina.name = 'pagina';
+            inputPagina.value = '0';  // Resetear a la página 0
+            this.appendChild(inputPagina);
+        });
+
+        document.getElementById('criterio').focus();
+        document.getElementById('criterio').select();
+    </script>
 </body>
 
 </html>
