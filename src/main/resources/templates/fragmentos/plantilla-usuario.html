@@ -41,14 +41,17 @@
           <li><a th:href="@{/paquetes}">CRUD paquetes</a></li>
         </ul>
       </li>
-
-      <li sec:authorize="hasAuthority('empleado')"><a href="#">prueba</a></li><!--Esto es de prueba-->
     </ul>
     <ul class="menu-cerrar-sesion">
-      <li><a href="@{/logout}">Cerrar sesion</a></li>
+      <li sec:authorize="isAuthenticated()">
+        <a sec:authentication="name" href="#"></a>
+        <ul>
+            <li sec:authorize="hasAuthority('cliente')"><a th:href="@{/clientes}">Mi Cuenta</a></li>
+            <li><a th:href="@{/logout}">Cerrar sesion</a></li>
+        </ul>
+    </li>
     </ul>
   </nav>
   <main class="contenido" th:insert="${contenido}"></main>
 </body>
-
 </html>
