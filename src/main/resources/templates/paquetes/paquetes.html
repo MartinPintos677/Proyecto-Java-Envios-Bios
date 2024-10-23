@@ -16,6 +16,17 @@
 
     <p th:replace="~{fragmentos/parrafo-mensaje}"></p>
 
+    <form id="formularioBusquedaID" th:action="@{/paquetes}" method="get">
+      <div>
+        <label for="idPaquete">Buscar por ID de Paquete</label>
+        <input type="number" name="idPaquete" id="idPaquete" placeholder="ID de paquete" th:value="${param.idPaquete}">
+      </div>
+      <div>
+        <input type="submit" value="Buscar por ID">
+      </div>
+    </form>
+
+
     <form id="formularioBusqueda" th:action="@{/paquetes}" method="get">
       <div>
         <label for="cedulaCliente">Filtrar por cédula</label>
@@ -152,7 +163,17 @@
       const inputPagina = document.createElement('input');
       inputPagina.type = 'hidden';
       inputPagina.name = 'pagina';
-      inputPagina.value = '0';  // Resetear a la página 0
+      inputPagina.value = '0';
+      this.appendChild(inputPagina);
+    });
+
+    // Escuchar el evento de envío del formulario de búsqueda
+    document.getElementById('formularioBusquedaID').addEventListener('submit', function () {
+      // Establecer la página a 0 antes de enviar el formulario
+      const inputPagina = document.createElement('input');
+      inputPagina.type = 'hidden';
+      inputPagina.name = 'pagina';
+      inputPagina.value = '0';
       this.appendChild(inputPagina);
     });
 
