@@ -51,7 +51,7 @@ public class ControladorCategoria {
 
     @PostMapping("/agregar")
     public String agregarCategoria(@ModelAttribute("categoria") @Valid Categoria categoria,
-            RedirectAttributes redirectAttributes, BindingResult result, Model model) {
+    BindingResult result,RedirectAttributes redirectAttributes,  Model model) {
 
                 if (result.hasErrors()) {
                     return "categorias/agregar";

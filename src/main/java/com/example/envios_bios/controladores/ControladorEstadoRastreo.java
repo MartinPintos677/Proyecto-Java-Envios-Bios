@@ -48,10 +48,9 @@ public class ControladorEstadoRastreo {
 
     @PostMapping("/agregar")
     public String agregarEstadoRastreo(@ModelAttribute("rastreo") @Valid EstadoRastreo rastreo,
-            BindingResult result,
-            RedirectAttributes redirectAttributes,
-            Model model) {
-        if (result.hasErrors()) {
+            BindingResult result, RedirectAttributes redirectAttributes, Model model) {
+        
+                if (result.hasErrors()) {
 
             return "estadosRastreos/agregar";
         }
