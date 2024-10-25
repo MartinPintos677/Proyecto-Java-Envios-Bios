@@ -22,7 +22,7 @@
       <li><a th:href="@{/bienvenida}">Inicio</a></li>
       
       <li sec:authorize="hasAuthority('cliente')">
-        <a href="#">Secciones</a>
+        <a href="#">Menu</a>
         <ul>
           <li><a th:href="@{/paquetes/agregar}">Agregar paquetes</a></li>
           <li><a th:href="@{/clientes}">Modificar</a></li>
@@ -32,7 +32,7 @@
       </li>
       
       <li sec:authorize="hasAuthority('empleado')">
-        <a href="#">Secciones</a>
+        <a href="#">Menu</a>
         <ul>
           <li><a th:href="@{/sucursales}">CRUD sucursales</a></li>
           <li><a th:href="@{/empleados}">CRUD empleados</a></li>
