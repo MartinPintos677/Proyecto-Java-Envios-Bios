@@ -18,7 +18,7 @@
       <h2>Registro de Cliente</h2>
       <div class="line-h2"></div>
       <p th:text="${mensaje}" style="color: red;"></p>
-      
+
       <div class="input-container-completo">
         <div class="input-container-uno">
           <div class="input-container-login">
@@ -39,14 +39,16 @@
           <div class="input-container-login">
             <label class="input-container-label" for="repetirClaveDeAcceso">Repetir Clave de Acceso</label>
             <input class="input-container-label" type="password" th:field="*{repetirClaveDeAcceso}">
-            <p th:errors="*{repetirClaveDeAcceso}" class="input-container-label" style="color: red;font-size: 12px;"></p>
+            <p th:errors="*{repetirClaveDeAcceso}" class="input-container-label" style="color: red;font-size: 12px;">
+            </p>
           </div>
         </div>
-        
+
         <div class="input-container-dos">
           <div class="input-container-login">
             <label class="input-container-label" for="cedula">Cédula</label>
-            <input class="input-container-label" type="text" th:field="*{cedula}">
+            <input class="input-container-label" type="text" th:field="*{cedula}" pattern="[0-9]+" maxlength="10"
+              title="Solo se permiten números">
             <p th:errors="*{cedula}" class="input-container-label" style="color: red;font-size: 12px;"></p>
           </div>
           <div class="input-container-login">
@@ -56,8 +58,9 @@
           </div>
           <div class="input-container-login">
             <label class="input-container-label" for="telefono">Teléfono</label>
-            <input class="input-container-label" type="text" th:field="*{telefono}">
-            <p th:errors="*{telefono}" class="input-container-label" style="color: red;font-size: 12px;" ></p>
+            <input class="input-container-label" type="text" th:field="*{telefono}" pattern="[0-9]+" maxlength="20"
+              title="Solo se permiten números">
+            <p th:errors="*{telefono}" class="input-container-label" style="color: red;font-size: 12px;"></p>
           </div>
         </div>
       </div>
@@ -71,6 +74,17 @@
       </div>
     </form>
   </div>
+
+  <script>
+    // Validación en tiempo real para aceptar solo números en los campos de cédula y teléfono
+    document.querySelector('input[name="cedula"]').addEventListener('input', function (e) {
+      this.value = this.value.replace(/[^0-9]/g, '');  // Elimina cualquier carácter que no sea un número
+    });
+
+    document.querySelector('input[name="telefono"]').addEventListener('input', function (e) {
+      this.value = this.value.replace(/[^0-9]/g, '');  // Elimina cualquier carácter que no sea un número
+    });
+  </script>
 </body>
 
 </html>

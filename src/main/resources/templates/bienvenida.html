@@ -1,12 +1,24 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org" th:replace="~{fragmentos/plantilla-usuario::html(~{::title}, ~{::body}, 'css/estiloFormularioGenerales.css')}">
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+    th:replace="~{fragmentos/plantilla-usuario::html(~{::title}, ~{::body}, 'css/estiloFormularioGenerales.css')}">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pantalla Principal</title>
 </head>
-<body>    
+
+<body>
     <h1>Página de Gestión</h1>
-    <p align="center">¡Bienvenido a la pantalla principal!</p>
+
+    <p align="center">¡Bienvenido a la plataforma de gestión de Envios Bios!</p>
+
+    <p align="center">Utiliza el menú de navegación para acceder a las distintas secciones y gestionar las opciones
+        disponibles.</p>
+
+    <div style="padding-bottom: 40px;"></div>
+
+    <div th:replace="~{fragmentos/footer::html(~{::title}, ~{::body})}"></div>
 </body>
+
 </html>

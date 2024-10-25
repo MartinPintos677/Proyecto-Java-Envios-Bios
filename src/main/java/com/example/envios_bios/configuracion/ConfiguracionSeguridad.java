@@ -23,7 +23,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 @Configuration
-@EnableWebSecurity //Para cuando implementemos security
+@EnableWebSecurity // Para cuando implementemos security
 public class ConfiguracionSeguridad {
 
     @Bean
@@ -34,64 +34,65 @@ public class ConfiguracionSeguridad {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .authorizeHttpRequests(authorize -> authorize
-                .requestMatchers("/").permitAll()
-                .requestMatchers("/login").permitAll()
-                .requestMatchers("/index").permitAll()
-                .requestMatchers("/categorias/**").hasAuthority("empleado")
-                .requestMatchers("/clientes/registrarcliente").anonymous()
-                .requestMatchers("/clientes/**").hasAuthority("cliente")
-                .requestMatchers("/empleados/**").hasAuthority("empleado")
-                .requestMatchers("/mierror").permitAll()
-                .requestMatchers("/estadosRastreos/**").hasAuthority("empleado")
-                .requestMatchers("/paquetes/agregar").hasAuthority("cliente")
-                .requestMatchers("/paquetes/**").hasAuthority("empleado")
-                .requestMatchers("/bienvenida").hasAnyAuthority("empleado", "cliente")
-                .requestMatchers("/sucursales/**").hasAuthority("empleado")
-                .anyRequest().authenticated()
-            )
-            .formLogin(form -> form
-                .loginPage("/login").defaultSuccessUrl("/bienvenida").permitAll()
-                .successHandler(new SimpleUrlAuthenticationSuccessHandler() {
-                    @Override
-                    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
-                            throws IOException, ServletException {
-                        FlashMap flashMap = new FlashMap();
-                        flashMap.put("mensaje", "Has ingresado a tu cuenta.");
+                .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/").permitAll()
+                        .requestMatchers("/login").permitAll()
+                        .requestMatchers("/index").permitAll()
+                        .requestMatchers("/categorias/**").hasAuthority("empleado")
+                        .requestMatchers("/clientes/registrarcliente").anonymous()
+                        .requestMatchers("/clientes/**").hasAuthority("cliente")
+                        .requestMatchers("/empleados/**").hasAuthority("empleado")
+                        .requestMatchers("/mierror").permitAll()
+                        .requestMatchers("/estadosRastreos/**").hasAuthority("empleado")
+                        .requestMatchers("/paquetes/agregar").hasAnyAuthority("cliente", "empleado")
+                        .requestMatchers("/paquetes/**").hasAnyAuthority("empleado", "cliente")
+                        .requestMatchers("/bienvenida").hasAnyAuthority("empleado", "cliente")
+                        .requestMatchers("/sucursales/**").hasAuthority("empleado")
+                        .anyRequest().authenticated())
+                .formLogin(form -> form
+                        .loginPage("/login").defaultSuccessUrl("/bienvenida").permitAll()
+                        .successHandler(new SimpleUrlAuthenticationSuccessHandler() {
+                            @Override
+                            public void onAuthenticationSuccess(HttpServletRequest request,
+                                    HttpServletResponse response, Authentication authentication)
+                                    throws IOException, ServletException {
+                                FlashMap flashMap = new FlashMap();
+                                flashMap.put("mensaje", "Has ingresado a tu cuenta.");
 
-                        FlashMapManager flashMapManager = new SessionFlashMapManager();
-                        flashMapManager.saveOutputFlashMap(flashMap, request, response);
+                                FlashMapManager flashMapManager = new SessionFlashMapManager();
+                                flashMapManager.saveOutputFlashMap(flashMap, request, response);
 
-                        super.onAuthenticationSuccess(request, response, authentication);
-                    }
+                                super.onAuthenticationSuccess(request, response, authentication);
+                            }
 
-                }))
-            .logout(logout -> logout
-                .logoutUrl("/logout")
-                .logoutSuccessUrl("/")
-                .permitAll()
-                .logoutSuccessHandler(new SimpleUrlLogoutSuccessHandler() {
+                        }))
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/")
+                        .permitAll()
+                        .logoutSuccessHandler(new SimpleUrlLogoutSuccessHandler() {
 
-                    @Override
-                    public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
-                            throws IOException, ServletException {
-                        FlashMap flashMap = new FlashMap();
-                        flashMap.put("mensaje", "Has salido de tu cuenta.");
+                            @Override
+                            public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response,
+                                    Authentication authentication)
+                                    throws IOException, ServletException {
+                                FlashMap flashMap = new FlashMap();
+                                flashMap.put("mensaje", "Has salido de tu cuenta.");
 
-                        FlashMapManager flashMapManager = new SessionFlashMapManager();
-                        flashMapManager.saveOutputFlashMap(flashMap, request, response);
+                                FlashMapManager flashMapManager = new SessionFlashMapManager();
+                                flashMapManager.saveOutputFlashMap(flashMap, request, response);
 
-                        super.onLogoutSuccess(request, response, authentication);
-                    }
+                                super.onLogoutSuccess(request, response, authentication);
+                            }
 
-                }));
+                        }));
         return http.build();
     }
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring()
-            .requestMatchers("/css/**", "/imagenes/**");
+                .requestMatchers("/css/**", "/imagenes/**");
     }
-    
+
 }
