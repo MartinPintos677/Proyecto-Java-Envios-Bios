@@ -9,7 +9,11 @@ BEGIN
         (1, 'Sucursal 1'),
         (2, 'Sucursal 2'),
         (3, 'Sucursal 3'),
-        (4, 'Sucursal 4');
+        (4, 'Sucursal 4'),
+        (5, 'Sucursal 5'),
+        (6, 'Sucursal 6'),
+        (7, 'Sucursal 7'),
+        (8, 'Sucursal 8');
 
         -- Datos de prueba para la tabla usuarios
         INSERT INTO usuarios (nombre_usuario, clave_de_acceso, email) VALUES        
@@ -20,22 +24,50 @@ BEGIN
         -- Clave clave456
         ('cliente2', '$2a$10$pjnPm1rV49t0qcxsaDjJN.HUZ8i2l521t8pOkTX52O3IbI1XSVVsa', 'cliente2@gmail.com'),
 
+        -- Clave clave123
+        ('cliente3', '$2a$10$QJu21AwLWBpyOGoRV3zH7ecZIM4.piwNLuQjnLtcoCUDzoyKLXnAG', 'cliente3@gmail.com'),
+
         -- Clave empleado123
         ('empleado1', '$2a$10$DiSj/4qyqVBNBkBWVVFHNO1ND5mZ4xXt1BmtCcFjJODlJzWeTs6Dq', 'empleado1@enviosbios.com'),
 
         -- Clave empleado456
-        ('empleado2', '$2a$10$Il1qsPOCz9fQ0ri1S9Z2Gu.rPDyigosoMBJhtz03ZbwTLFxA5JsCa', 'empleado2@gmail.com');
+        ('empleado2', '$2a$10$Il1qsPOCz9fQ0ri1S9Z2Gu.rPDyigosoMBJhtz03ZbwTLFxA5JsCa', 'empleado2@gmail.com'),
+
+        -- Clave empleado123
+        ('empleado3', '$2a$10$DiSj/4qyqVBNBkBWVVFHNO1ND5mZ4xXt1BmtCcFjJODlJzWeTs6Dq', 'empleado4@yahoo.com'),
+
+        -- Clave empleado123
+        ('empleado4', '$2a$10$DiSj/4qyqVBNBkBWVVFHNO1ND5mZ4xXt1BmtCcFjJODlJzWeTs6Dq', 'empleado4@gmail.com'),
+
+        -- Clave empleado123
+        ('empleado5', '$2a$10$DiSj/4qyqVBNBkBWVVFHNO1ND5mZ4xXt1BmtCcFjJODlJzWeTs6Dq', 'empleado5@yahoo.com'),
+
+        -- Clave empleado123
+        ('empleado6', '$2a$10$DiSj/4qyqVBNBkBWVVFHNO1ND5mZ4xXt1BmtCcFjJODlJzWeTs6Dq', 'empleado6@envios.com'),
+
+        -- Clave empleado123
+        ('empleado7', '$2a$10$DiSj/4qyqVBNBkBWVVFHNO1ND5mZ4xXt1BmtCcFjJODlJzWeTs6Dq', 'empleado7@adinet.com'),
+
+        -- Clave empleado123
+        ('empleado8', '$2a$10$DiSj/4qyqVBNBkBWVVFHNO1ND5mZ4xXt1BmtCcFjJODlJzWeTs6Dq', 'empleado8@enviosbios.com');
 
 
         -- Datos de prueba para la tabla clientes (sin claveDeAcceso y email)
         INSERT INTO clientes (nombre_usuario, cedula, domicilio, telefono, activo) VALUES
         ('cliente1', '12345678', 'Calle Falsa 123', '098765432', 1),
-        ('cliente2', '87654321', 'Avenida Siempre Viva 742', '091234567', 1);
+        ('cliente2', '87654321', 'Avenida Siempre Viva 742', '091234567', 1),
+        ('cliente3', '01234567', 'Avenida La Paz 742', '091234523', 1);
 
         -- Datos de prueba para la tabla empleados (sin claveDeAcceso y email)
         INSERT INTO empleados (nombre_usuario, sucursal_numero) VALUES
         ('empleado1', 1),
-        ('empleado2', 2);
+        ('empleado2', 2),
+        ('empleado3', 1),
+        ('empleado4', 2),
+        ('empleado5', 1),
+        ('empleado6', 2),
+        ('empleado7', 1),
+        ('empleado8', 2);
 
         --Datos de prueba para la tabla Roles
         INSERT INTO roles(nombre_rol) VALUES
@@ -44,9 +76,16 @@ BEGIN
 
         INSERT INTO usuarios_roles(usuario_nombre_usuario, rol_nombre_rol) VALUES
         ('empleado1', 'empleado'),
-        ('empleado2', 'empleado'),  
+        ('empleado2', 'empleado'), 
+        ('empleado3', 'empleado'),
+        ('empleado4', 'empleado'), 
+        ('empleado5', 'empleado'),
+        ('empleado6', 'empleado'), 
+        ('empleado7', 'empleado'),
+        ('empleado8', 'empleado'),  
         ('cliente1', 'cliente'),
-        ('cliente2', 'cliente'); 
+        ('cliente2', 'cliente'),
+        ('cliente3', 'cliente'); 
 
 
         -- Datos de prueba para la tabla categorias
