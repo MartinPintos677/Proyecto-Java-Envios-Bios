@@ -1,14 +1,10 @@
 package com.example.envios_bios.repositorio;
 
 import java.time.LocalDateTime;
-
-import org.apache.el.stream.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import java.util.List;
-
 import org.springframework.data.jpa.repository.JpaRepository;
-
 import com.example.envios_bios.dominio.Categoria;
 import com.example.envios_bios.dominio.EstadoRastreo;
 import com.example.envios_bios.dominio.Paquete;

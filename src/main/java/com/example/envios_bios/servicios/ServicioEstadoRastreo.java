@@ -72,7 +72,7 @@ public class ServicioEstadoRastreo implements IServicioEstadoRastreo {
     }
 
     @Override
-public void eliminar(Integer idRastreo) throws ExcepcionEnviosBios {
+    public void eliminar(Integer idRastreo) throws ExcepcionEnviosBios {
     EstadoRastreo rastreoExistente = repositorioEstadoRastreo.findById(idRastreo).orElse(null);
 
     if (rastreoExistente == null) {

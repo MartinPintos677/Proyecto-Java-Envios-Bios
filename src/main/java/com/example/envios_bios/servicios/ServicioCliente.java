@@ -1,11 +1,8 @@
 package com.example.envios_bios.servicios;
 
 import java.time.LocalDateTime;
-
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.example.envios_bios.dominio.Cliente;
 import com.example.envios_bios.dominio.Paquete;
 import com.example.envios_bios.dominio.Rol;
@@ -92,9 +89,7 @@ public class ServicioCliente implements IServicioCliente{
         else{
             repositorioClientes.deleteById(nombreUsuario);
         }
-    }
-
-    
+    }  
 
     
 }

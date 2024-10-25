@@ -1,12 +1,10 @@
 package com.example.envios_bios.servicios;
 
 import java.util.List;
-
 import com.example.envios_bios.dominio.Cliente;
 import com.example.envios_bios.dominio.Paquete;
 import com.example.envios_bios.excepciones.ExcepcionEnviosBios;
 import org.springframework.data.domain.Page;
-//import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 public interface IServicioPaquete {
