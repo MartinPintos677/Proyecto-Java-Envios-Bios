@@ -19,17 +19,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.envios_bios.dominio.Cliente;
-import com.example.envios_bios.dominio.EstadoRastreo;
 import com.example.envios_bios.dominio.Paquete;
 import com.example.envios_bios.excepciones.ExcepcionEnviosBios;
 import com.example.envios_bios.servicios.IServicioCliente;
 import com.example.envios_bios.servicios.IServicioPaquete;
-import com.example.envios_bios.servicios.ServicioEstadoRastreo;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
-import java.util.List;
 import java.util.UUID;
 import org.springframework.security.core.Authentication;
 
@@ -46,16 +43,14 @@ public class ControladorCliente {
     @Autowired
     private IServicioPaquete servicioPaquete;
 
-    @Autowired
-    private ServicioEstadoRastreo servicioEstadoRastreo;
-
     @GetMapping("/registrarcliente")
     public String mostrarRegistroCliente(@ModelAttribute Cliente cliente) {
         return "clientes/registro";
     }
 
     @PostMapping("/registrarcliente")
-    public String procesarRegistroCliente(@ModelAttribute @Valid Cliente cliente, BindingResult result, Model model, RedirectAttributes attributes) {
+    public String procesarRegistroCliente(@ModelAttribute @Valid Cliente cliente, BindingResult result, Model model,
+            RedirectAttributes attributes) {
         if (result.hasErrors()) {
             return "clientes/registro";
         }
@@ -102,7 +97,8 @@ public class ControladorCliente {
     }
 
     @PostMapping
-    public String procesarModificar(Principal principal, @ModelAttribute @Valid Cliente cliente, BindingResult result, String contrasenaFalsa, Model model, RedirectAttributes attributes) {
+    public String procesarModificar(Principal principal, @ModelAttribute @Valid Cliente cliente, BindingResult result,
+            String contrasenaFalsa, Model model, RedirectAttributes attributes) {
         if (result.hasErrors()) {
             model.addAttribute("contrasenaFalsa", UUID.randomUUID().toString());
 
@@ -116,7 +112,8 @@ public class ControladorCliente {
 
             cliente.setNombreUsuario(principal.getName());
 
-            if (cliente.getRepetirClaveDeAcceso() == null || !cliente.getRepetirClaveDeAcceso().equals(cliente.getClaveDeAcceso())) {
+            if (cliente.getRepetirClaveDeAcceso() == null
+                    || !cliente.getRepetirClaveDeAcceso().equals(cliente.getClaveDeAcceso())) {
                 model.addAttribute("contrasenaFalsa", UUID.randomUUID().toString());
 
                 throw new ExcepcionEnviosBios("Las contraseñas no coinciden.");
@@ -125,7 +122,6 @@ public class ControladorCliente {
             Cliente bdCli = servicioCliente.obtener(principal.getName());
 
             System.out.println("Contraseña en bd: " + bdCli.getClaveDeAcceso());
-            
 
             if (contrasenaFalsa.equals(cliente.getClaveDeAcceso())) {
                 cliente.setClaveDeAcceso(bdCli.getClaveDeAcceso());
@@ -178,26 +174,26 @@ public class ControladorCliente {
     }
 
     @GetMapping("/listarpaquetes")
-    public String mostrarPaquetes(@RequestParam(required = false) String destinatario,Pageable pageable,Model model, Principal principal) {
-        // Llamar al servicio con paginación y filtros
-        Page<Paquete> paquetesPage = servicioPaquete.listarPaquetesCliente(principal.getName(),destinatario,pageable);
+    public String mostrarPaquetes(@RequestParam(required = false) String destinatario, Pageable pageable, Model model,
+            Principal principal) {
+        Page<Paquete> paquetesPage;
 
-        // Añadir los paquetes y la información de paginación al modelo
+        if (destinatario != null && destinatario.matches("\\d+")) {
+            // Si `destinatario` contiene solo dígitos, buscar por ID de paquete
+            Long idPaquete = Long.parseLong(destinatario);
+            paquetesPage = servicioPaquete.buscarPorIdClienteYIdPaquete(principal.getName(), idPaquete, pageable);
+        } else {
+            // De lo contrario, buscar por nombre del destinatario
+            paquetesPage = servicioPaquete.listarPaquetesCliente(principal.getName(), destinatario, pageable);
+        }
+
+        // Agregar los resultados y la paginación al modelo
         model.addAttribute("paquetes", paquetesPage.getContent());
         model.addAttribute("totalPages", paquetesPage.getTotalPages());
         model.addAttribute("currentPage", paquetesPage.getNumber());
         model.addAttribute("pageSize", paquetesPage.getSize());
 
-        // Obtener los estados de rastreo filtrados
-        List<String> estadosFiltrados = List.of("a levantar", "levantado", "en reparto", "entregado", "devuelto");
-        List<EstadoRastreo> estadosRastreo = servicioEstadoRastreo.listar()
-            .stream()
-            .filter(estado -> estadosFiltrados.contains(estado.getDescripcion()))
-            .toList();
-
-        model.addAttribute("estadosRastreo", estadosRastreo);
-
         return "clientes/paquetes";
-  }
-    
+    }
+
 }

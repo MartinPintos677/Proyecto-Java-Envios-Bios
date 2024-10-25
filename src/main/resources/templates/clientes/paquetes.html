@@ -18,14 +18,15 @@
 
     <form id="formularioBusqueda" th:action="@{/clientes/listarpaquetes}" method="get">
       <div>
-        <label for="destinatario">Filtrar por destinatario</label>
+        <label for="destinatario">Filtrar por destinatario o ID de paquete</label>
         <input type="text" name="destinatario" th:value="${param.destinatario}" id="destinatario"
-          placeholder="Nombre destinatario">
+          placeholder="Nombre destinatario o ID de paquete">
       </div>
       <div>
         <input type="submit" value="Buscar">
       </div>
     </form>
+
 
     <!-- Mensaje si no se encontraron paquetes -->
     <div th:if="${#lists.isEmpty(paquetes)}" style="color: red;">

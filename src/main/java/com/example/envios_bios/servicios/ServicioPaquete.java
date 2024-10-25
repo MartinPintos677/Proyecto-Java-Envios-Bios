@@ -170,4 +170,10 @@ public class ServicioPaquete implements IServicioPaquete {
       return repositorioPaquete.findByCliente_NombreUsuario(cliente, pageable);
     }
   }
+
+  @Override
+  public Page<Paquete> buscarPorIdClienteYIdPaquete(String nombreUsuario, Long idPaquete, Pageable pageable) {
+    return repositorioPaquete.findByCliente_NombreUsuarioAndIdPaquete(nombreUsuario, idPaquete, pageable);
+  }
+
 }

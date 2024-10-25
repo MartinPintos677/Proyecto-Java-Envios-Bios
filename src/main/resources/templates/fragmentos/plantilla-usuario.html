@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" th:fragment="html(titulo, contenido, cssPath)">
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+  th:fragment="html(titulo, contenido, cssPath)">
 
 <head>
   <meta charset="UTF-8">
@@ -20,17 +21,15 @@
   <nav class="navegacion-principal">
     <ul>
       <li><a th:href="@{/bienvenida}">Inicio</a></li>
-      
+
       <li sec:authorize="hasAuthority('cliente')">
         <a href="#">Menu</a>
         <ul>
           <li><a th:href="@{/paquetes/agregar}">Agregar paquetes</a></li>
-          <li><a th:href="@{/clientes}">Modificar</a></li>
           <li><a th:href="@{/clientes/listarpaquetes}">Paquetes enviados</a></li>
-          <li><a th:href="@{/clientes/eliminar}">Eliminar cuenta</a></li>
         </ul>
       </li>
-      
+
       <li sec:authorize="hasAuthority('empleado')">
         <a href="#">Menu</a>
         <ul>
@@ -46,12 +45,13 @@
       <li sec:authorize="isAuthenticated()">
         <a sec:authentication="name" href="#"></a>
         <ul>
-            <li sec:authorize="hasAuthority('cliente')"><a th:href="@{/clientes}">Mi Cuenta</a></li>
-            <li><a th:href="@{/logout}">Cerrar sesion</a></li>
+          <li sec:authorize="hasAuthority('cliente')"><a th:href="@{/clientes}">Mi Cuenta</a></li>
+          <li><a th:href="@{/logout}">Cerrar sesion</a></li>
         </ul>
-    </li>
+      </li>
     </ul>
   </nav>
   <main class="contenido" th:insert="${contenido}"></main>
 </body>
+
 </html>

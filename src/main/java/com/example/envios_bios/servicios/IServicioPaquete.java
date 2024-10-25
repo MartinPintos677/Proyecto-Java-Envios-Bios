@@ -11,6 +11,8 @@ public interface IServicioPaquete {
 
     void agregarPaquete(Paquete paquete) throws ExcepcionEnviosBios;
 
+    Page<Paquete> buscarPorIdClienteYIdPaquete(String nombreUsuario, Long idPaquete, Pageable pageable);
+
     Paquete obtenerPaquetePorId(Long idPaquete);
 
     Page<Paquete> buscarConPaginacion(Long idPaquete, String cedulaCliente, String fechaRegistro, String estadoRastreo,
