@@ -12,9 +12,17 @@
     <p th:replace="~{fragmentos/parrafo-mensaje}"></p>
 
     <th:block th:if="${cliente}">
-      <div th:replace="~{fragmentos/formulario-cliente(textoBoton = 'Modificar', deshabilitarClave = true, foco = 'email')}"></div>
+      <div
+        th:replace="~{fragmentos/formulario-cliente(textoBoton = 'Modificar', deshabilitarClave = true, foco = 'email')}">
+      </div>
     </th:block>
-    <p><a th:href="@{/clientes/eliminar}">Eliminar mi cuenta...</a></p>
+
+    <div style="padding-bottom: 5px;"></div>
+
+    <p><a class="eliminar-cuenta" th:href="@{/clientes/eliminar}">Eliminar mi cuenta...</a></p>
+
+    <div style="padding-bottom: 20px;"></div>
+
     <div th:replace="~{fragmentos/footer::html(~{::title}, ~{::body})}"></div>
   </div>
 </body>
