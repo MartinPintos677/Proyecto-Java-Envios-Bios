@@ -3,8 +3,8 @@ package com.example.envios_bios.controladores;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.apache.el.stream.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -23,12 +23,14 @@ import com.example.envios_bios.dominio.Cliente;
 import com.example.envios_bios.dominio.EstadoRastreo;
 import com.example.envios_bios.dominio.Paquete;
 import com.example.envios_bios.excepciones.ExcepcionEnviosBios;
+import com.example.envios_bios.repositorio.IRepositorioEstadoRastreo;
 import com.example.envios_bios.servicios.IServicioCliente;
 import com.example.envios_bios.servicios.IServicioPaquete;
 import com.example.envios_bios.servicios.ServicioCategoria;
 import com.example.envios_bios.servicios.ServicioEstadoRastreo;
-
+import java.util.ArrayList;
 import jakarta.validation.Valid;
+
 
 @Controller
 @RequestMapping("/paquetes")
@@ -45,6 +47,9 @@ public class ControladorPaquete {
 
   @Autowired
   private ServicioEstadoRastreo servicioEstadoRastreo;
+
+  @Autowired
+  private IRepositorioEstadoRastreo repositorioEstadoRastreo;
 
   @GetMapping
   public String mostrarPaquetes(
@@ -78,45 +83,68 @@ public class ControladorPaquete {
   }
 
   @GetMapping("/agregar")
-  public String AgregarPaquete(Model model, Authentication authentication) {
-    // Crear un objeto paquete vacío para el formulario
-    Paquete paquete = new Paquete();
-    paquete.setFechaHoraRegistro(LocalDateTime.now());
-    model.addAttribute("paquete", paquete);
+    public String AgregarPaquete(Model model, Authentication authentication) {
+        // Crear un objeto paquete vacío para el formulario
+        Paquete paquete = new Paquete();
+        paquete.setFechaHoraRegistro(LocalDateTime.now());
+        model.addAttribute("paquete", paquete);
 
-    // Obtener el usuario autenticado
-    if (authentication != null) {
-      String nombreUsuario = authentication.getName();
+        // Definir variables para estado de rastreo y readonly
+        List<EstadoRastreo> estadosRastreo = new ArrayList<>();
+        String estadoSeleccionado = "";
+        boolean estadoReadonly = true;  // Estado siempre readonly
 
-      // Si el usuario logueado tiene el rol "cliente"
-      if (authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("cliente"))) {
-        Cliente cliente = servicioCliente.obtener(nombreUsuario); // Obtener el cliente logueado
-        model.addAttribute("cliente", cliente); // Agregar el cliente al modelo
-      }
-      // Si el usuario logueado tiene el rol "empleado"
-      else if (authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("empleado"))) {
-        List<Cliente> clientes = servicioPaquete.listarClientes(); // Listar todos los clientes
-        model.addAttribute("clientes", clientes); // Agregar la lista de clientes al modelo
-      }
+        if (authentication != null) {
+            String nombreUsuario = authentication.getName();
 
-      // Cargar las listas necesarias para los dropdowns
-      List<Categoria> categorias = servicioCategoria.listar();
-      List<EstadoRastreo> estadosRastreo = servicioEstadoRastreo.listar();
+            // Si el usuario logueado tiene el rol "cliente"
+            if (authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("cliente"))) {
+                Cliente cliente = servicioCliente.obtener(nombreUsuario);
+                model.addAttribute("cliente", cliente);
 
-      model.addAttribute("categorias", categorias);
-      model.addAttribute("estadosRastreo", estadosRastreo);
+                // Obtener el estado "a levantar"
+                EstadoRastreo estadoLevantar = repositorioEstadoRastreo.findByDescripcion("a levantar");
+                if (estadoLevantar != null) {
+                    estadosRastreo.add(estadoLevantar);
+                    estadoSeleccionado = "a levantar";
+                } 
 
-      // Pasar el valor del botón de acción al formulario
-      model.addAttribute("textoBoton", "Agregar");
+            } else if (authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("empleado"))) {
+                List<Cliente> clientes = servicioPaquete.listarClientes();
+                model.addAttribute("clientes", clientes);
+
+                // Obtener el estado "en sucursal"
+                EstadoRastreo estadoSucursal = repositorioEstadoRastreo.findByDescripcion("en sucursal");
+                if (estadoSucursal != null) {
+                    estadosRastreo.add(estadoSucursal);
+                    estadoSeleccionado = "en sucursal";
+                } 
+            }
+
+            // Pasar variables al modelo
+            model.addAttribute("estadoSeleccionado", estadoSeleccionado);
+            model.addAttribute("estadoReadonly", estadoReadonly);
+        }
+
+        // Cargar las listas de categorías
+        List<Categoria> categorias = servicioCategoria.listar();
+        model.addAttribute("categorias", categorias);
+
+        model.addAttribute("estadosRastreo", estadosRastreo);
+        model.addAttribute("textoBoton", "Agregar");
+
+        return "paquetes/agregar";
     }
 
-    return "paquetes/agregar";
-  }
 
   @PostMapping("/agregar")
   public String agregarPaquete(@ModelAttribute("paquete") @Valid Paquete paquete,
-      RedirectAttributes redirectAttributes,
-      Authentication authentication, BindingResult result) {
+    BindingResult result,RedirectAttributes redirectAttributes,
+      Authentication authentication) {
+
+        if (result.hasErrors()) {
+          return "paquetes/agregar";
+      }
     try {
       // Verifica si el usuario es cliente o empleado
       if (authentication != null) {

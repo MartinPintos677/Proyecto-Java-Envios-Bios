@@ -117,13 +117,19 @@ public class ControladorEstadoRastreo {
     public String procesarEliminar(Integer idRastreo, Model model, RedirectAttributes attributes) {
         try {
             servicioEstadoRastreo.eliminar(idRastreo);
-
             attributes.addFlashAttribute("mensaje", "Estado de Rastreo eliminado o desactivado con éxito.");
             return "redirect:/estadosRastreos";
-        } catch (ExcepcionEnviosBios e) {
+            
+        /* } catch (ExcepcionEnviosBios e) {
             model.addAttribute("mensaje", "¡ERROR! " + e.getMessage());
             return "estadosRastreos/estadosRastreos";
-        }
+        }*/
+   
+    } catch (ExcepcionEnviosBios e) {
+        attributes.addFlashAttribute("error", e.getMessage());
+    }
+
+    return "redirect:/estadosRastreos";
     }
 
     @GetMapping("/{idRastreo}")

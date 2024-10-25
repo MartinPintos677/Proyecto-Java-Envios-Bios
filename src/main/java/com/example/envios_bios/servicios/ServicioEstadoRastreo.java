@@ -72,25 +72,35 @@ public class ServicioEstadoRastreo implements IServicioEstadoRastreo {
     }
 
     @Override
-    public void eliminar(Integer idRastreo) throws ExcepcionEnviosBios {
-        EstadoRastreo rastreoExistente = repositorioEstadoRastreo.findById(idRastreo).orElse(null);
+public void eliminar(Integer idRastreo) throws ExcepcionEnviosBios {
+    EstadoRastreo rastreoExistente = repositorioEstadoRastreo.findById(idRastreo).orElse(null);
 
-        if (rastreoExistente == null) {
-            throw new ExcepcionNoExiste("El estado de Rastreo no existe.");
-        }
-
-        // Verificar si hay paquetes asociados a este estado de rastreo
-        boolean tienePaquetesAsociados = repositorioPaquetes.existsByEstadoRastreo(rastreoExistente);
-
-        if (tienePaquetesAsociados) {
-            // Si tiene paquetes, realizamos la baja lógica
-            rastreoExistente.setActivo(false);
-            repositorioEstadoRastreo.save(rastreoExistente);
-        } else {
-            // Si no tiene paquetes, lo eliminamos físicamente
-            repositorioEstadoRastreo.deleteById(idRastreo);
-        }
+    if (rastreoExistente == null) {
+        throw new ExcepcionNoExiste("El estado de Rastreo no existe.");
     }
+
+    // Verificar si el estado es "a levantar" o "en sucursal" y evitar su eliminación
+    if (rastreoExistente.getDescripcion().equalsIgnoreCase("a levantar") || 
+        rastreoExistente.getDescripcion().equalsIgnoreCase("en sucursal") || 
+        rastreoExistente.getDescripcion().equalsIgnoreCase("levantado") ||
+        rastreoExistente.getDescripcion().equalsIgnoreCase("en reparto") ||
+        rastreoExistente.getDescripcion().equalsIgnoreCase("entregado") ||
+        rastreoExistente.getDescripcion().equalsIgnoreCase("devuelto") ) {
+        throw new ExcepcionEnviosBios("No se puede eliminar el estado '" + rastreoExistente.getDescripcion() + "'.");
+    }
+
+    // Verificar si hay paquetes asociados a este estado de rastreo
+    boolean tienePaquetesAsociados = repositorioPaquetes.existsByEstadoRastreo(rastreoExistente);
+
+    if (tienePaquetesAsociados) {
+        // Si tiene paquetes, realizamos la baja lógica
+        rastreoExistente.setActivo(false);
+        repositorioEstadoRastreo.save(rastreoExistente);
+    } else {
+        // Si no tiene paquetes, lo eliminamos físicamente
+        repositorioEstadoRastreo.deleteById(idRastreo);
+    }
+}
 
     @Override
     public Page<EstadoRastreo> listarPaginado(Pageable pageable) {

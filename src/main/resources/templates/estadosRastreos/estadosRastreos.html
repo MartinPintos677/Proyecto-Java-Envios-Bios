@@ -15,7 +15,7 @@
         <h1>Estados de Rastreo</h1>
 
         <p th:replace="~{fragmentos/parrafo-mensaje}"></p>
-
+        <p th:if="${error}" th:text="${error}" style="color: red;"></p>
         <!-- Formulario de búsqueda -->
         <form id="formularioBusqueda" method="get">
             <div>
@@ -57,7 +57,7 @@
                 </tbody>
             </table>
         </div>
-
+        
         <p>
             <a class="agregar" th:href="@{/estadosRastreos/agregar}" title="Agregar">Agregar Estado de Rastreo</a>
         </p>

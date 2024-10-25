@@ -56,10 +56,14 @@
       </div>
       <div>
         <label for="estadoRastreo">Estado de Rastreo</label>
-        <select th:field="*{estadoRastreo.idRastreo}" id="estadoRastreo">
-          <option th:each="estado : ${estadosRastreo}" th:value="${estado.idRastreo}" th:text="${estado.descripcion}">Seleccionar estado</option>
-      </select>
-      </div>
+        <select th:field="*{estadoRastreo.idRastreo}" id="estadoRastreo" th:readonly="${estadoReadonly}">
+            <option th:each="estado : ${estadosRastreo}" 
+                    th:value="${estado.idRastreo}" 
+                    th:selected="${estado.descripcion == estadoSeleccionado}" 
+                    th:text="${estado.descripcion}">
+            </option>
+        </select>
+    </div>
       <div>
         <label for="fechaHoraRegistro">Fecha de Registro</label>
         <input type="text" th:field="*{fechaHoraRegistro}"
