@@ -138,45 +138,91 @@ public class ControladorPaquete {
   @PostMapping("/agregar")
   public String agregarPaquete(@ModelAttribute("paquete") @Valid Paquete paquete,
     BindingResult result,RedirectAttributes redirectAttributes,
-      Authentication authentication) {
+      Authentication authentication, Model model) {
 
         if (result.hasErrors()) {
+          // Volver a cargar los dropdowns
+          List<EstadoRastreo> estadosRastreo = new ArrayList<>();
+          String estadoSeleccionado = "";
+          boolean estadoReadonly = true;
+  
+          if (authentication != null) {
+              String nombreUsuario = authentication.getName();
+  
+              if (authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("cliente"))) {
+                  Cliente cliente = servicioCliente.obtener(nombreUsuario);
+                  model.addAttribute("cliente", cliente);
+  
+                  // Obtener el estado "a levantar"
+                  EstadoRastreo estadoLevantar = repositorioEstadoRastreo.findByDescripcion("a levantar");
+                  if (estadoLevantar != null) {
+                      estadosRastreo.add(estadoLevantar);
+                      estadoSeleccionado = "a levantar";
+                  }
+  
+              } else if (authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("empleado"))) {
+                  List<Cliente> clientes = servicioPaquete.listarClientes();
+                  model.addAttribute("clientes", clientes);
+  
+                  // Obtener el estado "en sucursal"
+                  EstadoRastreo estadoSucursal = repositorioEstadoRastreo.findByDescripcion("en sucursal");
+                  if (estadoSucursal != null) {
+                      estadosRastreo.add(estadoSucursal);
+                      estadoSeleccionado = "en sucursal";
+                  }
+              }
+  
+              // Pasar variables al modelo
+              model.addAttribute("estadoSeleccionado", estadoSeleccionado);
+              model.addAttribute("estadoReadonly", estadoReadonly);
+          }
+  
+          // Recargar la lista de categorías
+          List<Categoria> categorias = servicioCategoria.listar();
+          model.addAttribute("categorias", categorias);
+  
+          // Agregar los estados de rastreo al modelo
+          model.addAttribute("estadosRastreo", estadosRastreo);
+          model.addAttribute("textoBoton", "Agregar");
+  
           return "paquetes/agregar";
       }
-    try {
-      // Verifica si el usuario es cliente o empleado
-      if (authentication != null) {
-        String nombreUsuario = authentication.getName();
+  
+        try {
+          // Verifica si el usuario es cliente o empleado
+          if (authentication != null) {
+            String nombreUsuario = authentication.getName();
 
-        // Si el usuario es un cliente, asignar su nombreUsuario al paquete
-        if (authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("cliente"))) {
-          Cliente cliente = servicioCliente.obtener(nombreUsuario);
-          paquete.setCliente(cliente);
+            // Si el usuario es un cliente, asignar su nombreUsuario al paquete
+            if (authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("cliente"))) {
+              Cliente cliente = servicioCliente.obtener(nombreUsuario);
+              paquete.setCliente(cliente);
 
+              servicioPaquete.agregarPaquete(paquete);
+              redirectAttributes.addFlashAttribute("mensaje", "Paquete agregado correctamente.");
+              return "redirect:/clientes/listarpaquetes";
+            }
+            // Si el usuario es un empleado, ya debería haber seleccionado un cliente desde
+            // el dropdown por lo que no es necesario hacer nada en este caso
+          }     
+
+          // guarda el paquete en la base de datos
           servicioPaquete.agregarPaquete(paquete);
+
+          // Agrega mensaje de éxito
           redirectAttributes.addFlashAttribute("mensaje", "Paquete agregado correctamente.");
-          return "redirect:/clientes/listarpaquetes";
+          return "redirect:/paquetes";
+
+        } catch (ExcepcionEnviosBios e) {
+          
+          redirectAttributes.addFlashAttribute("mensajeError", e.getMessage());
+          return "redirect:/agregar";
+
+        } catch (Exception e) {
+          
+          redirectAttributes.addFlashAttribute("mensajeError", "Ocurrió un error al agregar el paquete.");
+          return "redirect:/paquetes";
         }
-        // Si el usuario es un empleado, ya debería haber seleccionado un cliente desde
-        // el dropdown
-        // por lo que no es necesario hacer nada en este caso
-      }     
-
-      // guarda el paquete en la base de datos
-      servicioPaquete.agregarPaquete(paquete);
-
-      // Agrega mensaje de éxito
-      redirectAttributes.addFlashAttribute("mensaje", "Paquete agregado correctamente.");
-      return "redirect:/paquetes";
-    } catch (ExcepcionEnviosBios e) {
-      // Si ocurre una excepción personalizada, mostrar mensaje de error
-      redirectAttributes.addFlashAttribute("mensajeError", e.getMessage());
-      return "redirect:/agregar";
-    } catch (Exception e) {
-      // En caso de un error general, agregar un mensaje genérico
-      redirectAttributes.addFlashAttribute("mensajeError", "Ocurrió un error al agregar el paquete.");
-      return "redirect:/paquetes";
-    }
   }
 
   @GetMapping("/modificar")
