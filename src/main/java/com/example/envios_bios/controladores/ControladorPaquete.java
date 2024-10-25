@@ -2,8 +2,6 @@ package com.example.envios_bios.controladores;
 
 import java.time.LocalDateTime;
 import java.util.List;
-
-import org.apache.el.stream.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -154,15 +152,15 @@ public class ControladorPaquete {
         if (authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("cliente"))) {
           Cliente cliente = servicioCliente.obtener(nombreUsuario);
           paquete.setCliente(cliente);
+
+          servicioPaquete.agregarPaquete(paquete);
+          redirectAttributes.addFlashAttribute("mensaje", "Paquete agregado correctamente.");
+          return "redirect:/clientes/listarpaquetes";
         }
         // Si el usuario es un empleado, ya debería haber seleccionado un cliente desde
         // el dropdown
         // por lo que no es necesario hacer nada en este caso
-      }
-      if (result.hasErrors()) {
-
-        return "paquetes/agregar";
-      }
+      }     
 
       // guarda el paquete en la base de datos
       servicioPaquete.agregarPaquete(paquete);
