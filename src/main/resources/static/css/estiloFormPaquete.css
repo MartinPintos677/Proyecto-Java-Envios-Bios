@@ -22,7 +22,9 @@ label {
     font-size: 14px; /* Tamaño de letra de etiquetas */
     font-weight: bold; /* Letras en negrita */
     margin-bottom: 5px; /* Espacio debajo de la etiqueta */
-    color: #333; /* Color del texto */
+    /*color: #333; /* Color del texto */
+
+    color: #666;
 }
 
 /* Estilo para los inputs */

@@ -43,19 +43,25 @@ section:hover{
 
 p, .li-inicio {
     font-size: 1.2rem;
-    color: #111010;
+    /*color: #111010;*/
     line-height: 1.2; 
     text-align: left; 
+
+    color: #666;
 }
 
 .li-inicio{
   margin-bottom: 10px;
 }
 
+.ul-inicio-mision li strong {
+    color: #666;
+}
+
 .line {
     height: 1px;
     width: 100%; 
-    background-color: #111010; 
+    background-color: #666; 
     margin: 10px auto;
 }
 
@@ -150,6 +156,3 @@ html {
     list-style-type: none;    
 }
 
-.ul-inicio-mision li strong {
-    color: #333; 
-}
