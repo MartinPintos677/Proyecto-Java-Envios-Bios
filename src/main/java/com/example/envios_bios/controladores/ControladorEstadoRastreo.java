@@ -49,8 +49,8 @@ public class ControladorEstadoRastreo {
     @PostMapping("/agregar")
     public String agregarEstadoRastreo(@ModelAttribute("rastreo") @Valid EstadoRastreo rastreo,
             BindingResult result, RedirectAttributes redirectAttributes, Model model) {
-        
-                if (result.hasErrors()) {
+
+        if (result.hasErrors()) {
 
             return "estadosRastreos/agregar";
         }
@@ -81,8 +81,7 @@ public class ControladorEstadoRastreo {
 
     @PostMapping("/modificar")
     public String procesarModificar(@ModelAttribute("rastreo") @Valid EstadoRastreo rastreo, BindingResult result,
-            Model model,
-            RedirectAttributes attributes) {
+            Model model, RedirectAttributes attributes) {
 
         if (result.hasErrors()) {
             model.addAttribute("textoBoton", "Modificar Estado de Rastreo");
@@ -94,7 +93,8 @@ public class ControladorEstadoRastreo {
             attributes.addFlashAttribute("mensaje", "Estado de Rastreo modificado con éxito.");
             return "redirect:/estadosRastreos";
         } catch (ExcepcionEnviosBios e) {
-            model.addAttribute("mensaje", "¡ERROR! " + e.getMessage());
+            model.addAttribute("mensajeError", "¡ERROR! " + e.getMessage());
+            model.addAttribute("textoBoton", "Modificar Estado de Rastreo");
             return "estadosRastreos/modificar";
         }
     }
@@ -118,13 +118,13 @@ public class ControladorEstadoRastreo {
         try {
             servicioEstadoRastreo.eliminar(idRastreo);
             attributes.addFlashAttribute("mensaje", "Estado de Rastreo eliminado o desactivado con éxito.");
-            return "redirect:/estadosRastreos";   
-   
+            return "redirect:/estadosRastreos";
+
         } catch (ExcepcionEnviosBios e) {
             attributes.addFlashAttribute("error", e.getMessage());
         }
 
-    return "redirect:/estadosRastreos";
+        return "redirect:/estadosRastreos";
     }
 
     @GetMapping("/{idRastreo}")

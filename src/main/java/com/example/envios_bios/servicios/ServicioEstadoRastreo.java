@@ -64,59 +64,72 @@ public class ServicioEstadoRastreo implements IServicioEstadoRastreo {
     }
 
     @Override
-public void modificar(EstadoRastreo rastreo) throws ExcepcionEnviosBios {
-    // Buscamos el estado de rastreo
-    EstadoRastreo rastreoExistente = repositorioEstadoRastreo.findById(rastreo.getIdRastreo()).orElse(null);
+    public void modificar(EstadoRastreo rastreo) throws ExcepcionEnviosBios {
+        // Buscar el estado de rastreo actual
+        EstadoRastreo rastreoExistente = repositorioEstadoRastreo.findById(rastreo.getIdRastreo()).orElse(null);
 
-    if (rastreoExistente == null) {
-        throw new ExcepcionNoExiste("El estado de Rastreo no existe.");
+        if (rastreoExistente == null) {
+            throw new ExcepcionNoExiste("El estado de Rastreo no existe.");
+        }
+
+        // Verificar si el estado es uno de los que no se deben modificar
+        if (rastreosNoModificables(rastreoExistente.getDescripcion())) {
+            throw new ExcepcionEnviosBios(
+                    "No se puede modificar el estado '" + rastreoExistente.getDescripcion() + "'.");
+        }
+
+        // Verificar si la nueva descripción ya existe en otro estado activo
+        EstadoRastreo otroEstadoConMismaDescripcion = repositorioEstadoRastreo
+                .findByDescripcion(rastreo.getDescripcion());
+        if (otroEstadoConMismaDescripcion != null
+                && !otroEstadoConMismaDescripcion.getIdRastreo().equals(rastreo.getIdRastreo())) {
+            throw new ExcepcionYaExiste("Ya existe otro Estado de Rastreo con la misma descripción.");
+        }
+
+        // Actualizar y guardar el estado
+        rastreo.setActivo(true);
+        repositorioEstadoRastreo.save(rastreo);
     }
 
-    // Verifica si el estado es uno de los que no se deben modificar
-    if (rastreoExistente.getDescripcion().equalsIgnoreCase("a levantar") || 
-        rastreoExistente.getDescripcion().equalsIgnoreCase("en sucursal") || 
-        rastreoExistente.getDescripcion().equalsIgnoreCase("levantado") ||
-        rastreoExistente.getDescripcion().equalsIgnoreCase("en reparto") ||
-        rastreoExistente.getDescripcion().equalsIgnoreCase("entregado") ||
-        rastreoExistente.getDescripcion().equalsIgnoreCase("devuelto")) {
-        throw new ExcepcionEnviosBios("No se puede modificar el estado '" + rastreoExistente.getDescripcion() + "'.");
+    // Método auxiliar para verificar los estados no modificables
+    private boolean rastreosNoModificables(String descripcion) {
+        List<String> estadosNoModificables = List.of("a levantar", "en sucursal", "levantado", "en reparto",
+                "entregado", "devuelto");
+        return estadosNoModificables.contains(descripcion.toLowerCase());
     }
-
-    // Actualizamos el estado de rastreo (asegurando que se mantenga activo)
-    rastreo.setActivo(true);
-    repositorioEstadoRastreo.save(rastreo);
-}
 
     @Override
     public void eliminar(Integer idRastreo) throws ExcepcionEnviosBios {
-    EstadoRastreo rastreoExistente = repositorioEstadoRastreo.findById(idRastreo).orElse(null);
+        EstadoRastreo rastreoExistente = repositorioEstadoRastreo.findById(idRastreo).orElse(null);
 
-    if (rastreoExistente == null) {
-        throw new ExcepcionNoExiste("El estado de Rastreo no existe.");
+        if (rastreoExistente == null) {
+            throw new ExcepcionNoExiste("El estado de Rastreo no existe.");
+        }
+
+        // Verificar si el estado es "a levantar" o "en sucursal" y evitar su
+        // eliminación
+        if (rastreoExistente.getDescripcion().equalsIgnoreCase("a levantar") ||
+                rastreoExistente.getDescripcion().equalsIgnoreCase("en sucursal") ||
+                rastreoExistente.getDescripcion().equalsIgnoreCase("levantado") ||
+                rastreoExistente.getDescripcion().equalsIgnoreCase("en reparto") ||
+                rastreoExistente.getDescripcion().equalsIgnoreCase("entregado") ||
+                rastreoExistente.getDescripcion().equalsIgnoreCase("devuelto")) {
+            throw new ExcepcionEnviosBios(
+                    "No se puede eliminar el estado '" + rastreoExistente.getDescripcion() + "'.");
+        }
+
+        // Verificar si hay paquetes asociados a este estado de rastreo
+        boolean tienePaquetesAsociados = repositorioPaquetes.existsByEstadoRastreo(rastreoExistente);
+
+        if (tienePaquetesAsociados) {
+            // Si tiene paquetes, realizamos la baja lógica
+            rastreoExistente.setActivo(false);
+            repositorioEstadoRastreo.save(rastreoExistente);
+        } else {
+            // Si no tiene paquetes, lo eliminamos físicamente
+            repositorioEstadoRastreo.deleteById(idRastreo);
+        }
     }
-
-    // Verificar si el estado es "a levantar" o "en sucursal" y evitar su eliminación
-    if (rastreoExistente.getDescripcion().equalsIgnoreCase("a levantar") || 
-        rastreoExistente.getDescripcion().equalsIgnoreCase("en sucursal") || 
-        rastreoExistente.getDescripcion().equalsIgnoreCase("levantado") ||
-        rastreoExistente.getDescripcion().equalsIgnoreCase("en reparto") ||
-        rastreoExistente.getDescripcion().equalsIgnoreCase("entregado") ||
-        rastreoExistente.getDescripcion().equalsIgnoreCase("devuelto") ) {
-        throw new ExcepcionEnviosBios("No se puede eliminar el estado '" + rastreoExistente.getDescripcion() + "'.");
-    }
-
-    // Verificar si hay paquetes asociados a este estado de rastreo
-    boolean tienePaquetesAsociados = repositorioPaquetes.existsByEstadoRastreo(rastreoExistente);
-
-    if (tienePaquetesAsociados) {
-        // Si tiene paquetes, realizamos la baja lógica
-        rastreoExistente.setActivo(false);
-        repositorioEstadoRastreo.save(rastreoExistente);
-    } else {
-        // Si no tiene paquetes, lo eliminamos físicamente
-        repositorioEstadoRastreo.deleteById(idRastreo);
-    }
-}
 
     @Override
     public Page<EstadoRastreo> listarPaginado(Pageable pageable) {

@@ -10,6 +10,11 @@
     <h1>Modificar Estado de Rastreo</h1>
 
     <p th:replace="~{fragmentos/parrafo-mensaje}"></p>
+    <!-- Mostrar mensaje de error si existe -->
+    <div th:if="${mensajeError}" style="color: red" align="center">
+        <p style="color: red" th:text="${mensajeError}"></p>
+    </div>
+
 
     <!-- Mostrar el formulario solo si 'rastreo' está presente -->
     <th:block th:if="${rastreo}">
