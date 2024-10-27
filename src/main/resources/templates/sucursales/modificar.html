@@ -9,10 +9,12 @@
 <body th:remove="tag">
     <h1>Modificar Sucursal</h1>
 
-    <p th:replace="~{fragmentos/parrafo-mensaje}"></p>
+    <p th:if="${mensaje}" style="color: red; text-align: center;" th:text="${mensaje}"></p>
 
     <th:block th:if="${sucursal}">
-        <div th:replace="~{fragmentos/formulario-sucursal(textoBoton = 'Modificar', deshabilitarClave = true, foco = 'nombre')}"></div>
+        <div
+            th:replace="~{fragmentos/formulario-sucursal(textoBoton = 'Modificar', deshabilitarClave = true, foco = 'nombre')}">
+        </div>
 
     </th:block>
 

@@ -69,12 +69,19 @@ public class ServicioSucursales implements IServicioSucursales {
 
     @Override
     public void modificar(Sucursal sucursal) throws ExcepcionEnviosBios {
-        Sucursal s = repositorioSucursal.findById(sucursal.getNumero()).orElse(null);
+        Sucursal sucursalExistente = repositorioSucursal.findById(sucursal.getNumero()).orElse(null);
 
-        if (s == null) {
+        if (sucursalExistente == null) {
             throw new ExcepcionNoExiste("La Sucursal no existe.");
         }
-        repositorioSucursal.save(sucursal);
+
+        // Buscar si ya existe otra sucursal con el mismo nombre
+        Sucursal sucursalConMismoNombre = repositorioSucursal.findByNombre(sucursal.getNombre());
+        if (sucursalConMismoNombre != null && !sucursalConMismoNombre.getNumero().equals(sucursal.getNumero())) {
+            throw new ExcepcionYaExiste("Ya existe otra Sucursal con el mismo nombre.");
+        }
+
+        repositorioSucursal.save(sucursal); // Guardar los cambios si no hay duplicados
     }
 
     @Override

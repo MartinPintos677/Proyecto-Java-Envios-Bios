@@ -91,19 +91,15 @@ public class ControladorSucursales {
     @PostMapping("/modificar")
     public String procesarModificar(@ModelAttribute @Valid Sucursal sucursal, BindingResult result, Model model,
             RedirectAttributes attributes) {
-        model.addAttribute("sucursales", servicioSucursales.listar());
-
         if (result.hasErrors()) {
             return "sucursales/modificar";
         }
         try {
-
             servicioSucursales.modificar(sucursal);
             attributes.addFlashAttribute("mensaje", "Sucursal modificada con éxito.");
             return "redirect:/sucursales";
         } catch (ExcepcionEnviosBios e) {
             model.addAttribute("mensaje", "¡ERROR! " + e.getMessage());
-
             return "sucursales/modificar";
         }
     }

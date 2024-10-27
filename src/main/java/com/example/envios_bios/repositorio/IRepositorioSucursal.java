@@ -12,6 +12,8 @@ public interface IRepositorioSucursal extends JpaRepository<Sucursal, Long>, Jpa
 
     List<Sucursal> findByNombreContaining(String criterio);
 
+    Sucursal findByNombre(String nombre);
+
     Page<Sucursal> findByNombreContaining(String criterio, Pageable pageable);
 
 }

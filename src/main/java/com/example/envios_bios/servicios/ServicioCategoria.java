@@ -51,13 +51,21 @@ public class ServicioCategoria implements IServicioCategorias {
 
     @Override
     public void modificar(Categoria categoria) throws ExcepcionEnviosBios {
-        // busco por el idCat
+        // Buscar la categoría actual por idCat
         Categoria categoriaExistente = repositorioCategorias.findById(categoria.getIdCat()).orElse(null);
 
         if (categoriaExistente == null) {
             throw new ExcepcionNoExiste("La categoría no existe.");
         }
 
+        // Verificar si el nuevo nombre ya está siendo usado por otra categoría
+        Categoria otraCategoriaConMismoNombre = repositorioCategorias.findByNombre(categoria.getNombre());
+        if (otraCategoriaConMismoNombre != null
+                && !otraCategoriaConMismoNombre.getIdCat().equals(categoria.getIdCat())) {
+            throw new ExcepcionYaExiste("Ya existe otra categoría con el mismo nombre.");
+        }
+
+        // Si no hay conflictos, actualizamos y guardamos
         repositorioCategorias.save(categoria);
     }
 

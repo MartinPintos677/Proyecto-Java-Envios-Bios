@@ -9,7 +9,7 @@
 <body th:remove="tag">
     <h1>Modificar Categoria</h1>
 
-    <p th:replace="~{fragmentos/parrafo-mensaje}"></p>
+    <p th:if="${mensaje}" style="color: red; text-align: center;" th:text="${mensaje}"></p>
 
     <th:block th:if="${categoria}">
         <div th:replace="fragmentos/formulario-categoria :: formulario-categoria('Modificar')"></div>

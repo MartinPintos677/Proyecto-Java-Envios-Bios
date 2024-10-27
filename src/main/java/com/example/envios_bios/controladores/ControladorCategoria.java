@@ -51,32 +51,31 @@ public class ControladorCategoria {
 
     @PostMapping("/agregar")
     public String agregarCategoria(@ModelAttribute("categoria") @Valid Categoria categoria,
-    BindingResult result,RedirectAttributes redirectAttributes,  Model model) {
+            BindingResult result, RedirectAttributes redirectAttributes, Model model) {
 
-                if (result.hasErrors()) {
-                    return "categorias/agregar";
-                }
-                try {
-                    servicioCategorias.agregar(categoria);
-        
-                    // Añadir un mensaje de éxito a los atributos redireccionados
-                    redirectAttributes.addFlashAttribute("mensaje", "Categoria agregada exitosamente!");
-        
-                    // Redireccionar a la lista de categorias
-                    return "redirect:/categorias";
-                } catch (ExcepcionEnviosBios e) {
-                    model.addAttribute("mensaje", e.getMessage());
-                    return "categorias/agregar";
-                }
-            }
-    
+        if (result.hasErrors()) {
+            return "categorias/agregar";
+        }
+        try {
+            servicioCategorias.agregar(categoria);
+
+            // Añadir un mensaje de éxito a los atributos redireccionados
+            redirectAttributes.addFlashAttribute("mensaje", "Categoria agregada exitosamente!");
+
+            // Redireccionar a la lista de categorias
+            return "redirect:/categorias";
+        } catch (ExcepcionEnviosBios e) {
+            model.addAttribute("mensaje", e.getMessage());
+            return "categorias/agregar";
+        }
+    }
 
     @GetMapping("/modificar")
     public String mostrarModificar(@RequestParam("idCat") Integer idCat, Model model) {
         Categoria categoria = servicioCategorias.obtener(idCat);
 
         if (categoria != null) {
-            model.addAttribute("categoria", categoria); 
+            model.addAttribute("categoria", categoria);
             model.addAttribute("textoBoton", "Modificar Categoría");
         } else {
             model.addAttribute("mensaje", "¡ERROR! No se encontró la categoría con el id " + idCat + ".");
@@ -88,22 +87,16 @@ public class ControladorCategoria {
     @PostMapping("/modificar")
     public String procesarModificar(@ModelAttribute @Valid Categoria categoria, BindingResult result, Model model,
             RedirectAttributes attributes) {
-        model.addAttribute("categorias", servicioCategorias.listar());
-        
         if (result.hasErrors()) {
             return "categorias/modificar";
         }
         try {
-
             servicioCategorias.modificar(categoria);
-            attributes.addFlashAttribute("mensaje", "Categoria modificada con éxito.");
+            attributes.addFlashAttribute("mensaje", "Categoría modificada con éxito.");
             return "redirect:/categorias";
-
         } catch (ExcepcionEnviosBios e) {
             model.addAttribute("mensaje", "¡ERROR! " + e.getMessage());
-
             return "categorias/modificar";
-
         }
     }
 
