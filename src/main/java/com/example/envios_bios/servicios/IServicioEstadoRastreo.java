@@ -12,6 +12,8 @@ public interface IServicioEstadoRastreo {
 
     List<EstadoRastreo> buscar(String criterio);
 
+    EstadoRastreo findByDescripcion(String descripcion);
+
     EstadoRastreo obtener(Integer idRastreo);
 
     void agregar(EstadoRastreo rastreo) throws ExcepcionEnviosBios;

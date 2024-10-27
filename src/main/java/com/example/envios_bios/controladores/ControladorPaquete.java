@@ -21,7 +21,6 @@ import com.example.envios_bios.dominio.Cliente;
 import com.example.envios_bios.dominio.EstadoRastreo;
 import com.example.envios_bios.dominio.Paquete;
 import com.example.envios_bios.excepciones.ExcepcionEnviosBios;
-import com.example.envios_bios.repositorio.IRepositorioEstadoRastreo;
 import com.example.envios_bios.servicios.IServicioCliente;
 import com.example.envios_bios.servicios.IServicioPaquete;
 import com.example.envios_bios.servicios.ServicioCategoria;
@@ -45,9 +44,7 @@ public class ControladorPaquete {
 
   @Autowired
   private ServicioEstadoRastreo servicioEstadoRastreo;
-
-  @Autowired
-  private IRepositorioEstadoRastreo repositorioEstadoRastreo;
+  
 
   @GetMapping
   public String mostrarPaquetes(
@@ -101,7 +98,7 @@ public class ControladorPaquete {
                 model.addAttribute("cliente", cliente);
 
                 // Obtener el estado "a levantar"
-                EstadoRastreo estadoLevantar = repositorioEstadoRastreo.findByDescripcion("a levantar");
+                EstadoRastreo estadoLevantar = servicioEstadoRastreo.findByDescripcion("a levantar");
                 if (estadoLevantar != null) {
                     estadosRastreo.add(estadoLevantar);
                     estadoSeleccionado = "a levantar";
@@ -112,7 +109,7 @@ public class ControladorPaquete {
                 model.addAttribute("clientes", clientes);
 
                 // Obtener el estado "en sucursal"
-                EstadoRastreo estadoSucursal = repositorioEstadoRastreo.findByDescripcion("en sucursal");
+                EstadoRastreo estadoSucursal = servicioEstadoRastreo.findByDescripcion("en sucursal");
                 if (estadoSucursal != null) {
                     estadosRastreo.add(estadoSucursal);
                     estadoSeleccionado = "en sucursal";
@@ -154,7 +151,7 @@ public class ControladorPaquete {
                   model.addAttribute("cliente", cliente);
   
                   // Obtener el estado "a levantar"
-                  EstadoRastreo estadoLevantar = repositorioEstadoRastreo.findByDescripcion("a levantar");
+                  EstadoRastreo estadoLevantar = servicioEstadoRastreo.findByDescripcion("a levantar");
                   if (estadoLevantar != null) {
                       estadosRastreo.add(estadoLevantar);
                       estadoSeleccionado = "a levantar";
@@ -165,7 +162,7 @@ public class ControladorPaquete {
                   model.addAttribute("clientes", clientes);
   
                   // Obtener el estado "en sucursal"
-                  EstadoRastreo estadoSucursal = repositorioEstadoRastreo.findByDescripcion("en sucursal");
+                  EstadoRastreo estadoSucursal = servicioEstadoRastreo.findByDescripcion("en sucursal");
                   if (estadoSucursal != null) {
                       estadosRastreo.add(estadoSucursal);
                       estadoSeleccionado = "en sucursal";

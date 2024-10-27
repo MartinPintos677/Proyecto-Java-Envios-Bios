@@ -37,6 +37,11 @@ public class ServicioEstadoRastreo implements IServicioEstadoRastreo {
     }
 
     @Override
+    public EstadoRastreo findByDescripcion(String descripcion) {
+        return repositorioEstadoRastreo.findByDescripcion(descripcion);
+    }
+
+    @Override
     public void agregar(EstadoRastreo rastreo) throws ExcepcionEnviosBios {
         // Verificar si ya existe un estado con la misma descripción, sea activo o
         // inactivo
