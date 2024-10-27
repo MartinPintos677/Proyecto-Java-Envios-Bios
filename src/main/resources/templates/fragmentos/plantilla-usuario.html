@@ -31,13 +31,13 @@
       </li>
 
       <li sec:authorize="hasAuthority('empleado')">
-        <a href="#">Menu</a>
+        <a href="#">Menú</a>
         <ul>
-          <li><a th:href="@{/sucursales}">CRUD sucursales</a></li>
-          <li><a th:href="@{/empleados}">CRUD empleados</a></li>
-          <li><a th:href="@{/categorias}">CRUD categorias</a></li>
-          <li><a th:href="@{/estadosRastreos}">CRUD estadosRastreos</a></li>
-          <li><a th:href="@{/paquetes}">CRUD paquetes</a></li>
+          <li><a th:href="@{/sucursales}">CRUD Sucursales</a></li>
+          <li><a th:href="@{/empleados}">CRUD Empleados</a></li>
+          <li><a th:href="@{/categorias}">CRUD Categorías</a></li>
+          <li><a th:href="@{/estadosRastreos}">CRUD Estados de Rastreo</a></li>
+          <li><a th:href="@{/paquetes}">CRUD Paquetes</a></li>
         </ul>
       </li>
     </ul>
@@ -46,7 +46,7 @@
         <a sec:authentication="name" href="#"></a>
         <ul>
           <li sec:authorize="hasAuthority('cliente')"><a th:href="@{/clientes}">Mi Cuenta</a></li>
-          <li><a th:href="@{/logout}">Cerrar sesion</a></li>
+          <li class="cierre-sesion"><a th:href="@{/logout}">Cerrar sesión</a></li>
         </ul>
       </li>
     </ul>
