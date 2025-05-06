@@ -33,6 +33,21 @@
     </ul>
   </nav>
 
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const seccionesLink = document.querySelector('nav.navegacion-principal li > a[href="#"]');
+  
+      if (window.innerWidth <= 768 && seccionesLink) {
+        seccionesLink.addEventListener("click", function (e) {
+          e.preventDefault();
+          const parentLi = this.parentElement;
+          parentLi.classList.toggle("show-submenu");
+        });
+      }
+    });
+  </script>
+  
+
 </body>
 
 </html>

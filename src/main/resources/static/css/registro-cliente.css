@@ -107,7 +107,7 @@ body{
   justify-content: space-between;
 }
 
-@media (max-width: 600px) {
+/*@media (max-width: 600px) {
 
   .input-container-completo{
   display: grid;  
@@ -126,4 +126,27 @@ padding-bottom: 50px;
 width: 350px;
 margin-top: 10px;
 }
+}*/
+
+@media (max-width: 600px) {
+  .input-container-completo {
+    display: block;
+  }
+
+  .input-container-label {
+    width: 100%;
+    box-sizing: border-box; /* Asegura que padding no sobrepase el ancho */
+  }
+
+  .login-container {
+    height: auto;
+    padding-bottom: 50px;
+  }
+
+  .login-form {
+    width: 100%; 
+    max-width: 500px;
+    margin-top: 10px;
+  }
 }
+

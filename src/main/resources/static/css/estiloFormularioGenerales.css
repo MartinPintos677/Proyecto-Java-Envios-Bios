@@ -350,4 +350,27 @@ width: 50%;
 @media (max-width: 565px) {
 input[type="submit"] {
 width: 55%;
-}}
+}
+
+.datagrid {
+   /* width: 100%;*/
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch; /* Para iOS */
+  }
+
+  .datagrid table {
+    min-width: 500px; /* fuerza scroll horizontal */
+    width: max-content; /* asegura que no se achique */
+  }
+
+  .datagrid table th, 
+  .datagrid table td {
+    white-space: nowrap;
+  }
+
+  .bienvenida-p{
+    text-align: center;
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+}

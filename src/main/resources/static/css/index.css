@@ -12,7 +12,7 @@ main {
 section {
     max-width: 1150px;
     width: 100%; 
-    padding: 20px 0;
+    /*padding: 20px 0;*/
     margin: 20px auto; 
     box-shadow: 0 2px 15px rgba(0,0,0,0.2);
     background-color: #fff;
@@ -156,3 +156,18 @@ html {
     list-style-type: none;    
 }
 
+@media (max-width: 565px){
+blockquote p {    
+    margin-left: 20px;
+}
+
+.ul-inicio-mision {
+    padding-left: 10px;
+  }
+
+  .ul-inicio-mision li {
+    margin-left: 0;
+    padding-left: 8px;
+    border-left-width: 3px;
+  }
+}

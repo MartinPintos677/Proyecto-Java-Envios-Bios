@@ -39,6 +39,21 @@
       <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
       <button class="btn-login" type="submit">Iniciar Sesión</button>
 
+      <button type="button" class="btn-login auto-login-btn" onclick="mostrarModal()">Ingresar datos automáticamente</button>
+
+      <!-- Modal -->
+      <div id="modalLogin" class="modal">
+        <div class="modal-content">
+          <h3>¿Desea loguearse como...?</h3>
+          <button type="button" onclick="autocompletar('empleado')">Empleado</button>
+          <button type="button" onclick="autocompletar('cliente')">Cliente</button>
+          <button type="button" onclick="cerrarModal()">Cancelar</button>
+        </div>
+      </div>
+      
+      
+
+
       <p class="registro-invitar">Si aún no estás registrado como cliente, <a
           th:href="@{/clientes/registrarcliente}">regístrate ahora!</a></p>
 
@@ -49,6 +64,43 @@
       document.getElementById('nombreUsuario').select();
     </script>
   </div>
+
+  <script>
+    function mostrarModal() {
+      document.getElementById("modalLogin").style.display = "block";
+    }
+  
+    function cerrarModal() {
+  document.getElementById("modalLogin").style.display = "none";
+
+  // Ocultar mensaje de error si está visible
+  const errorMsg = document.querySelector(".error");
+  if (errorMsg) {
+    errorMsg.style.display = "none";
+  }
+}
+
+  
+    function autocompletar(rol) {
+      cerrarModal();
+      const usuarioInput = document.getElementById("nombreUsuario");
+      const passInput = document.getElementById("claveDeAcceso");
+  
+      if (rol === "empleado") {
+        usuarioInput.value = "empleado1";
+        passInput.value = "empleado123";
+      } else if (rol === "cliente") {
+        usuarioInput.value = "cliente1";
+        passInput.value = "clave123";
+      }
+  
+      // Enviar el formulario automáticamente
+      setTimeout(() => {
+        document.querySelector(".login-form").submit();
+      }, 500); // pequeña pausa para que se vean los datos cargados
+    }
+  </script>
+  
 </body>
 
 </html>
